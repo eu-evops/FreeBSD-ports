@@ -34,6 +34,14 @@ if (!function_exists("filter_configure")) {
 require_once("notices.inc");
 require_once("xmlrpc_client.inc");
 
+/* Bind9 configuration parsers required to update dynamic zones */
+require_once('bind/lib/Bind9ZoneConfiguration.php');
+require_once('bind/lib/Bind9ZoneConfigurationParser.php');
+require_once('bind/lib/Bind9ZoneRecord.php');
+require_once('bind/lib/Bind9ZoneRecordParser.php');
+require_once('bind/lib/Bind9ZoneSOARecord.php');
+require_once('bind/lib/Bind9ZoneSOARecordParser.php');
+
 define('BIND_LOCALBASE', '/usr/local');
 define('CHROOT_LOCALBASE', '/cf/named');
 
@@ -596,12 +604,25 @@ EOD;
 						$rndc = "/usr/local/sbin/rndc -q -c {$rndc_conf_path}";
 						if ($zone_is_dynamic) {
 							exec("{$rndc} freeze " . escapeshellarg($zonename) . " IN " . escapeshellarg($zoneview));
-							// TODO: diff frozen zone DB with pfSense's stored DB file
-							//       and (optionally?) add dynamic records to customzonerecords
-						}
 
-						// Save zone configuration DB file
-						file_put_contents(CHROOT_LOCALBASE."/etc/namedb/{$zonetype}/{$zoneview}/{$zonename}.DB", $zone_conf);
+							$dynamicZoneParser = new Bind9ZoneConfigurationParser(CHROOT_LOCALBASE . "/etc/namedb/{$zonetype}/{$zoneview}/{$zonename}.DB");
+							$dynamicConfiguration = $dynamicZoneParser->parse($zonename);
+
+							// Save temp file
+							file_put_contents(CHROOT_LOCALBASE . "/etc/namedb/{$zonetype}/{$zoneview}/{$zonename}.DB.tmp", $zone_conf);
+
+							$pfSenseZoneParser = new Bind9ZoneConfigurationParser(CHROOT_LOCALBASE . "/etc/namedb/{$zonetype}/{$zoneview}/{$zonename}.DB.tmp");
+							$pfSenseConfiguration = $pfSenseZoneParser->parse($zonename);
+
+							$pfSenseConfiguration->merge($dynamicConfiguration);
+
+							// Save merged configuration
+							file_put_contents(CHROOT_LOCALBASE . "/etc/namedb/{$zonetype}/{$zoneview}/{$zonename}.DB", $pfSenseConfiguration->toString());
+							unlink(CHROOT_LOCALBASE . "/etc/namedb/{$zonetype}/{$zoneview}/{$zonename}.DB.tmp");
+						} else {
+							// Save zone configuration DB file
+							file_put_contents(CHROOT_LOCALBASE . "/etc/namedb/{$zonetype}/{$zoneview}/{$zonename}.DB", $zone_conf);
+						}
 
 						// Thaw frozen dynamic zone
 						if ($zone_is_dynamic) {
