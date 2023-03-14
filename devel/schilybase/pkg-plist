@@ -1,4 +1,3 @@
-etc/termcap
 include/scg/aspi-dos.h
 include/scg/aspi-win32.h
 include/scg/scgcmd.h
@@ -20,6 +19,7 @@ include/schily/alloca.h
 include/schily/archdefs.h
 include/schily/assert.h
 include/schily/avoffset.h
+include/schily/blake2.h
 include/schily/btorder.h
 include/schily/ccomdefs.h
 include/schily/checkerr.h
@@ -206,6 +206,7 @@ lib/libxtermcap.so.1.0
 %%PROFILE%%lib/profiled/libxtermcap.a
 %%PORTDOCS%%share/doc/libparanoia/README.interface
 %%PORTDOCS%%share/doc/libparanoia/README.paranoia
+%%NLS%%share/locale/C/LC_MESSAGES/SCHILY_utils.mo
 %%NLS%%share/locale/af/LC_MESSAGES/SCHILY_utils.mo
 %%NLS%%share/locale/am/LC_MESSAGES/SCHILY_utils.mo
 %%NLS%%share/locale/ar/LC_MESSAGES/SCHILY_utils.mo

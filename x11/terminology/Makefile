@@ -1,13 +1,12 @@
-# Created by: Grzegorz Blach <gblach@FreeBSD.org>
-
 PORTNAME=	terminology
-DISTVERSION=	1.9.0
+DISTVERSION=	1.13.0
 CATEGORIES=	x11 enlightenment
 MASTER_SITES=	http://download.enlightenment.org/rel/apps/${PORTNAME}/
 DIST_SUBDIR=	enlightenment
 
 MAINTAINER=	enlightenment@FreeBSD.org
 COMMENT=	EFL Terminal Emulator
+WWW=		https://www.enlightenment.org/
 
 LICENSE=	BSD2CLAUSE
 LICENSE_FILE=	${WRKSRC}/COPYING

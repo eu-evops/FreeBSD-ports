@@ -1,13 +1,12 @@
-# Created by: Alexis Praga <alexis.praga@free.fr>
-
 PORTNAME=	sphinxext-opengraph
-PORTVERSION=	0.5.0
+PORTVERSION=	0.6.3
 DISTVERSIONPREFIX=	v
 CATEGORIES=	textproc python
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
 
 MAINTAINER=	alexis.praga@free.fr
 COMMENT=	Sphinx extension to generate OpenGraph metadata
+WWW=		https://github.com/wpilibsuite/sphinxext-opengraph
 
 LICENSE=	BSD3CLAUSE
 LICENSE_FILE=	${WRKSRC}/LICENSE.md

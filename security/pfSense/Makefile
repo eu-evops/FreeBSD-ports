@@ -1,13 +1,12 @@
-# $FreeBSD$
-
 PORTNAME=	pfSense
 DISTVERSION=	2.7.0
+PORTREVISION=	4
 CATEGORIES=	security
 MASTER_SITES=	# empty
 DISTFILES=	# empty
 EXTRACT_ONLY=	# empty
 
-MAINTAINER=	renato@pfsense.com
+MAINTAINER=	coreteam@pfsense.org
 COMMENT?=	Meta package to install pfSense required ports
 
 LICENSE=	APACHE20
@@ -49,7 +48,6 @@ RUN_DEPENDS=	bind-tools>=0:dns/bind-tools \
 		${PHP_PKGNAMEPREFIX}pear-Mail>=0:mail/pear-Mail@${PHP_FLAVOR} \
 		${PHP_PKGNAMEPREFIX}pear-Net_IPv6>=0:net/pear-Net_IPv6@${PHP_FLAVOR} \
 		${PHP_PKGNAMEPREFIX}pear-XML_RPC2>=0:net/pear-XML_RPC2@${PHP_FLAVOR} \
-		${PHP_PKGNAMEPREFIX}simplepie>=0:www/simplepie@${PHP_FLAVOR} \
 		${PHP_PKGNAMEPREFIX}pfSense-module>=0:devel/php-pfSense-module@${PHP_FLAVOR} \
 		${PHP_PKGNAMEPREFIX}phpseclib>=0:security/phpseclib@${PHP_FLAVOR} \
 		pfSense-Status_Monitoring>=0:sysutils/pfSense-Status_Monitoring@${PHP_FLAVOR} \
@@ -68,6 +66,7 @@ RUN_DEPENDS=	bind-tools>=0:dns/bind-tools \
 		voucher>=0:sysutils/voucher \
 		wol>=0:net/wol \
 		wpa_supplicant>=0:security/wpa_supplicant \
+		whois>0:net/whois \
 		xinetd>=0:security/xinetd \
 		openvpn-auth-script>=0:security/openvpn-auth-script \
 		opensc>0:security/opensc \
@@ -81,7 +80,7 @@ LIB_DEPENDS=	libltdl.so:devel/libltdl
 
 USES=		kmod php:flavors
 
-IGNORE_WITH_PHP=	72 73
+IGNORE_WITH_PHP=	72 73 74 80 81
 USE_PHP=	bz2 bcmath ctype curl dom filter gettext intl json mbstring \
 		mcrypt opcache openssl pcntl pdo pdo_sqlite posix \
 		radius readline session shmop simplexml sockets sysvmsg sysvsem \

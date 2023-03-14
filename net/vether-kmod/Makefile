@@ -1,9 +1,10 @@
 PORTNAME=	vether-kmod
-DISTVERSION=	g20211119
+DISTVERSION=	g20211214
 CATEGORIES=	net
 
 MAINTAINER=	henning.matyschok@outlook.com
 COMMENT=	Virtual Ethernet Interface
+WWW=		https://github.com/hmatyschok/if_vether
 
 LICENSE=	BSD2CLAUSE ISCL
 LICENSE_COMB=	multi
@@ -13,7 +14,7 @@ USES=		kmod uidfix
 USE_GITHUB=	yes
 GH_ACCOUNT=	hmatyschok
 GH_PROJECT=	if_vether
-GH_TAGNAME=	8fd5c68a969014fca8cc9e6e90cb686cc2b7685c
+GH_TAGNAME=	511ee3b393029cfff0c5b1873fe0a16f077a7459
 
 WRKSRC_SUBDIR=	src
 

@@ -1,9 +1,12 @@
 PORTNAME=	ivan
-PORTVERSION=	0.58
+PORTVERSION=	0.59
 CATEGORIES=	games
 
 MAINTAINER=	amdmi3@FreeBSD.org
 COMMENT=	Graphical roguelike game
+WWW=		https://attnam.com/ \
+		http://ivan.sourceforge.net/ \
+		https://github.com/Attnam/ivan
 
 LICENSE=	GPLv2+
 LICENSE_FILE=	${WRKSRC}/COPYING
@@ -17,12 +20,9 @@ USE_GITHUB=	yes
 GH_ACCOUNT=	Attnam
 GH_TAGNAME=	v${PORTVERSION:C/\.//}
 
-CFLAGS+=	-DNOSOUND=1
-CXXFLAGS+=	-DNOSOUND=1
-
 PLIST_FILES=	bin/ivan
 
-PORTSCOUT=	skipv:0.301,0.310,0.311,0.401,0.410,0.420,0.430
+PORTSCOUT=	limit:^0\.[5-9]
 
 PORTDATA=	*
 PORTDOCS=	*

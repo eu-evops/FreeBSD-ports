@@ -1,9 +1,11 @@
 PORTNAME=	carbonapi
 DISTVERSION=	0.14.1
+PORTREVISION=	10
 CATEGORIES=	www
 
 MAINTAINER=	a.andersson.thn@gmail.com
 COMMENT=	Go implementation of carbonapi
+WWW=		https://github.com/go-graphite/carbonapi
 
 LICENSE=	BSD2CLAUSE
 LICENSE_FILE=	${WRKSRC}/LICENSE
@@ -20,6 +22,8 @@ GO_TARGET=	./cmd/carbonapi \
 GO_BUILDFLAGS=	-v \
 		${CARBON_ARGS} \
 		-ldflags="-X main.BuildVersion=${DISTVERSION}"
+
+CONFLICTS_INSTALL=	carbonzipper # bin/carbonzipper
 
 USERS=		carbon
 GROUPS=		carbon

@@ -1,10 +1,11 @@
 PORTNAME=	cloud-init
-DISTVERSION=	21.2
+DISTVERSION=	22.4.2
 CATEGORIES=	net python
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
 
 MAINTAINER=	andrey@bsdnir.info
 COMMENT=	Init scripts for use on cloud images
+WWW=		https://cloud-init.io/
 
 LICENSE=	APACHE20 GPLv3
 LICENSE_COMB=	dual
@@ -21,24 +22,25 @@ RUN_DEPENDS=	sudo>0:security/sudo \
 		${PYTHON_PKGNAMEPREFIX}oauthlib>0:security/py-oauthlib@${PY_FLAVOR} \
 		${PYTHON_PKGNAMEPREFIX}jsonpatch>0:devel/py-jsonpatch@${PY_FLAVOR} \
 		${PYTHON_PKGNAMEPREFIX}jsonschema>0:devel/py-jsonschema@${PY_FLAVOR} \
-		${PYTHON_PKGNAMEPREFIX}jsonpointer>0:devel/py-jsonpointer@${PY_FLAVOR}
+		${PYTHON_PKGNAMEPREFIX}jsonpointer>0:devel/py-jsonpointer@${PY_FLAVOR} \
+		${PYTHON_PKGNAMEPREFIX}netifaces>0:net/py-netifaces@${PY_FLAVOR}
 
 USES=		python:3.6+ shebangfix
 USE_GITHUB=	yes
 GH_ACCOUNT=	canonical
+USE_PYTHON=	autoplist distutils
+PYDISTUTILS_INSTALLARGS+=	"--init-system=sysvinit_freebsd"
 
 SHEBANG_FILES=	tools/validate-yaml.py tools/read-dependencies \
-		tools/read-version
-USE_PYTHON=	autoplist distutils
+		tools/read-version tools/hook-hotplug
 ETCDIR=		${PREFIX}/etc/cloud
-
-PYDISTUTILS_INSTALLARGS+=	"--init-system=sysvinit_freebsd"
 
 NO_ARCH=	yes
 
 post-patch:
 	${REINPLACE_CMD} -e 's|%%PREFIX%%|${STAGEDIR}${PREFIX}|g' ${WRKSRC}/setup.py
 	${REINPLACE_CMD} -e 's|%%PREFIX%%|${PREFIX}|g' ${WRKSRC}/cloudinit/settings.py
+	@cd ${WRKSRC} && ${RM} config/cloud.cfg.d/99_freebsd.cfg.orig
 
 post-build:
 	@cd ${WRKSRC} && ${MV} config/cloud.cfg.d/05_logging.cfg config/cloud.cfg.d/05_logging.cfg.sample

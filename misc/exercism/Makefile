@@ -1,10 +1,12 @@
 PORTNAME=	exercism
 DISTVERSIONPREFIX=	v
 DISTVERSION=	3.0.13
+PORTREVISION=	10
 CATEGORIES=	misc
 
 MAINTAINER=	swills@FreeBSD.org
 COMMENT=	CLI client for exercism.io
+WWW=		https://exercism.io/
 
 LICENSE=	MIT
 LICENSE_FILE=	${WRKSRC}/LICENSE

@@ -1,11 +1,12 @@
 PORTNAME=	img2pdf
 DISTVERSION=	0.3.5
 CATEGORIES=	graphics python
-MASTER_SITES=	CHEESESHOP
+MASTER_SITES=	PYPI
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
 
 MAINTAINER=	kai@FreeBSD.org
 COMMENT=	Convert images to PDF via direct JPEG inclusion
+WWW=		https://gitlab.mister-muffin.de/josch/img2pdf
 
 LICENSE=	LGPL3+
 LICENSE_FILE=	${WRKSRC}/LICENSE

@@ -1,12 +1,11 @@
-# Created by: TAKATSU Tomonari <tota@FreeBSD.org>
-
 PORTNAME=	withr
-PORTVERSION=	2.4.3
+PORTVERSION=	2.5.0
 CATEGORIES=	devel
 DISTNAME=	${PORTNAME}_${PORTVERSION}
 
 MAINTAINER=	tota@FreeBSD.org
 COMMENT=	Run Code 'With' Temporarily Modified Global State
+WWW=		https://cran.r-project.org/web/packages/withr/
 
 LICENSE=	MIT
 

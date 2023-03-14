@@ -8,4 +8,8 @@ DIST=		base
 
 MASTERDIR=	${.CURDIR}/../../multimedia/gstreamer1-plugins
 
+PLIST=  ${.CURDIR}/pkg-plist
+
+LIB_DEPENDS= libopus.so:audio/opus
+
 .include "${MASTERDIR}/Makefile"

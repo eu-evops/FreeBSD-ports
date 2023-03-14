@@ -1,13 +1,12 @@
-# Created by: Tony Narlock <tony@git-pull.com>
-
 PORTNAME=	argcomplete
-PORTVERSION=	1.12.3
+PORTVERSION=	2.0.0
 CATEGORIES=	devel python
-MASTER_SITES=	CHEESESHOP
+MASTER_SITES=	PYPI
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
 
 MAINTAINER=	sunpoet@FreeBSD.org
 COMMENT=	Bash tab completion for argparse
+WWW=		https://pypi.org/project/argcomplete/
 
 LICENSE=	APACHE20
 LICENSE_FILE=	${WRKSRC}/LICENSE.rst

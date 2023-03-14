@@ -1,7 +1,6 @@
-# Created by: Elisey Savateev <b3k@mail.ru>
-
 PORTNAME=	c-icap
 PORTVERSION=	0.5.10
+PORTREVISION=	1
 PORTEPOCH=	2
 CATEGORIES=	www
 MASTER_SITES=	SF/${PORTNAME}/${PORTNAME}/0.5.x/
@@ -9,6 +8,7 @@ DISTNAME=	c_icap-${PORTVERSION}
 
 MAINTAINER=	rodrigo@FreeBSD.org
 COMMENT=	ICAP server implementation
+WWW=		http://c-icap.sourceforge.net/
 
 LICENSE=	LGPL21+
 LICENSE_FILE=	${WRKSRC}/COPYING
@@ -25,6 +25,8 @@ INSTALL_TARGET=	install-strip
 CPE_VENDOR=	c-icap_project
 USE_LDCONFIG=	yes
 USE_RC_SUBR=	c-icap
+
+CFLAGS+=	-Wno-int-conversion
 
 USERS=		${CICAP_USER}
 GROUPS=		${CICAP_GROUP}
@@ -53,7 +55,7 @@ LARGE_FILES_CONFIGURE_ENABLE=	large-files
 MEMCACHE_CONFIGURE_WITH=	memcached
 MEMCACHE_LIB_DEPENDS=		libmemcached.so:databases/libmemcached
 
-LDAP_USE=		OPENLDAP=yes
+LDAP_USES=		ldap
 LDAP_CONFIGURE_ON=	--with-ldap=yes
 LDAP_CONFIGURE_OFF=	--with-ldap=no
 

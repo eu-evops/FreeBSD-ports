@@ -1,7 +1,5 @@
-# Created by: ruslan@shevchenko.kiev.ua
-
 PORTNAME=	erlang
-PORTVERSION=	24.1
+PORTVERSION=	24.3
 CATEGORIES=	lang parallel
 MASTER_SITES=	http://www.erlang.org/download/:erlangorg \
 		http://erlang.stacken.kth.se/download/:erlangorg \
@@ -20,6 +18,7 @@ EXTRACT_ONLY=	${DISTNAME}${EXTRACT_SUFX}
 
 MAINTAINER=	erlang@FreeBSD.org
 COMMENT=	Erlang documentation
+WWW=		https://www.erlang.org/
 
 LICENSE=	APACHE20
 

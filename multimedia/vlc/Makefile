@@ -1,8 +1,6 @@
-# Created by: Brian Somers <brian@FreeBSD.org>
-
 PORTNAME=	vlc
-DISTVERSION=	3.0.16
-PORTREVISION=	8
+DISTVERSION=	3.0.18
+PORTREVISION=	1
 PORTEPOCH=	4
 CATEGORIES=	multimedia audio net www
 MASTER_SITES=	http://download.videolan.org/pub/videolan/${PORTNAME}/${DISTVERSION:S/a$//}/ \
@@ -11,6 +9,7 @@ MASTER_SITES=	http://download.videolan.org/pub/videolan/${PORTNAME}/${DISTVERSIO
 
 MAINTAINER=	multimedia@FreeBSD.org
 COMMENT=	Qt based multimedia player and streaming server
+WWW=		https://www.videolan.org
 
 LICENSE=	GPLv2
 
@@ -51,8 +50,8 @@ CONFIGURE_ARGS=	--enable-avcodec --enable-avformat --enable-dvbpsi \
 		--disable-alsa --disable-archive --disable-chromaprint --disable-crystalhd \
 		--disable-dc1394 --disable-decklink --disable-dsm \
 		--disable-dv1394 --disable-fdkaac --disable-gst-decode \
-		--disable-gles2 --disable-kai --disable-kva --disable-mpg123 \
-		--disable-vnc --disable-opencv --disable-projectm \
+		--disable-gles2 --disable-kai --disable-kate --disable-kva --disable-mpg123 \
+		--disable-vnc --disable-opencv --disable-projectm --disable-schroedinger \
 		--disable-secret --disable-soxr --disable-telx \
 		--disable-tiger --disable-tremor --disable-udev \
 		--disable-update-check --disable-vsxu \
@@ -67,10 +66,10 @@ CFLAGS_i386=	-fomit-frame-pointer
 
 OPTIONS_DEFINE=	A52 AALIB AOM ASS AVAHI CACA CHROMECAST DAV1D DBUS DCA DOCS DVDREAD \
 		DEBUG DVDNAV FAAD FLAC FLUID FREERDP FRIBIDI GME GNUTLS \
-		GOOM HARFBUZZ JACK JPEG KATE LIBBLURAY LIBPLACEBO LIBRSVG2 LIBSSH2 LIRC \
+		GOOM HARFBUZZ JACK JPEG LIBBLURAY LIBPLACEBO LIBRSVG2 LIBSSH2 LIRC \
 		LIVEMEDIA LUA MAD MFX MODPLUG MPEG2 MTP MUSEPACK \
 		NCURSES NFS NLS NOTIFY OGG OGGSPOTS OPTIMIZED_CFLAGS OPUS PNG PULSEAUDIO \
-		QT5 REALRTSP RUNROOT SAMPLERATE SIDPLAY SCHROEDINGER \
+		QT5 REALRTSP RUNROOT SAMPLERATE SIDPLAY \
 		SDL SHOUTCAST SKINS SMB SNDIO STREAM SPEEX TAGLIB THEORA \
 		TWOLAME UPNP V4L VAAPI VCD VDPAU VPX VORBIS WAYLAND X11 X264 X265 ZVBI
 OPTIONS_DEFINE_powerpc=	ALTIVEC
@@ -78,9 +77,10 @@ OPTIONS_DEFINE_powerpc64=	ALTIVEC
 OPTIONS_DEFAULT=ASS AVAHI DAV1D DBUS DVDREAD DVDNAV GNUTLS HARFBUZZ JPEG \
 		LIVEMEDIA LUA OGG OPTIMIZED_CFLAGS \
 		OPUS PNG QT5 SAMPLERATE STREAM SPEEX TAGLIB THEORA TWOLAME \
-		V4L VAAPI VCD VDPAU VORBIS WAYLAND X11
+		UPNP V4L VAAPI VCD VDPAU VORBIS WAYLAND X11
 OPTIONS_DEFAULT_powerpc=	ALTIVEC
 OPTIONS_DEFAULT_powerpc64=	ALTIVEC
+OPTIONS_EXCLUDE=LIBPLACEBO # https://code.videolan.org/videolan/vlc/-/commit/8e22c39ea3c3
 OPTIONS_SUB=	yes
 
 AOM_DESC=	AV1 video encoding/decoding via libaom
@@ -94,7 +94,6 @@ FREERDP_DESC=	RDP support
 GME_DESC=	Game Music Emu (libgme) support
 GOOM_DESC=	Goom visualisation plugin
 HARFBUZZ_DESC=	OpenType text shaping engine
-KATE_DESC=	Kate codec support
 LIBPLACEBO_DESC=HDR tonemapping support through libplacebo
 LIBSSH2_DESC=	SCP/SFTP support via libssh2
 MFX_DESC=	Intel MediaSDK (aka Quick Sync Video)
@@ -119,6 +118,7 @@ ASS_LIB_DEPENDS=	libass.so:multimedia/libass
 ASS_CONFIGURE_ENABLE=	libass
 
 ALTIVEC_CONFIGURE_ENABLE=	altivec
+ALTIVEC_CFLAGS=		-maltivec
 
 AOM_LIB_DEPENDS=	libaom.so:multimedia/aom
 AOM_CONFIGURE_ENABLE=	aom
@@ -185,9 +185,6 @@ JACK_CONFIGURE_ENABLE=	jack
 
 JPEG_USES=		jpeg
 JPEG_CONFIGURE_ENABLE=	jpeg
-
-KATE_LIB_DEPENDS=	libkate.so:multimedia/libkate
-KATE_CONFIGURE_ENABLE=	kate
 
 LIBBLURAY_LIB_DEPENDS=	libbluray.so:multimedia/libbluray
 LIBBLURAY_CONFIGURE_ENABLE=	bluray
@@ -276,7 +273,7 @@ PULSEAUDIO_LIB_DEPENDS=	libpulse.so:audio/pulseaudio
 PULSEAUDIO_CONFIGURE_ENABLE=	pulse
 
 QT5_USES=	qt:5
-QT5_USE=	QT=gui,core,svg,widgets,x11extras,buildtools_build
+QT5_USE=	QT=gui,core,svg,widgets,x11extras,buildtools:build
 QT5_CONFIGURE_ENABLE=	qt
 QT5_IMPLIES=	X11
 
@@ -287,9 +284,6 @@ RUNROOT_CONFIGURE_ENABLE=	run-as-root
 SAMPLERATE_LIB_DEPENDS=		libsamplerate.so:audio/libsamplerate
 SAMPLERATE_CONFIGURE_ENABLE=	samplerate
 
-SCHROEDINGER_LIB_DEPENDS=	libschroedinger-1.0.so:multimedia/schroedinger
-SCHROEDINGER_CONFIGURE_ENABLE=	schroedinger
-
 SDL_USES=		sdl
 SDL_USE=		SDL=image
 SDL_CONFIGURE_ENABLE=	sdl-image
@@ -299,9 +293,8 @@ SIDPLAY_LDFLAGS=	-L${LOCALBASE}/lib/sidplay/builders
 SIDPLAY_CONFIGURE_ENABLE=	sid
 CONFIGURE_ARGS+=	--disable-sid
 
-SKINS_USE=		XORG=xext,xinerama,xpm
-SKINS_LIB_DEPENDS=	libminizip.so:archivers/minizip \
-			libtar.so:devel/libtar
+SKINS_USE=		XORG=xext,xinerama,xpm minizip
+SKINS_LIB_DEPENDS=	libtar.so:devel/libtar
 SKINS_CONFIGURE_ENABLE=	skins2 libtar
 SKINS_IMPLIES=		QT5
 
@@ -352,6 +345,7 @@ VPX_CONFIGURE_ENABLE=	vpx
 VORBIS_LIB_DEPENDS=	libvorbis.so:audio/libvorbis
 VORBIS_CONFIGURE_ENABLE=vorbis
 
+WAYLAND_CATEGORIES=	wayland
 WAYLAND_BUILD_DEPENDS=	wayland-protocols>=0:graphics/wayland-protocols
 WAYLAND_LIB_DEPENDS=	libwayland-client.so:graphics/wayland
 WAYLAND_CONFIGURE_ENABLE=	wayland
@@ -378,9 +372,6 @@ WITH_CDROM_DEVICE?=/dev/cd0
 WITH_DVD_DEVICE?=/dev/cd0
 
 .include <bsd.port.options.mk>
-
-.if ${PORT_OPTIONS:MX11}
-.endif
 
 .if ${PORT_OPTIONS:MDEBUG}
 WITH_DEBUG=yes

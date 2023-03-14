@@ -1,13 +1,13 @@
-# Created by: ijliao
-
 PORTNAME=	gtkdatabox
 PORTVERSION=	0.9.3.1
+PORTREVISION=	1
 CATEGORIES=	x11-toolkits
 MASTER_SITES=	SF
 DIST_SUBDIR=	gnome2
 
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	GTK+2 widget to display large amounts of numerical data
+WWW=		https://sourceforge.net/projects/gtkdatabox/
 
 LICENSE=	LGPL21+
 LICENSE_FILE=	${WRKSRC}/COPYING

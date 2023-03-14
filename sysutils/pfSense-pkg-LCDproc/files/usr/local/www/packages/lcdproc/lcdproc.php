@@ -3,7 +3,7 @@
  * lcdproc.php
  *
  * part of pfSense (https://www.pfsense.org/)
- * Copyright (c) 2016-2022 Rubicon Communications, LLC (Netgate)
+ * Copyright (c) 2016-2023 Rubicon Communications, LLC (Netgate)
  * Copyright (c) 2011 Michele Di Maria
  * Copyright (c) 2007-2009 Seth Mos <seth.mos@dds.nl>
  * Copyright (c) 2008 Mark J Crane
@@ -76,6 +76,7 @@ if ($_POST) {
 	}
 }
 
+$shortcut_section = 'lcdproc';
 
 $pgtitle = array(gettext("Services"), gettext("LCDproc"), gettext("Server"));
 include("head.inc");
@@ -99,7 +100,7 @@ $section->addInput(
 	new Form_Checkbox(
 		'enable', // checkbox name (id)
 		'Enable', // checkbox label
-		'Enable LCDproc at startup', // checkbox text
+		'Enable LCDproc service', // checkbox text
 		$pconfig['enable'] // checkbox initial value
 	)
 );
@@ -347,7 +348,7 @@ $section->addInput(
 	'Each LED can be off or show two colors: RED (alarm) or GREEN (everything ok) and shows:%1$s' .
 	'LED1: NICs status (green: ok, red: at least one nic down)%1$s' .
 	'LED2: CARP status (green: master, red: backup, off: CARP not implemented)%1$s' .
-	'LED3: CPU status (green %2$s 50%, red %3$s 50%)%1$s' .
+	'LED3: CPU status (green %2$s 50%%, red %3$s 50%%)%1$s' .
 	'LED4: Gateway status (green: ok, red: at least one gateway not responding, off: no gateway configured).',
 	'<br />', '&lt;', '&gt;'
 );

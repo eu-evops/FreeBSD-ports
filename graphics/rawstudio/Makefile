@@ -1,13 +1,12 @@
-# Created by: Alex Samorukov <samm@os2.kiev.ua>
-
 PORTNAME=	rawstudio
 PORTVERSION=	2.0
-PORTREVISION=	20
+PORTREVISION=	23
 CATEGORIES=	graphics
 MASTER_SITES=	http://rawstudio.org/files/release/
 
 MAINTAINER=	samm@os2.kiev.ua
 COMMENT=	Open-source program to read and manipulate RAW photo images
+WWW=		https://rawstudio.org/
 
 LICENSE=	GPLv2
 
@@ -27,7 +26,7 @@ LIB_DEPENDS=	libcurl.so:ftp/curl \
 		libraptor2.so:textproc/raptor2 \
 		libtiff.so:graphics/tiff
 
-USES=		compiler:c++11-lang desktop-file-utils gmake gnome \
+USES=		compiler:c++11-lang cpe desktop-file-utils gmake gnome \
 		jpeg libtool localbase pathfix pkgconfig sqlite xorg
 USE_GNOME=	cairo gconf2 gdkpixbuf2 gtk20 libxml2
 USE_LDCONFIG=	yes

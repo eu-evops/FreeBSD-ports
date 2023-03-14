@@ -1,11 +1,11 @@
 PORTNAME=	pounce
-DISTVERSION=	2.5
-PORTREVISION=	1
+DISTVERSION=	3.1
 CATEGORIES=	irc
 MASTER_SITES=	https://git.causal.agency/pounce/snapshot/
 
 MAINTAINER=	june@causal.agency
 COMMENT=	Multi-client IRC bouncer
+WWW=		https://git.causal.agency/pounce/
 
 LICENSE=	GPLv3+
 LICENSE_FILE=	${WRKSRC}/LICENSE
@@ -15,7 +15,6 @@ USE_RC_SUBR=	calico pounce
 
 MAKE_ENV+=	MANDIR=${MANPREFIX}/man
 CFLAGS+=	-D'OPENSSL_BIN=\"${OPENSSL_BIN}\"'
-CFLAGS+=	-D'CERTBOT_PATH=\"${LOCALBASE}/etc/letsencrypt\"'
 
 .include <bsd.port.pre.mk>
 

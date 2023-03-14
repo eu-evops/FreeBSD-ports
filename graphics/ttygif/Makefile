@@ -5,16 +5,15 @@ CATEGORIES=	graphics
 
 MAINTAINER=	olivier@FreeBSD.org
 COMMENT=	Converts a ttyrec file into animated gif
+WWW=		https://github.com/icholy/ttygif
 
 LICENSE=	MIT
 LICENSE_FILE=	${WRKSRC}/LICENSE
 
-RUN_DEPENDS=	convert:graphics/ImageMagick6
-
 USE_GITHUB=	yes
 GH_ACCOUNT=	icholy
 
-USES=		gmake
+USES=		gmake magick:6,run
 
 PLIST_FILES=	bin/${PORTNAME}
 

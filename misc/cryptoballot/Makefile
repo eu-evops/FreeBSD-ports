@@ -1,10 +1,11 @@
 PORTNAME=	cryptoballot
 DISTVERSION=	g20181015
-PORTREVISION=	2
+PORTREVISION=	12
 CATEGORIES=	misc
 
 MAINTAINER=	yuri@FreeBSD.org
 COMMENT=	Cryptographically secure online voting
+WWW=		https://cryptoballot.com
 
 LICENSE=	AGPLv3
 

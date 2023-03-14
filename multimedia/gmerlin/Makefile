@@ -1,11 +1,12 @@
 PORTNAME=	gmerlin
 PORTVERSION=	1.2.0
-PORTREVISION=	19
+PORTREVISION=	22
 CATEGORIES=	multimedia
 MASTER_SITES=	SF
 
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Multimedia framework
+WWW=		http://gmerlin.sourceforge.net/
 
 LICENSE=	GPLv3
 LICENSE_FILE=	${WRKSRC}/COPYING

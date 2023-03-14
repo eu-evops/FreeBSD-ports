@@ -1,13 +1,12 @@
-# Created by: Po-Chuan Hsieh <sunpoet@FreeBSD.org>
-
 PORTNAME=	babelfont
 PORTVERSION=	2.0.2
 CATEGORIES=	x11-fonts python
-MASTER_SITES=	CHEESESHOP
+MASTER_SITES=	PYPI
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
 
 MAINTAINER=	sunpoet@FreeBSD.org
 COMMENT=	Abstract interface to font source files based on fontParts
+WWW=		https://github.com/simoncozens/babelfont
 
 LICENSE=	BSD3CLAUSE
 LICENSE_FILE=	${WRKSRC}/LICENSE

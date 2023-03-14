@@ -4,6 +4,7 @@ CATEGORIES=	audio
 
 MAINTAINER=	yuri@FreeBSD.org
 COMMENT=	View and edit Ogg Opus comments
+WWW=		https://github.com/fmang/opustags
 
 LICENSE=	BSD3CLAUSE
 LICENSE_FILE=	${WRKSRC}/LICENSE
@@ -16,6 +17,6 @@ USE_GITHUB=	yes
 GH_ACCOUNT=	fmang
 
 PLIST_FILES=	bin/opustags \
-		man/man1/opustags.1.gz
+		share/man/man1/opustags.1.gz
 
 .include <bsd.port.mk>

@@ -1,13 +1,12 @@
-# Created by: Po-Chuan Hsieh <sunpoet@FreeBSD.org>
-
 PORTNAME=	String-Tagged
-PORTVERSION=	0.17
+PORTVERSION=	0.18
 CATEGORIES=	textproc perl5
 MASTER_SITES=	CPAN
 PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	sunpoet@FreeBSD.org
 COMMENT=	Sstring buffers with value tags on extents
+WWW=		https://metacpan.org/release/String-Tagged
 
 LICENSE=	ART10 GPLv1+
 LICENSE_COMB=	dual

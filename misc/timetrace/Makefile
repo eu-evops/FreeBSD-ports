@@ -1,10 +1,12 @@
 PORTNAME=	timetrace
 DISTVERSIONPREFIX=	v
-DISTVERSION=	0.14.2
+DISTVERSION=	0.14.3
+PORTREVISION=	10
 CATEGORIES=	misc
 
 MAINTAINER=	nc@FreeBSD.org
 COMMENT=	Simple time tracking CLI
+WWW=		https://github.com/dominikbraun/timetrace
 
 LICENSE=	APACHE20
 LICENSE_FILE=	${WRKSRC}/LICENSE

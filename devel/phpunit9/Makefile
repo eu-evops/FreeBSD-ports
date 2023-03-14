@@ -1,5 +1,5 @@
 PORTNAME=	phpunit
-PORTVERSION=	9.5.10
+PORTVERSION=	9.5.28
 CATEGORIES=	devel www
 MASTER_SITES=	https://phar.phpunit.de/
 PKGNAMESUFFIX=	9${PHP_PKGNAMESUFFIX}
@@ -7,6 +7,8 @@ EXTRACT_SUFX=	.phar
 
 MAINTAINER=	sunpoet@FreeBSD.org
 COMMENT=	Testing framework for unit tests
+WWW=		https://phpunit.de/ \
+		https://github.com/sebastianbergmann/phpunit
 
 LICENSE=	BSD3CLAUSE
 

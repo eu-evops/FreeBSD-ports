@@ -3,7 +3,7 @@
  * lcdproc_screens.php
  *
  * part of pfSense (https://www.pfsense.org/)
- * Copyright (c) 2016-2022 Rubicon Communications, LLC (Netgate)
+ * Copyright (c) 2016-2023 Rubicon Communications, LLC (Netgate)
  * Copyright (c) 2016 Treer
  * Copyright (c) 2008 Mark J Crane
  * All rights reserved.
@@ -96,6 +96,7 @@ if ($_POST) {
 	}
 }
 
+$shortcut_section = 'lcdproc';
 
 $pgtitle = array(gettext("Services"), gettext("LCDproc"), gettext("Screens"));
 include("head.inc");

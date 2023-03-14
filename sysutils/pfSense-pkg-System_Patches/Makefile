@@ -1,8 +1,7 @@
 # $FreeBSD$
 
 PORTNAME=	pfSense-pkg-System_Patches
-PORTVERSION=	1.2
-PORTREVISION=	7
+PORTVERSION=	2.1
 CATEGORIES=	sysutils
 MASTER_SITES=	# empty
 DISTFILES=	# empty
@@ -24,6 +23,7 @@ do-extract:
 
 do-install:
 	${MKDIR} ${STAGEDIR}${PREFIX}/pkg
+	${MKDIR} ${STAGEDIR}${PREFIX}/pkg/patches
 	${MKDIR} ${STAGEDIR}${PREFIX}/www
 	${MKDIR} ${STAGEDIR}${PREFIX}/bin
 	${MKDIR} ${STAGEDIR}${DATADIR}
@@ -37,6 +37,10 @@ do-install:
 		${STAGEDIR}${PREFIX}/bin
 	${INSTALL_DATA} ${FILESDIR}${PREFIX}/pkg/patches.inc \
 		${STAGEDIR}${PREFIX}/pkg
+	${INSTALL_DATA} ${FILESDIR}${PREFIX}/pkg/patches/manifest.inc \
+		${STAGEDIR}${PREFIX}/pkg/patches
+	${INSTALL_DATA} ${FILESDIR}${PREFIX}/pkg/patches/*.patch \
+		${STAGEDIR}${PREFIX}/pkg/patches
 	${INSTALL_DATA} ${FILESDIR}${DATADIR}/info.xml \
 		${STAGEDIR}${DATADIR}
 	@${REINPLACE_CMD} -i '' -e "s|%%PKGVERSION%%|${PKGVERSION}|" \

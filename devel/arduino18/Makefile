@@ -7,6 +7,7 @@ DIST_SUBDIR=	${PORTNAME}
 
 MAINTAINER=	kevans@FreeBSD.org
 COMMENT=	Open-source electronics prototyping platform
+WWW=		https://arduino.cc/
 
 LICENSE=	GPLv2
 LICENSE_FILE=	${WRKSRC}/../license.txt
@@ -81,7 +82,7 @@ INSLIST+=	reference
 INSLIST+=	examples
 .endif
 
-post-extract:
+post-extract-DOCS-on:
 	${MKDIR} ${BUILD_DIR}/reference
 	${MV} ${WRKDIR}/code.jquery.com ${BUILD_DIR}/reference
 	${MV} ${WRKDIR}/www.arduino.cc ${BUILD_DIR}/reference

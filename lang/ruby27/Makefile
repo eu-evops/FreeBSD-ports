@@ -1,5 +1,3 @@
-# Created by: Akinori MUSHA aka knu <knu@idaemons.org>
-
 PORTNAME=	ruby
 PORTVERSION=	${RUBY_PORTVERSION}
 PORTREVISION=	${RUBY_PORTREVISION}
@@ -11,18 +9,22 @@ DIST_SUBDIR=	ruby
 
 MAINTAINER=	ruby@FreeBSD.org
 COMMENT=	Object-oriented interpreted scripting language
+WWW=		https://www.ruby-lang.org/en/
 
 LICENSE=	BSD2CLAUSE RUBY
 LICENSE_COMB=	dual
 LICENSE_FILE_BSD2CLAUSE=${WRKSRC}/BSDL
 LICENSE_FILE_RUBY=	${WRKSRC}/COPYING
 
+DEPRECATED=	Please migrate to newer versions. Ruby 2.7 will reach its EoL on April 12, 2023
+EXPIRATION_DATE=	2023-04-12
+
 # Using LIB_DEPENDS finds the libffi from gcc which causes problems
 BUILD_DEPENDS=	libffi>=0:devel/libffi
 LIB_DEPENDS=	libyaml.so:textproc/libyaml
 RUN_DEPENDS=	libffi>=0:devel/libffi
 
-USES=		autoreconf cpe ssl tar:xz
+USES=		autoreconf cpe ruby:none ssl tar:xz
 
 CONFIGURE_ARGS=	${RUBY_CONFIGURE_ARGS} \
 		--disable-rpath \
@@ -42,9 +44,6 @@ WRKSRC=		${RUBY_WRKSRC}
 MAKE_JOBS_UNSAFE=	yes
 
 RUBY_VER=		2.7
-USE_RUBY=		yes
-RUBY_NO_BUILD_DEPENDS=	yes
-RUBY_NO_RUN_DEPENDS=	yes
 
 OPTIONS_DEFINE=		CAPIDOCS DEBUG DOCS EXAMPLES GMP RDOC
 OPTIONS_DEFAULT=	RDOC LIBEDIT
@@ -85,7 +84,7 @@ _SUF2=	,${PORTEPOCH}
 .endif
 
 .if ${OPSYS} == "FreeBSD"
-.if exists(/usr/sbin/dtrace) && (${ARCH} == amd64 || ${ARCH} == i386)
+.if exists(/usr/sbin/dtrace) && (${ARCH} == amd64 || ${ARCH} == i386 || ${ARCH} == powerpc64le || ${ARCH} == powerpc64 || ${ARCH} == powerpc)
 CONFIGURE_ARGS+=--enable-dtrace
 .else
 CONFIGURE_ARGS+=--disable-dtrace
@@ -97,11 +96,11 @@ CONFIGURE_ARGS+=--disable-dtrace
 LIB_DEPENDS+=	libunwind.so:devel/libunwind
 .endif
 
-.if (defined(PPC_ABI) && ${PPC_ABI} == ELFv1) || ${ARCH} == powerpc
+.if defined(PPC_ABI) && ${PPC_ABI} == ELFv1
 USE_GCC=	yes
 .endif
 
-.if ${ARCH} == armv6 || ${ARCH} == armv7
+.if ${ARCH} == armv6 || ${ARCH} == armv7 || ${ARCH} == powerpc
 CONFIGURE_ARGS+=--with-setjmp-type=_setjmp
 CONFIGURE_ENV+=	ac_cv_func__setjmp=yes
 .endif
@@ -182,6 +181,10 @@ post-install:
 	${LN} -fs ${FILE}${RUBY_SUFFIX}.1.gz ${STAGEDIR}${MANPREFIX}/man/man1/${FILE}.1.gz
 . endfor
 .endif
+
+post-install-CAPIDOCS-on:
+	${RM} ${WRKSRC}/doc/capi/.timestamp ${STAGEDIR}${PREFIX}/share/doc/ruby${RUBY_SUFFIX}/capi/.timestamp
+	cd ${STAGEDIR}${PREFIX} && ${FIND} share/doc/ruby${RUBY_SUFFIX}/capi/ -type f >> ${TMPPLIST}
 
 post-install-DEBUG-off:
 #

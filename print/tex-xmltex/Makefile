@@ -1,17 +1,17 @@
 PORTNAME=	xmltex
 PORTVERSION=	1.9
-PORTREVISION=	2
+PORTREVISION=	3
 CATEGORIES=	print
-MASTER_SITES=	ftp://tug.org/historic/systems/texlive/2015/
+MASTER_SITES=	TEX_CTAN/systems/texlive/${TEXLIVE_YEAR}/
 PKGNAMEPREFIX=	tex-
-DISTNAME=	texlive-20150523-texmf
+DISTNAME=	texlive-${TEXLIVE_VERSION}-texmf
 DIST_SUBDIR=	TeX
 EXTRACT_ONLY=
 
 MAINTAINER=	tex@FreeBSD.org
 COMMENT=	Non-validating XML parser, written in TeX
 
-USES=		tar:xz
+USES=		tar:xz tex
 USE_TEX=	texmf pdftex fmtutil
 TEXHASHDIRS=	${TEXMFDISTDIR}
 EXTRACT_AFTER_ARGS=| ${TAR} -xf - -C ${STAGEDIR}${PREFIX}/share \

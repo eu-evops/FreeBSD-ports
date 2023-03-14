@@ -1,13 +1,12 @@
-# Created by: Kris Moore <kmoore@FreeBSD.org>
-
 PORTNAME=	phoronix-test-suite
 DISTVERSIONPREFIX=	v
-DISTVERSION=	10.6.1
+DISTVERSION=	10.8.4
 CATEGORIES=	benchmarks
 PKGNAMESUFFIX=	${PHP_PKGNAMESUFFIX}
 
 MAINTAINER=	pizzamig@FreeBSD.org
 COMMENT=	Phoronix Benchmarking Suite
+WWW=		https://www.phoronix-test-suite.com
 
 LICENSE=	GPLv3
 LICENSE_FILE=	${WRKSRC}/COPYING
@@ -36,6 +35,8 @@ SHEBANG_FILES=	ob-cache/test-profiles/pts/shadowofthetombraider-1.0.0/install.sh
 				ob-cache/test-profiles/pts/dota2-1.2.2/pre_linux.sh \
 				ob-cache/test-profiles/pts/portal-1.1.1/pre_linux.sh \
 				deploy/docker/ubuntu-pts-docker-build.sh
+
+CONFLICTS_INSTALL=	phoronix-test-suite-php[0-9][0-9] # bin/phoronix-test-suite
 
 OPTIONS_DEFINE=	BASH_COMPLETIONS DOCS X11
 OPTIONS_DEFAULT=	X11

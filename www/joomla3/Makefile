@@ -1,20 +1,21 @@
-# Created by: Francisco Cabrita <include@npf.pt.freebsd.org>
-
 PORTNAME=	joomla
-DISTVERSION=	3-9-24
+DISTVERSION=	3-10-8
 CATEGORIES=	www
 MASTER_SITES=	https://downloads.joomla.org/cms/joomla3/${DISTVERSION}/
 PKGNAMESUFFIX=	3
 DISTNAME=	Joomla_${DISTVERSION}-Stable-Full_Package.tar.bz2?format=bz2
 
-MAINTAINER=	ler@FreeBSD.org
+MAINTAINER=	wen@FreeBSD.org
 COMMENT=	Dynamic web content management system (CMS)
+WWW=		https://www.joomla.org/
 
 LICENSE=	GPLv2
 
 USES=		cpe php:web tar:bz2 shebangfix
 CPE_VENDOR=	${PORTNAME}
 CPE_PRODUCT=	${PORTNAME}\!
+
+CONFLICTS_INSTALL=	joomla
 
 NO_ARCH=	yes
 NO_BUILD=	yes

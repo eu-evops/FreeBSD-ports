@@ -1,5 +1,3 @@
-# Created by: Boris Kochergin <spawk@acm.poly.edu>
-
 PORTNAME=	geomWatch
 PORTVERSION=	1.3.0
 PORTREVISION=	3
@@ -13,6 +11,7 @@ EXTRACT_ONLY=	${DISTNAME}${EXTRACT_SUFX}
 
 MAINTAINER=	spawk@acm.poly.edu
 COMMENT=	Watches for and e-mails admins about GEOM/ZFS state changes
+WWW=		http://acm.poly.edu/wiki/GEOM_Watch
 
 LIB_DEPENDS=	libesmtp.so:mail/libesmtp
 
@@ -21,6 +20,8 @@ BROKEN_armv6=		fails to compile: call to 'atomic_add_64' is ambiguous
 BROKEN_armv7=		fails to compile: call to 'atomic_add_64' is ambiguous
 IGNORE_DragonFly=	requires geom(4) support
 BROKEN=			does not fetch
+DEPRECATED=	Broken since 2021
+EXPIRATION_DATE=	2023-03-21
 
 USES=		tar:tbz
 USE_CXXSTD=	gnu++98

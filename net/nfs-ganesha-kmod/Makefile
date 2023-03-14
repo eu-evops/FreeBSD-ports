@@ -5,10 +5,13 @@ CATEGORIES=	net
 
 MAINTAINER=	freebsd@gandi.net
 COMMENT=	Modules to implement required syscalls for userspace fileservers
+WWW=		https://github.com/gandi/nfs-ganesha-kmod
 
 LICENSE=	BSD3CLAUSE
 
 BROKEN=		fails to compile: fhlink.c:57: error: redefinition of 'struct fhlink_args'
+DEPRECATED=	Broken since 2020
+EXPIRATION_DATE=	2023-03-20
 
 USES=		kmod
 

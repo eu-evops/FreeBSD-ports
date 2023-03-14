@@ -3,7 +3,7 @@
  * widget-apcupsd.inc
  *
  * part of pfSense (https://www.pfsense.org)
- * Copyright (c) 2021-2022 Rubicon Communications, LLC (Netgate)
+ * Copyright (c) 2021-2023 Rubicon Communications, LLC (Netgate)
  * All rights reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -21,6 +21,6 @@
 
 //set variable for custom title
 $apcupsd_title = gettext("Apcupsd");
-$apcupsd_title_link = "apcupsd.widget.php";
+$apcupsd_title_link = "apcupsd_status.php";
 $apcupsd_allow_multiple_widget_copies = false;
 ?>

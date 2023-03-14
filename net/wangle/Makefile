@@ -1,10 +1,11 @@
 PORTNAME=	wangle
 DISTVERSIONPREFIX=	v
-DISTVERSION=	2021.11.29.00
+DISTVERSION=	2023.03.06.00
 CATEGORIES=	net
 
 MAINTAINER=	yuri@FreeBSD.org
 COMMENT=	Framework for building services in a consistent/modular/composable way
+WWW=		https://github.com/facebook/wangle
 
 LICENSE=	APACHE20
 LICENSE_FILE=	${WRKSRC}/../LICENSE

@@ -1,18 +1,17 @@
-# Created by: Po-Chuan Hsieh <sunpoet@FreeBSD.org>
-
 PORTNAME=	starlette
-PORTVERSION=	0.17.1
+PORTVERSION=	0.23.1
 CATEGORIES=	www python
-MASTER_SITES=	CHEESESHOP
+MASTER_SITES=	PYPI
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
 
 MAINTAINER=	sunpoet@FreeBSD.org
 COMMENT=	Lightweight ASGI framework/toolkit
+WWW=		https://github.com/encode/starlette
 
 LICENSE=	BSD3CLAUSE
 LICENSE_FILE=	${WRKSRC}/LICENSE.md
 
-RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}anyio>=3.0.0<4:devel/py-anyio@${PY_FLAVOR}
+RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}anyio>=3.4.0<5:devel/py-anyio@${PY_FLAVOR}
 
 USES=		python:3.7+
 USE_PYTHON=	autoplist concurrent distutils
@@ -31,8 +30,12 @@ FULL_RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}itsdangerous>=0:security/py-itsdangerou
 
 .include <bsd.port.pre.mk>
 
-.if ${PYTHON_REL} < 30800
-RUN_DEPENDS+=	${PYTHON_PKGNAMEPREFIX}typing-extensions>=0:devel/py-typing-extensions@${PY_FLAVOR}
+.if ${PYTHON_REL} < 31000
+RUN_DEPENDS+=	${PYTHON_PKGNAMEPREFIX}typing-extensions>=3.10.0:devel/py-typing-extensions@${PY_FLAVOR}
 .endif
+
+post-patch:
+	@${RM} ${WRKSRC}/pyproject.toml
+	@${SED} -e 's|%%PORTVERSION%%|${PORTVERSION}|' ${FILESDIR}/setup.py > ${WRKSRC}/setup.py
 
 .include <bsd.port.post.mk>

@@ -3,7 +3,7 @@
  * wg_api.inc
  *
  * part of pfSense (https://www.pfsense.org)
- * Copyright (c) 2021-2022 Rubicon Communications, LLC (Netgate)
+ * Copyright (c) 2021-2023 Rubicon Communications, LLC (Netgate)
  * Copyright (c) 2021 R. Christian McDonald (https://github.com/theonemcdonald)
  * Copyright (c) 2021 Vajonam
  * All rights reserved.
@@ -1009,6 +1009,10 @@ function wg_get_tunnel_networks($family = 'both') {
 	}
 
 	foreach ((array) $wgg['tunnels'] as $tunnel) {
+		if (!is_array($tunnel['addresses'])
+		    || !is_array($tunnel['addresses']['row']))
+				continue;
+
 		foreach ((array) $tunnel['addresses']['row'] as $address) {
 			$masked_address = "{$address['address']}/{$address['mask']}";
 

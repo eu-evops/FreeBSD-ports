@@ -5,8 +5,9 @@ PORTREVISION=	1
 CATEGORIES=	security devel python
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
 
-MAINTAINER=	0mp@FreeBSD.org
+MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Multi-architecture binary analysis toolkit
+WWW=		https://github.com/angr/angr
 
 LICENSE=	BSD3CLAUSE
 LICENSE_FILE=	${WRKSRC}/LICENSE

@@ -1,12 +1,13 @@
 PORTNAME=	xfce4-screensaver
 PORTVERSION=	4.16.0
-PORTREVISION=	2
+PORTREVISION=	3
 CATEGORIES=	x11 xfce
 MASTER_SITES=	XFCE/apps
 DIST_SUBDIR=	xfce4
 
 MAINTAINER=	xfce@FreeBSD.org
 COMMENT=	Xfce 4 screen saver and locker
+WWW=		https://git.xfce.org/apps/xfce4-screensaver/about/
 
 LICENSE=	GPLv2 LGPL20
 LICENSE_COMB=	dual

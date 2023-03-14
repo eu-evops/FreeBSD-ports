@@ -8,6 +8,7 @@ DISTFILES=	OpenSpadesDevPackage-r33.zip:data
 
 MAINTAINER=	amdmi3@FreeBSD.org
 COMMENT=	Compatible client of Ace of Spades
+WWW=		https://openspades.yvt.jp/
 
 LICENSE=	GPLv3
 LICENSE_FILE=	${WRKSRC}/LICENSE
@@ -25,7 +26,6 @@ GH_ACCOUNT=	yvt
 USES=		cmake:insource compiler:c++11-lib desktop-file-utils dos2unix \
 		gl gnome openal sdl xorg
 CMAKE_ARGS=	-DOPENSPADES_RESOURCES=OFF \
-		-DOPENSPADES_INSTALL_MAN="man/man6" \
 		-DOPENSPADES_INSTALL_BINARY="bin" \
 		-DOPENSPADES_INSTALL_RESOURCES="${DATADIR_REL}"
 DOS2UNIX_FILES=	Sources/AngelScript/source/as_config.h

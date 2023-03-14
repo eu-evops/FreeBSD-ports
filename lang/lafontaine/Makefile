@@ -1,14 +1,13 @@
-# Created by: ijliao
-
 PORTNAME=	lafontaine
 PORTVERSION=	0.4.1
-PORTREVISION=	9
+PORTREVISION=	10
 CATEGORIES=	lang
 MASTER_SITES=	http://www.nongnu.org/lafontaine/archives/
 DISTNAME=	${PORTNAME}_0.4-1
 
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Graphical logo interpreter
+WWW=		https://www.nongnu.org/lafontaine/en/eubaout.html
 
 BROKEN_FreeBSD_13=	ld: error: duplicate symbol: my_turtle
 BROKEN_FreeBSD_14=	ld: error: duplicate symbol: my_turtle

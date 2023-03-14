@@ -4,15 +4,15 @@ CATEGORIES=	net-im
 
 MAINTAINER=	swills@FreeBSD.org
 COMMENT=	Discord plugin for libpurple
+WWW=		https://github.com/EionRobb/purple-discord
 
 LICENSE=	GPLv3
 LICENSE_FILE=	${WRKSRC}/LICENSE
 
-BUILD_DEPENDS=	convert:graphics/ImageMagick6
 LIB_DEPENDS=	libjson-glib-1.0.so:devel/json-glib \
 		libpurple.so:net-im/libpurple
 
-USES=		dos2unix gettext gmake gnome pkgconfig
+USES=		dos2unix gettext gmake gnome magick:6,build pkgconfig
 USE_GNOME=	glib20
 USE_LDCONFIG=	yes
 USE_GITHUB=	yes

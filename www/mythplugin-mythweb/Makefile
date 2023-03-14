@@ -1,13 +1,14 @@
-# Created by: Bernhard Froehlich <decke@bluelife.at>
-
 PORTNAME=	mythweb
 DISTVERSIONPREFIX=	v
-DISTVERSION=	31.0
+DISTVERSION=	32.0-40
+DISTVERSIONSUFFIX=	-gb05906a6
+
 CATEGORIES=	www
 PKGNAMEPREFIX=	mythplugin-
 
 MAINTAINER=	ahicks@p-o.co.uk
 COMMENT=	Frontend for scheduling and managing recordings on your MythTV Box
+WWW=		https://www.mythtv.org/wiki/MythWeb
 
 LICENSE=	GPLv2
 LICENSE_FILE=	${WRKSRC}/LICENSE
@@ -29,7 +30,7 @@ REINPLACE_ARGS=	-i ""
 OPTIONS_DEFINE=	APACHE LIGHTTPD NGINX
 OPTIONS_DEFAULT=	APACHE
 
-APACHE_USES=		apache:2.2+
+APACHE_USES=		apache
 LIGHTTPD_RUN_DEPENDS=	lighttpd:www/lighttpd
 NGINX_DESC=		Nginx server support
 NGINX_RUN_DEPENDS=	nginx:www/nginx

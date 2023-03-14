@@ -1,5 +1,5 @@
 PORTNAME=	antlr4
-PORTVERSION=	4.9
+PORTVERSION=	4.11.1
 CATEGORIES=	devel java
 MASTER_SITES=	http://www.antlr.org/download/
 DISTNAME=	antlr-${PORTVERSION}-complete
@@ -8,6 +8,7 @@ EXTRACT_ONLY=
 
 MAINTAINER=	pi@FreeBSD.org
 COMMENT=	ANother Tool for Language Recognition
+WWW=		https://www.antlr.org/
 
 LICENSE=	BSD3CLAUSE
 

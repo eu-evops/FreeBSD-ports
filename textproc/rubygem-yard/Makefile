@@ -1,18 +1,19 @@
-# Created by: Sunpoet Po-Chuan Hsieh <sunpoet@FreeBSD.org>
-
 PORTNAME=	yard
-PORTVERSION=	0.9.26
+PORTVERSION=	0.9.28
+PORTREVISION=	1
 CATEGORIES=	textproc devel rubygems
 MASTER_SITES=	RG
 
 MAINTAINER=	sunpoet@FreeBSD.org
 COMMENT=	Documentation generation tool for Ruby
+WWW=		https://yardoc.org/
 
 LICENSE=	MIT
 LICENSE_FILE=	${WRKSRC}/LICENSE
 
+RUN_DEPENDS=	rubygem-webrick>=1.7.0<2:www/rubygem-webrick
+
 USES=		cpe gem
-USE_RUBY=	yes
 
 NO_ARCH=	yes
 

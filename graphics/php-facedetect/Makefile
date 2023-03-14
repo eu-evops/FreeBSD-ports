@@ -1,13 +1,12 @@
-# Created by: Martin Matuska <mm@FreeBSD.org>
-
 PORTNAME=	facedetect
 PORTVERSION=	1.1
-PORTREVISION=	11
+PORTREVISION=	13
 CATEGORIES=	graphics
 PKGNAMEPREFIX=	${PHP_PKGNAMEPREFIX}
 
 MAINTAINER=	mm@FreeBSD.org
 COMMENT=	Face detection extension for PHP using OpenCV library
+WWW=		https://www.xarg.org/project/php-facedetect/
 
 LICENSE=	PHP30
 
@@ -21,6 +20,7 @@ GH_TAGNAME=	2a8974b
 LIBS+=		-lopencv_core
 
 USES=		compiler:c11 localbase php:ext pkgconfig
+IGNORE_WITH_PHP=	81 82
 
 CONFIGURE_ARGS+=	--with-facedetect
 

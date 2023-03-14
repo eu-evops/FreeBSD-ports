@@ -1,13 +1,12 @@
-# Created by: Roland van Laar <roland@micite.net>
-
 PORTNAME=	sqlparse
-PORTVERSION=	0.4.2
+PORTVERSION=	0.4.3
 CATEGORIES=	databases python
-MASTER_SITES=	CHEESESHOP
+MASTER_SITES=	PYPI
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
 
 MAINTAINER=	sunpoet@FreeBSD.org
 COMMENT=	Non-validating SQL parser for Python
+WWW=		https://github.com/andialbrecht/sqlparse
 
 LICENSE=	BSD3CLAUSE
 LICENSE_FILE=	${WRKSRC}/LICENSE

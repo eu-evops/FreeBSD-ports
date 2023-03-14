@@ -1,5 +1,3 @@
-# Created by: Daniel O'Connor <darius@dons.net.au>
-
 PORTNAME=	miniupnpd
 DISTVERSION=	2.2.1
 PORTREVISION=	1
@@ -10,6 +8,7 @@ MASTER_SITES=	http://miniupnp.tuxfamily.org/files/ \
 
 MAINTAINER=	squat@squat.no
 COMMENT=	UPnP IGD implementation which uses pf/ipf
+WWW=		http://miniupnp.free.fr/
 
 LICENSE=	BSD3CLAUSE
 

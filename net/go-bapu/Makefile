@@ -1,7 +1,6 @@
-# Created by: Carlo Strub <cs@FreeBSD.org>
-
 PORTNAME=	bapu
 PORTVERSION=	0.3.0
+PORTREVISION=	10
 CATEGORIES=	net
 MASTER_SITES=	https://bitbucket.org/carlostrub/bapu/get/
 PKGNAMEPREFIX=	go-
@@ -11,6 +10,7 @@ DIST_SUBDIR=	go-bapu
 
 MAINTAINER=	cs@FreeBSD.org
 COMMENT=	Virtual Machine Controller for Gandi.net
+WWW=		https://bitbucket.org/carlostrub/bapu
 
 LICENSE=	BSD3CLAUSE
 

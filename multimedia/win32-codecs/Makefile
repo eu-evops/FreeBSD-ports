@@ -1,5 +1,3 @@
-# Created by: Holger Lamm
-
 PORTNAME=	win32-codecs
 DISTVERSION=	20110131
 PORTEPOCH=	1
@@ -14,12 +12,16 @@ EXTRACT_ONLY=	all-${DISTVERSION}.tar.bz2
 
 MAINTAINER=	multimedia@FreeBSD.org
 COMMENT=	Huge compilation of Win32 binary video codecs
+WWW=		http://www.mplayerhq.hu/MPlayer/releases/codecs/
 
 # Converted from RESTRICTED
 LICENSE=	win32-codec
 LICENSE_NAME=	win32-codec
 LICENSE_TEXT=	Unsure of codec's license
 LICENSE_PERMS=	auto-accept
+
+DEPRECATED=	Obsolete and users are recommended to utilize ffmpeg instead
+EXPIRATION_DATE=2023-03-31
 
 USES=		tar:bzip2
 

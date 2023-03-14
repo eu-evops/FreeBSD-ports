@@ -1,13 +1,15 @@
 PORTNAME=	mu4e
-PORTVERSION=	1.6.4
-PORTREVISION=	2
+PORTVERSION=	1.8.13
+DISTVERSIONPREFIX=	v
 CATEGORIES=	mail
 PKGNAMESUFFIX=	${EMACS_PKGNAMESUFFIX}
 
 MAINTAINER=	hrs@FreeBSD.org
 COMMENT=	Emacs frontend for Mu
+WWW=		https://www.djcbsoftware.nl/code/mu/
 
-LICENSE=	GPLv3
+LICENSE=	GPLv3+
+LICENSE_FILE=	${WRKSRC}/COPYING
 
 RUN_DEPENDS=	mu:mail/mu
 
@@ -17,9 +19,8 @@ GH_PROJECT=	mu
 GH_ACCOUNT=	djcb
 
 GNU_CONFIGURE=	yes
-CONFIGURE_ARGS=	--disable-gtk \
-		--disable-webkit \
-		--disable-guile \
+CONFIGURE_ARGS=	--disable-guile \
+		--disable-readline \
 		--docdir="${DOCSDIR}" \
 		--enable-mu4e
 INFO=		${PORTNAME}

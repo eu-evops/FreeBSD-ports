@@ -1,8 +1,6 @@
-# Created by: Oliver Lehmann (oliver@FreeBSD.org)
-
 PORTNAME=	xfce4-dict
 PORTVERSION=	0.8.4
-PORTREVISION=	1
+PORTREVISION=	2
 CATEGORIES=	textproc xfce
 MASTER_SITES=	XFCE/apps
 PKGNAMESUFFIX=	-plugin
@@ -10,6 +8,7 @@ DIST_SUBDIR=	xfce4
 
 MAINTAINER=	xfce@FreeBSD.org
 COMMENT=	Xfce4 plugin to query different dictionaries
+WWW=		https://goodies.xfce.org/projects/applications/xfce4-dict
 
 LICENSE=	GPLv2
 LICENSE_FILE=	${WRKSRC}/COPYING

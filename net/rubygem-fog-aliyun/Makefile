@@ -1,5 +1,3 @@
-# Created by: Sunpoet Po-Chuan Hsieh <sunpoet@FreeBSD.org>
-
 PORTNAME=	fog-aliyun
 PORTVERSION=	0.3.19
 CATEGORIES=	net rubygems
@@ -7,6 +5,7 @@ MASTER_SITES=	RG
 
 MAINTAINER=	sunpoet@FreeBSD.org
 COMMENT=	Module for the 'fog' gem to support aliyun OSS/ECS
+WWW=		https://github.com/fog/fog-aliyun
 
 LICENSE=	MIT
 LICENSE_FILE=	${WRKSRC}/LICENSE.txt
@@ -18,7 +17,6 @@ RUN_DEPENDS=	rubygem-aliyun-sdk>=0.8.0<0.9:devel/rubygem-aliyun-sdk \
 		rubygem-xml-simple>=1.1<2:textproc/rubygem-xml-simple
 
 USES=		gem
-USE_RUBY=	yes
 
 NO_ARCH=	yes
 

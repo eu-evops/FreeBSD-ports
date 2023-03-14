@@ -1,11 +1,12 @@
 PORTNAME=	pylibsrtp
 PORTVERSION=	0.6.7
 CATEGORIES=	devel python
-MASTER_SITES=	CHEESESHOP
+MASTER_SITES=	PYPI
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
 
 MAINTAINER=	swills@FreeBSD.org
 COMMENT=	Python wrapper around libsrtp
+WWW=		https://github.com/jlaine/pylibsrtp
 
 LICENSE=	BSD3CLAUSE
 LICENSE_FILE=	${WRKSRC}/LICENSE

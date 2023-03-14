@@ -1,13 +1,12 @@
-# Created by: Koop Mast <kwm@FreeBSD.org>
-
 PORTNAME=	harfbuzz
-DISTVERSION=	3.1.2
+DISTVERSION=	7.1.0
 PORTREVISION?=	0
 CATEGORIES=	print
 MASTER_SITES=	https://github.com/harfbuzz/harfbuzz/releases/download/${DISTVERSION}/
 
 MAINTAINER=	desktop@FreeBSD.org
 COMMENT?=	OpenType text shaping engine
+WWW=		https://harfbuzz.github.io/
 
 LICENSE=	MIT
 LICENSE_FILE=	${WRKSRC}/COPYING
@@ -25,7 +24,7 @@ CPE_VENDOR=	harfbuzz_project
 MESON_ARGS=	-Dglib=enabled -Dgobject=enabled -Dgraphite=enabled \
 		-Dfreetype=enabled -Dbenchmark=disabled
 
-PLIST_SUB+=	LIBVER=0.30102.0
+PLIST_SUB+=	LIBVER=0.60710.0
 
 HARFBUZZ_SLAVE?=	no
 
@@ -46,7 +45,7 @@ MESON_ARGS+=	-Dicu=enabled -Dcairo=disabled -Ddocs=disabled \
 LIB_DEPENDS+=	libharfbuzz.so:print/harfbuzz \
 		libicudata.so:devel/icu
 
-.elif ${HARFBUZZ_SLAVE} == hb-view
+.elif ${HARFBUZZ_SLAVE} == cairo
 MESON_ARGS+=	-Dcairo=enabled -Dicu=disabled -Ddocs=disabled \
 		-Dtests=disabled
 LIB_DEPENDS+=	libharfbuzz.so:print/harfbuzz

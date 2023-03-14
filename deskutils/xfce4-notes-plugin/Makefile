@@ -1,13 +1,13 @@
-# Created by: Thorsten Greiner <thorsten.greiner@web.de>
-
 PORTNAME=	xfce4-notes-plugin
 PORTVERSION=	1.9.0
+PORTREVISION=	1
 CATEGORIES=	deskutils xfce
 MASTER_SITES=	XFCE/panel-plugins
 DIST_SUBDIR=	xfce4
 
 MAINTAINER=	xfce@FreeBSD.org
 COMMENT=	Notes plugin for the Xfce panel
+WWW=		https://goodies.xfce.org/projects/panel-plugins/xfce4-notes-plugin
 
 LICENSE=	GPLv2
 

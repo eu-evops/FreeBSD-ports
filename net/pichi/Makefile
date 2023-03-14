@@ -1,12 +1,16 @@
 PORTNAME=	pichi
 DISTVERSION=	1.4.0
+PORTREVISION=	3
 CATEGORIES=	net
 
 MAINTAINER=	pichi@elude.in
 COMMENT=	Flexible rule-based proxy
+WWW=		https://github.com/pichi-router/pichi
 
 LICENSE=	BSD3CLAUSE
 LICENSE_FILE=	${WRKSRC}/LICENSE
+
+BROKEN=		fails to build
 
 BUILD_DEPENDS=	rapidjson>=1.1.0:devel/rapidjson
 

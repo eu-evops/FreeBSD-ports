@@ -21,6 +21,14 @@ include/proxygen/httpserver/SignalHandler.h
 include/proxygen/httpserver/filters/CompressionFilter.h
 include/proxygen/httpserver/filters/DirectResponseHandler.h
 include/proxygen/httpserver/filters/RejectConnectFilter.h
+include/proxygen/lib/dns/CAresResolver.h
+include/proxygen/lib/dns/CachingDNSResolver.h
+include/proxygen/lib/dns/DNSModule.h
+include/proxygen/lib/dns/DNSResolver.h
+include/proxygen/lib/dns/FutureDNSResolver.h
+include/proxygen/lib/dns/NaiveResolutionCallback.h
+include/proxygen/lib/dns/Rfc6724.h
+include/proxygen/lib/dns/SyncDNSResolver.h
 include/proxygen/lib/healthcheck/PoolHealthChecker.h
 include/proxygen/lib/healthcheck/ServerHealthCheckerCallback.h
 include/proxygen/lib/http/HQConnector.h
@@ -48,6 +56,7 @@ include/proxygen/lib/http/codec/CodecDictionaries.h
 include/proxygen/lib/http/codec/CodecProtocol.h
 include/proxygen/lib/http/codec/CodecUtil.h
 include/proxygen/lib/http/codec/ControlMessageRateLimitFilter.h
+include/proxygen/lib/http/codec/DebugFilter.h
 include/proxygen/lib/http/codec/DefaultHTTPCodecFactory.h
 include/proxygen/lib/http/codec/ErrorCode.h
 include/proxygen/lib/http/codec/FlowControlFilter.h
@@ -62,6 +71,7 @@ include/proxygen/lib/http/codec/HTTP1xCodec.h
 include/proxygen/lib/http/codec/HTTP2Codec.h
 include/proxygen/lib/http/codec/HTTP2Constants.h
 include/proxygen/lib/http/codec/HTTP2Framer.h
+include/proxygen/lib/http/codec/HTTPBinaryCodec.h
 include/proxygen/lib/http/codec/HTTPChecks.h
 include/proxygen/lib/http/codec/HTTPCodec.h
 include/proxygen/lib/http/codec/HTTPCodecFactory.h
@@ -73,14 +83,9 @@ include/proxygen/lib/http/codec/HTTPSettings.h
 include/proxygen/lib/http/codec/HeaderDecodeInfo.h
 include/proxygen/lib/http/codec/QPACKDecoderCodec.h
 include/proxygen/lib/http/codec/QPACKEncoderCodec.h
-include/proxygen/lib/http/codec/SPDYCodec.h
-include/proxygen/lib/http/codec/SPDYConstants.h
-include/proxygen/lib/http/codec/SPDYVersion.h
-include/proxygen/lib/http/codec/SPDYVersionSettings.h
 include/proxygen/lib/http/codec/SettingsId.h
 include/proxygen/lib/http/codec/TransportDirection.h
 include/proxygen/lib/http/codec/compress/CompressionInfo.h
-include/proxygen/lib/http/codec/compress/GzipHeaderCodec.h
 include/proxygen/lib/http/codec/compress/HPACKCodec.h
 include/proxygen/lib/http/codec/compress/HPACKConstants.h
 include/proxygen/lib/http/codec/compress/HPACKContext.h
@@ -92,7 +97,6 @@ include/proxygen/lib/http/codec/compress/HPACKEncoder.h
 include/proxygen/lib/http/codec/compress/HPACKEncoderBase.h
 include/proxygen/lib/http/codec/compress/HPACKHeader.h
 include/proxygen/lib/http/codec/compress/HPACKHeaderName.h
-include/proxygen/lib/http/codec/compress/HPACKQueue.h
 include/proxygen/lib/http/codec/compress/HPACKStreamingCallback.h
 include/proxygen/lib/http/codec/compress/Header.h
 include/proxygen/lib/http/codec/compress/HeaderCodec.h
@@ -113,6 +117,7 @@ include/proxygen/lib/http/codec/compress/experimental/simulator/CompressionSchem
 include/proxygen/lib/http/codec/compress/experimental/simulator/CompressionSimulator.h
 include/proxygen/lib/http/codec/compress/experimental/simulator/CompressionTypes.h
 include/proxygen/lib/http/codec/compress/experimental/simulator/CompressionUtils.h
+include/proxygen/lib/http/codec/compress/experimental/simulator/HPACKQueue.h
 include/proxygen/lib/http/codec/compress/experimental/simulator/HPACKScheme.h
 include/proxygen/lib/http/codec/compress/experimental/simulator/QMINScheme.h
 include/proxygen/lib/http/codec/compress/experimental/simulator/QPACKScheme.h
@@ -141,6 +146,7 @@ include/proxygen/lib/http/session/HTTPErrorPage.h
 include/proxygen/lib/http/session/HTTPEvent.h
 include/proxygen/lib/http/session/HTTPSession.h
 include/proxygen/lib/http/session/HTTPSessionAcceptor.h
+include/proxygen/lib/http/session/HTTPSessionActivityTracker.h
 include/proxygen/lib/http/session/HTTPSessionBase.h
 include/proxygen/lib/http/session/HTTPSessionController.h
 include/proxygen/lib/http/session/HTTPSessionStats.h
@@ -154,6 +160,9 @@ include/proxygen/lib/http/session/ServerPushLifecycle.h
 include/proxygen/lib/http/session/SimpleController.h
 include/proxygen/lib/http/session/TTLBAStats.h
 include/proxygen/lib/http/session/TransactionByteEvents.h
+include/proxygen/lib/http/sink/HTTPSink.h
+include/proxygen/lib/http/sink/HTTPTransactionSink.h
+include/proxygen/lib/http/sink/NullHTTPSink.h
 include/proxygen/lib/http/stats/ConnectionStats.h
 include/proxygen/lib/http/stats/HeaderCodecStats.h
 include/proxygen/lib/http/stats/HTTPCodecStats.h
@@ -190,12 +199,13 @@ include/proxygen/lib/stats/PeriodicStats.h
 include/proxygen/lib/stats/PeriodicStatsDataBase.h
 include/proxygen/lib/stats/ResourceData.h
 include/proxygen/lib/stats/ResourceStats.h
+include/proxygen/lib/transport/AsyncUDPSocketFactory.h
 include/proxygen/lib/transport/H3DatagramAsyncSocket.h
 include/proxygen/lib/transport/PersistentFizzPskCache.h
 include/proxygen/lib/transport/PersistentQuicPskCache.h
+include/proxygen/lib/transport/PersistentQuicTokenCache.h
 include/proxygen/lib/utils/AcceptorAddress.h
 include/proxygen/lib/utils/AsyncTimeoutSet.h
-include/proxygen/lib/utils/Base64.h
 include/proxygen/lib/utils/CobHelper.h
 include/proxygen/lib/utils/ConditionalGate.h
 include/proxygen/lib/utils/ConsistentHash.h

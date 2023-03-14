@@ -1,7 +1,5 @@
-# Created by: Andrey Fesenko <andrey@bsdnir.info>
-
 PORTNAME=	emkatic
-PORTVERSION=	0.38
+PORTVERSION=	0.41
 PORTREVISION=	5
 CATEGORIES=	russian emulators
 PKGNAMESUFFIX=	${LAZARUS_PKGNAMESUFFIX}
@@ -10,6 +8,7 @@ DISTNAME=	${PORTNAME}-${PORTVERSION}-src
 
 MAINTAINER=	andrey@bsdnir.info
 COMMENT=	Emulator of Elektronika RPN programmable calculator series
+WWW=		https://sourceforge.net/projects/emkatic/
 
 LICENSE=	GPLv3+
 LICENSE_FILE=	${WRKSRC}/COPYING.txt

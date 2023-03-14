@@ -1,18 +1,6 @@
---- modules/freebsd/vmblock/vfsops.c.orig	2021-09-24 04:19:18 UTC
+--- modules/freebsd/vmblock/vfsops.c.orig	2022-11-29 21:17:22 UTC
 +++ modules/freebsd/vmblock/vfsops.c
-@@ -124,6 +124,11 @@ VMBlockVFSMount(struct mount *mp,        // IN: mount(
-    char *pathname;
-    int len, error = 0;
- 
-+#if __FreeBSD_version >= 800087
-+   struct thread *td;
-+   td = curthread;
-+#endif
-+
-    VMBLOCKDEBUG("VMBlockVFSMount(mp = %p)\n", (void *)mp);
- 
-    /*
-@@ -171,7 +176,11 @@ VMBlockVFSMount(struct mount *mp,        // IN: mount(
+@@ -171,14 +171,21 @@ VMBlockVFSMount(struct mount *mp,        // IN: mount(
      * Find lower node and lock if not already locked.
      */
  
@@ -23,16 +11,15 @@
 +#endif
     error = namei(ndp);
     if (error) {
-       NDFREE(ndp, 0);
-@@ -276,6 +285,11 @@ VMBlockVFSUnmount(struct mount *mp,    // IN: filesyst
-    void *mntdata;
-    int error;
-    int flags = 0, removed = 0;
-+
-+#if __FreeBSD_version >= 800087
-+   struct thread *td;
-+   td = curthread;
+-      NDFREE(ndp, 0);
+       uma_zfree(VMBlockPathnameZone, pathname);
+       return error;
+    }
++#if __FreeBSD_version < 1400054
+    NDFREE(ndp, NDF_ONLY_PNBUF);
++#else
++   NDFREE_PNBUF(ndp);
 +#endif
  
-    VMBLOCKDEBUG("VMBlockVFSUnmount: mp = %p\n", (void *)mp);
- 
+    /*
+     * Check multi VMBlock mount to avoid `lock against myself' panic.

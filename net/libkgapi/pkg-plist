@@ -1,4 +1,3 @@
-share/qlogging-categories5/libkgapi.categories
 include/KPim/KGAPI/KGAPI/Account
 include/KPim/KGAPI/KGAPI/AccountInfo
 include/KPim/KGAPI/KGAPI/AccountInfoFetchJob
@@ -324,6 +323,7 @@ share/locale/el/LC_MESSAGES/libkgapi_qt.qm
 share/locale/en_GB/LC_MESSAGES/libkgapi_qt.qm
 share/locale/es/LC_MESSAGES/libkgapi_qt.qm
 share/locale/et/LC_MESSAGES/libkgapi_qt.qm
+share/locale/eu/LC_MESSAGES/libkgapi_qt.qm
 share/locale/fi/LC_MESSAGES/libkgapi_qt.qm
 share/locale/fr/LC_MESSAGES/libkgapi_qt.qm
 share/locale/ga/LC_MESSAGES/libkgapi_qt.qm
@@ -332,6 +332,7 @@ share/locale/hu/LC_MESSAGES/libkgapi_qt.qm
 share/locale/ia/LC_MESSAGES/libkgapi_qt.qm
 share/locale/it/LC_MESSAGES/libkgapi_qt.qm
 share/locale/ja/LC_MESSAGES/libkgapi_qt.qm
+share/locale/ka/LC_MESSAGES/libkgapi_qt.qm
 share/locale/kk/LC_MESSAGES/libkgapi_qt.qm
 share/locale/km/LC_MESSAGES/libkgapi_qt.qm
 share/locale/ko/LC_MESSAGES/libkgapi_qt.qm
@@ -349,9 +350,13 @@ share/locale/ru/LC_MESSAGES/libkgapi_qt.qm
 share/locale/sk/LC_MESSAGES/libkgapi_qt.qm
 share/locale/sl/LC_MESSAGES/libkgapi_qt.qm
 share/locale/sr/LC_MESSAGES/libkgapi_qt.qm
+share/locale/sr@ijekavian/LC_MESSAGES/libkgapi_qt.qm
+share/locale/sr@ijekavianlatin/LC_MESSAGES/libkgapi_qt.qm
+share/locale/sr@latin/LC_MESSAGES/libkgapi_qt.qm
 share/locale/sv/LC_MESSAGES/libkgapi_qt.qm
 share/locale/tr/LC_MESSAGES/libkgapi_qt.qm
 share/locale/ug/LC_MESSAGES/libkgapi_qt.qm
 share/locale/uk/LC_MESSAGES/libkgapi_qt.qm
 share/locale/zh_CN/LC_MESSAGES/libkgapi_qt.qm
 share/locale/zh_TW/LC_MESSAGES/libkgapi_qt.qm
+share/qlogging-categories5/libkgapi.categories

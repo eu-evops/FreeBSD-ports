@@ -7,7 +7,9 @@ PORTNAME=	pfSense-pkg-zabbix-agent54
 CONFLICTS=	pfSense-pkg-zabbix-agent \
 		pfSense-pkg-zabbix-agent4 \
 		pfSense-pkg-zabbix-agent44 \
-		pfSense-pkg-zabbix-agent5
+		pfSense-pkg-zabbix-agent5 \
+		pfSense-pkg-zabbix-agent6 \
+		pfSense-pkg-zabbix-agent62
 
 RUN_DEPENDS=	zabbix_agentd:net-mgmt/zabbix54-agent
 

@@ -1,6 +1,6 @@
 PORTNAME=	arrow
-DISTVERSION=	4.0.1
-PORTREVISION=	4
+DISTVERSION=	8.0.0
+PORTREVISION=	7
 CATEGORIES=	databases
 MASTER_SITES=	APACHE/${PORTNAME}/${PORTNAME}-${DISTVERSION} \
 		https://github.com/apache/orc/archive/rel/:orc
@@ -10,6 +10,7 @@ EXTRACT_ONLY=	apache-${PORTNAME}-${DISTVERSION}${EXTRACT_SUFX}
 
 MAINTAINER=	yuri@FreeBSD.org
 COMMENT=	Columnar in-memory analytics layer for big data
+WWW=		https://arrow.apache.org/
 
 LICENSE=	APACHE20
 LICENSE_FILE=	${WRKSRC}/../LICENSE.txt
@@ -26,7 +27,7 @@ CMAKE_OFF=	ARROW_BUILD_STATIC ARROW_WITH_BACKTRACE ARROW_BUILD_TESTS ARROW_BUILD
 
 OPTIONS_GROUP=			COMPRESSION COMPONENTS # components are listed in cpp/cmake_modules/DefineOptions.cmake
 OPTIONS_GROUP_COMPRESSION=	BROTLI BZ2 LZ4 SNAPPY ZLIB ZSTD
-OPTIONS_GROUP_COMPONENTS=	COMPUTE CSV DATASET FILESYSTEM FLIGHT GANDIVA HDFS HIVESERVER2 IPC JSON MIMALLOC PARQUET ORC PLASMA PYTHON S3 BUILD_UTILITIES TESTING
+OPTIONS_GROUP_COMPONENTS=	COMPUTE CSV DATASET FILESYSTEM FLIGHT GANDIVA HDFS HIVESERVER2 IPC JSON MIMALLOC PARQUET ORC PLASMA PYTHON S3 SKYHOOK SUBSTRAIT BUILD_UTILITIES TESTING
 OPTIONS_SUB=			yes
 
 COMPRESSION_DESC=		Compression support:
@@ -87,7 +88,8 @@ GANDIVA_CMAKE_BOOL=		ARROW_GANDIVA
 GANDIVA_BUILD_DEPENDS=		${LOCALBASE}/bin/clang12:devel/llvm12 # explicitly requires llvm-12
 GANDIVA_LIB_DEPENDS=		libgrpc.so:devel/grpc \
 				libprotobuf.so:devel/protobuf \
-				libre2.so:devel/re2
+				libre2.so:devel/re2 \
+				libutf8proc.so:textproc/utf8proc
 
 HDFS_DESC=			Arrow HDFS bridge
 HDFS_CMAKE_BOOL=		ARROW_HDFS
@@ -126,24 +128,27 @@ ORC_BROKEN=			fatal error: 'orc/OrcFile.hh' file not found: https://issues.apach
 
 PLASMA_DESC=			Plasma object store
 PLASMA_CMAKE_BOOL=		ARROW_PLASMA
-PLASMA_LIB_DEPENDS=		libgflags.so:devel/gflags
+PLASMA_LIB_DEPENDS=		libaws-c-auth.so:security/aws-c-auth \
+				libaws-c-compression.so:devel/aws-c-compression \
+				libaws-c-http.so:devel/aws-c-http \
+				libaws-c-mqtt.so:devel/aws-c-mqtt \
+				libaws-c-s3.so:devel/aws-c-s3 \
+				libaws-c-sdkutils.so:devel/aws-c-sdkutils \
+				libaws-crt-cpp.so:devel/aws-crt-cpp \
+				libgflags.so:devel/gflags
 
 BUILD_UTILITIES_DESC=		build Arrow commandline utilities
 BUILD_UTILITIES_CMAKE_BOOL=	ARROW_BUILD_UTILITIES
 
-PYTHON_DESC=			build the Arrow CPython extensions
+PYTHON_DESC=			Build python extension support
 PYTHON_CMAKE_BOOL=		ARROW_PYTHON
-PYTHON_USES=			python:3.9
-PYTHON_BUILD_DEPENDS=		${PY_NUMPY} \
-				${PYTHON_PKGNAMEPREFIX}numpy>0:math/py-numpy@${PY_FLAVOR} \
-				${PYTHON_PKGNAMEPREFIX}cython>0:lang/cython@${PY_FLAVOR} \
-				${PYTHON_PKGNAMEPREFIX}setuptools>0:devel/py-setuptools@${PY_FLAVOR} \
-				${PYTHON_PKGNAMEPREFIX}setuptools_scm>0:devel/py-setuptools_scm@${PY_FLAVOR}
+PYTHON_USES=			python:3.7+
+PYTHON_BUILD_DEPENDS=		${PYNUMPY} # see https://issues.apache.org/jira/browse/ARROW-16820
+PYTHON_CMAKE_ON=		-DPython3_EXECUTABLE=${PYTHON_CMD}
 PYTHON_LIB_DEPENDS=		libutf8proc.so:textproc/utf8proc
-PYTHON_RUN_DEPENDS=		${PY_NUMPY}
+PYTHON_RUN_DEPENDS=		${PYNUMPY}
 PYTHON_IMPLIES=			COMPUTE CSV DATASET FILESYSTEM HDFS JSON
-PYTHON_BROKEN=			py39-setuptools_scm-4.1.2_1 Unknown flavor 'py39', possible flavors: py38
-PYTHON_VARS=			PLIST_SUB=PYTHON_SUFFIX=${PYTHON_SUFFIX}
+PYTHON_VARS=			PLIST_SUB+=PYTHON_SUFFIX=${PYTHON_SUFFIX}
 
 S3_DESC=			S3 support
 S3_CMAKE_BOOL=			ARROW_S3
@@ -155,8 +160,16 @@ S3_LIB_DEPENDS=			\
 				libaws-c-io.so:devel/aws-c-io \
 				libaws-checksums.so:devel/aws-checksums \
 				libaws-cpp-sdk-s3.so:devel/aws-sdk-cpp \
-				libs2n.so:security/s2n
+				libs2n.so:security/s2n-tls
 S3_IMPLIES=			ZLIB
+
+SKYHOOK_DESC=			Build the Skyhook libraries
+SKYHOOK_CMAKE_BOOL=		ARROW_SKYHOOK
+SKYHOOK_BROKEN=			could NOT find librados
+
+SUBSTRAIT_DESC=			Build the Arrow Substrait Consumer Module
+SUBSTRAIT_CMAKE_BOOL=		ARROW_SUBSTRAIT
+SUBSTRAIT_BROKEN=		needs investigation
 
 TESTING_DESC=			Arrow testing libraries
 TESTING_CMAKE_BOOL=		ARROW_TESTING
@@ -169,14 +182,6 @@ OPTIONS_DEFAULT+=	${opt}
 .endfor
 
 .include <bsd.port.pre.mk>
-
-.if ${CHOSEN_COMPILER_TYPE} == clang && ${OPSYS} == FreeBSD
-LLVM_VER=	10 # clang-11 crashes on FreeBSD 14: https://bugs.llvm.org/show_bug.cgi?id=50277
-
-BUILD_DEPENDS+=	clang${LLVM_VER}:devel/llvm${LLVM_VER}
-CC=		${LOCALBASE}/bin/clang${LLVM_VER}
-CXX=		${LOCALBASE}/bin/clang++${LLVM_VER}
-.endif
 
 pre-configure-PYTHON-on:
 	@${REINPLACE_CMD} -e ' \

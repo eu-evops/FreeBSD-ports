@@ -1,10 +1,12 @@
 PORTNAME=	consul_exporter
 PORTVERSION=	0.3.0
 DISTVERSIONPREFIX=	v
+PORTREVISION=	10
 CATEGORIES=	sysutils
 
 MAINTAINER=	t.tom@succont.de
 COMMENT=	Exporter for Consul metrics
+WWW=		https://github.com/prometheus/consul_exporter
 
 LICENSE=	APACHE20
 

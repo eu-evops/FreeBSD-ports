@@ -1,7 +1,5 @@
-# Created by: Po-Chuan Hsieh <sunpoet@FreeBSD.org>
-
 PORTNAME=	xapian
-PORTVERSION=	1.4.18
+PORTVERSION=	1.4.21
 DISTVERSIONPREFIX=	bindings-
 CATEGORIES=	databases
 MASTER_SITES=	https://oligarchy.co.uk/xapian/${PORTVERSION}/ \
@@ -10,6 +8,7 @@ PKGNAMEPREFIX=	${LUA_PKGNAMEPREFIX}
 
 MAINTAINER=	sunpoet@FreeBSD.org
 COMMENT=	Lua binding for Xapian
+WWW=		https://xapian.org/
 
 LICENSE=	GPLv2
 LICENSE_FILE=	${WRKSRC}/COPYING
@@ -18,8 +17,6 @@ BUILD_DEPENDS=	xapian-core>=${PORTVERSION}:databases/xapian-core
 LIB_DEPENDS=	libxapian.so:databases/xapian-core
 
 USES=		compiler:c++11-lang libtool lua:module tar:xz
-
-DOCSDIR=	${LUA_DOCSDIR}
 
 CONFIGURE_ARGS=	--datarootdir=${DATADIR} \
 		--docdir=${DOCSDIR} \
@@ -40,7 +37,7 @@ GNU_CONFIGURE=	yes
 INSTALL_TARGET=	install-strip
 USE_CXXSTD=	c++11
 
-PORTDOCS=	*
+DOCSDIR=	${LUA_DOCSDIR}
 
 CONFLICTS_INSTALL=	xapian-bindings12
 

@@ -1,12 +1,12 @@
-# Created by: Hye-Shik Chang <perky@FreeBSD.org>
-
 PORTNAME=	liferea
 DISTVERSION=	1.12.7
+PORTREVISION=	3
 CATEGORIES=	net gnome
 MASTER_SITES=	https://github.com/lwindolf/liferea/releases/download/v${PORTVERSION:S/.r/-rc/}/
 
 MAINTAINER=	kwm@FreeBSD.org
 COMMENT=	Simple RSS/RDF feed reader
+WWW=		https://lzone.de/liferea/
 
 LICENSE=	GPLv2
 

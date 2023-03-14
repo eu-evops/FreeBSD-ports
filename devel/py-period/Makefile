@@ -1,13 +1,12 @@
-# Created by: ijliao
-
 PORTNAME=	period
 PORTVERSION=	0.6.1
 CATEGORIES=	devel python
-MASTER_SITES=	CHEESESHOP
+MASTER_SITES=	PYPI
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
 
 MAINTAINER=	sunpoet@FreeBSD.org
 COMMENT=	Basic time period checking library
+WWW=		https://pypi.org/project/period/
 
 LICENSE=	ART20
 

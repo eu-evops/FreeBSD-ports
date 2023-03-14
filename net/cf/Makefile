@@ -1,10 +1,12 @@
 PORTNAME=	cf
 PORTVERSION=	6.49.0
 DISTVERSIONPREFIX=	v
+PORTREVISION=	10
 CATEGORIES=	net
 
 MAINTAINER=	dumbbell@FreeBSD.org
 COMMENT=	CLI for Cloud Foundry written in Go
+WWW=		https://cloudfoundry.org/
 
 LICENSE=	APACHE20
 LICENSE_FILE=	${WRKSRC}/LICENSE
@@ -16,6 +18,8 @@ GH_ACCOUNT=	cloudfoundry
 GH_PROJECT=	cli
 
 USES=		go
+
+CONFLICTS_INSTALL=	lbl-cf # bin/cf
 
 GO_BUILDFLAGS=	-ldflags="-X code.cloudfoundry.org/cli/version.binaryVersion=${PORTVERSION}"
 GO_PKGNAME=	code.cloudfoundry.org/cli

@@ -1,11 +1,11 @@
 PORTNAME=	glx-utils
 DISTVERSIONPREFIX=	${GL_ACCOUNT}-${GL_PROJECT}-
-DISTVERSION=	8.4.0-53
-PORTREVISION=	1
+DISTVERSION=	8.5.0-31
 CATEGORIES=	graphics
 
 MAINTAINER=	jbeich@FreeBSD.org
 COMMENT=	List GLX capabilities and simple renderer
+WWW=		https://www.mesa3d.org/
 
 LICENSE=	MIT
 
@@ -18,7 +18,7 @@ USE_XORG=	x11
 GL_SITE=	https://gitlab.freedesktop.org
 GL_ACCOUNT=	mesa
 GL_PROJECT=	demos
-GL_COMMIT=	5435fc7fbd332e171da9a71e33a9b190e9462cf0
+GL_COMMIT=	f5e202be2d10f58084ad6d115be5196fdd917da3
 WRKSRC_SUBDIR=	src/xdemos
 PLIST_FILES=	bin/glxgears \
 		bin/glxinfo \

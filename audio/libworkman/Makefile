@@ -1,5 +1,3 @@
-# Created by: Jim Mock <jim@FreeBSD.org>
-
 PORTNAME=	libworkman
 PORTVERSION=	1.4
 PORTREVISION=	3
@@ -12,6 +10,9 @@ COMMENT=	Workman library required by some audio apps
 
 LICENSE=	LGPL20+
 LICENSE_FILE=	${WRKSRC}/COPYING.LIB
+
+DEPRECATED=	Abandonware, no development in 20+ years
+EXPIRATION_DATE=2023-03-31
 
 USES=		imake
 WRKSRC=		${WRKDIR}/libworkman

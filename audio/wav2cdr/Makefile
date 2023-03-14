@@ -1,5 +1,3 @@
-# Created by: Emanuel Haupt <ehaupt@critical.ch>
-
 PORTNAME=	wav2cdr
 PORTVERSION=	2.3.4
 DISTVERSIONSUFFIX=	.orig
@@ -12,6 +10,9 @@ MAINTAINER=	ehaupt@FreeBSD.org
 COMMENT=	Converts WAV files into CDR audio file format
 
 LICENSE=	GPLv2
+
+DEPRECATED=	Obsolete utility, consider using multimedia/ffmpeg
+EXPIRATION_DATE=2023-03-31
 
 USES=		tar:bz2
 

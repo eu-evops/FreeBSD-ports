@@ -1,10 +1,12 @@
 PORTNAME=	git-chglog
 DISTVERSIONPREFIX=	v
-DISTVERSION=	0.15.0
+DISTVERSION=	0.15.1
+PORTREVISION=	10
 CATEGORIES=	textproc
 
 MAINTAINER=	lcook@FreeBSD.org
 COMMENT=	CHANGELOG generator implemented in Go
+WWW=		https://github.com/git-chglog/git-chglog
 
 LICENSE=	MIT
 LICENSE_FILE=	${WRKSRC}/LICENSE

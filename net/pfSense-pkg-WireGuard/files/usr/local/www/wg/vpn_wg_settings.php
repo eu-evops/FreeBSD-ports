@@ -3,7 +3,7 @@
  * vpn_wg_settings.php
  *
  * part of pfSense (https://www.pfsense.org)
- * Copyright (c) 2021-2022 Rubicon Communications, LLC (Netgate)
+ * Copyright (c) 2021-2023 Rubicon Communications, LLC (Netgate)
  * Copyright (c) 2021 R. Christian McDonald (https://github.com/theonemcdonald)
  * All rights reserved.
  *
@@ -68,6 +68,7 @@ if ($_POST) {
 
 				if (empty($input_errors) && $res['changes']) {
 					wg_toggle_wireguard();
+					mark_subsystem_dirty($wgg['subsystems']['wg']);
 					$save_success = true;
 				}
 
@@ -106,7 +107,7 @@ include('head.inc');
 wg_print_service_warning();
 
 if ($save_success) {
-	print_info_box(gettext('The changes have been applied successfully.'), 'success');
+	//print_info_box(gettext('The changes have been applied successfully.'), 'success');
 }
 
 if (isset($_POST['apply'])) {

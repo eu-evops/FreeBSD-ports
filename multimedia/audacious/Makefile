@@ -1,12 +1,11 @@
-# Created by: Zastupov Stepan [RedChrom] <redchrom@mail.ru>
-
 PORTNAME=	audacious
-PORTVERSION=	4.1
+PORTVERSION=	4.2
 CATEGORIES=	multimedia audio
 MASTER_SITES=	https://distfiles.audacious-media-player.org/
 
 MAINTAINER=	madpilot@FreeBSD.org
 COMMENT=	Lightweight and versatile audio player
+WWW=		https://audacious-media-player.org/
 
 LICENSE=	BSD2CLAUSE BSD3CLAUSE
 LICENSE_COMB=	multi
@@ -19,12 +18,14 @@ FLAVORS=	qt5 gtk2
 FLAVOR?=	${FLAVORS:[1]}
 
 USES=		compiler:c++11-lib desktop-file-utils gettext-tools gmake \
-		iconv localbase pkgconfig tar:bzip2 xorg
+		gnome iconv localbase pkgconfig tar:bzip2 xorg
+USE_GNOME=	glib20
 USE_XORG=	x11 sm
 USE_LDCONFIG=	yes
 
 qt5_CONFLICTS_INSTALL=	audacious-gtk2
 
+gtk2_LIB_DEPENDS+=	libharfbuzz.so:print/harfbuzz
 gtk2_PKGNAMESUFFIX=	-gtk2
 gtk2_CONFLICTS_INSTALL=	audacious
 
@@ -37,12 +38,11 @@ CONFIGURE_ARGS=	--with-pkgconfigdir=${PREFIX}/libdata/pkgconfig \
 .if ${FLAVOR} == qt5
 CONFIGURE_ARGS+=	--enable-qt --disable-gtk
 USES+=			qt:5
-USE_QT=			buildtools_build core gui widgets
+USE_QT=			buildtools:build core gui widgets
 PLIST_SUB=		QT5="" GTK2="@comment "
 .elif ${FLAVOR} == gtk2
 CONFIGURE_ARGS+=	--disable-qt --enable-gtk
-USES+=			gnome
-USE_GNOME=		gtk20 glib20 cairo
+USE_GNOME+=		cairo gdkpixbuf2 gtk20
 PLIST_SUB=		QT5="@comment " GTK2=""
 .endif
 

@@ -1,13 +1,12 @@
-# Created by: Thomas Gellekum <tg@FreeBSD.org>
-
 PORTNAME=	pstoedit
 PORTVERSION=	3.70
-PORTREVISION=	11
+PORTREVISION=	12
 CATEGORIES=	graphics print
 MASTER_SITES=	SF
 
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Convert PostScript to other vector graphic formats
+WWW=		http://www.pstoedit.net/
 
 LICENSE=	GPLv2+
 
@@ -32,7 +31,7 @@ EMF_DESC=		WMF/EMF support via libEMF
 EMF_LIB_DEPENDS=	libEMF.so:graphics/libemf
 EMF_CONFIGURE_ON=	--with-libemf-include=${LOCALBASE}/include/libEMF
 EMF_CONFIGURE_OFF=	--without-emf
-MAGICK_LIB_DEPENDS=	libMagick++-${IMAGEMAGICK_DEFAULT}.so:graphics/ImageMagick${IMAGEMAGICK_DEFAULT}
+MAGICK_USES=		magick
 MAGICK_CONFIGURE_ON=	--with-magick
 MAGICK_CONFIGURE_OFF=	--without-magick
 MING_DESC=		Flash support via Ming

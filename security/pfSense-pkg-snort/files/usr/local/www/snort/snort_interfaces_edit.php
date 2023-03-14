@@ -3,9 +3,9 @@
  * snort_interfaces_edit.php
  *
  * part of pfSense (https://www.pfsense.org)
- * Copyright (c) 2011-2022 Rubicon Communications, LLC (Netgate)
+ * Copyright (c) 2011-2023 Rubicon Communications, LLC (Netgate)
  * Copyright (C) 2008-2009 Robert Zelaya
- * Copyright (c) 2021 Bill Meeks
+ * Copyright (c) 2022 Bill Meeks
  * All rights reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -24,7 +24,7 @@
 require_once("guiconfig.inc");
 require_once("/usr/local/pkg/snort/snort.inc");
 
-global $g, $config, $rebuild_rules;
+global $g, $rebuild_rules;
 
 $snortdir = SNORTDIR;
 $snortlogdir = SNORTLOGDIR;
@@ -32,14 +32,11 @@ $snortlogdir = SNORTLOGDIR;
 $netmapifs = array('cc', 'cxl', 'cxgbe', 'em', 'igb', 'em', 'lem', 'ix', 'ixgbe', 'ixl', 're', 'vtnet');
 if (pfs_version_compare(false, 2.4, $g['product_version'])) {
 	/* add FreeBSD 12 iflib(4) supported devices */
-	$netmapifs = array_merge($netmapifs, array('ena', 'ice', 'bnxt', 'vmx'));
+	$netmapifs = array_merge($netmapifs, array('ena', 'ice', 'igc', 'bnxt', 'vmx'));
 	sort($netmapifs);
 }
 
-if (!is_array($config['installedpackages']['snortglobal']['rule'])) {
-	$config['installedpackages']['snortglobal']['rule'] = array();
-}
-$a_rule = &$config['installedpackages']['snortglobal']['rule'];
+$a_rule = config_get_path('installedpackages/snortglobal/rule', []);
 
 if (isset($_POST['id']) && is_numericint($_POST['id']))
 	$id = $_POST['id'];
@@ -47,7 +44,6 @@ elseif (isset($_GET['id']) && is_numericint($_GET['id']))
 	$id = htmlspecialchars($_GET['id']);
 
 if (is_null($id)) {
-	unset($a_rule);
         header("Location: /snort/snort_interfaces.php");
         exit;
 }
@@ -59,20 +55,25 @@ if ($_REQUEST['ajax']) {
 	$type = $_REQUEST['type'];
 
 	if (isset($id) && isset($wlist)) {
-		$rule = $config['installedpackages']['snortglobal']['rule'][$id];
-		if ($type == "homenet") {
+		$rule = config_get_path("installedpackages/snortglobal/rule/{$id}", []);
+		if ($rule && $type == "homenet") {
 			$list = snort_build_list($rule, empty($wlist) ? 'default' : $wlist);
 			$contents = implode("\n", $list);
 		}
-		elseif ($type == "passlist") {
+		elseif ($rule && $type == "passlist") {
 			$list = snort_build_list($rule, $wlist, true);
 			$contents = implode("\n", $list);
 		}
-		elseif ($type == "suppress") {
+		elseif ($rule && $type == "suppress") {
 			$list = snort_find_list($wlist, $type);
-			$contents = str_replace("\r", "", base64_decode($list['suppresspassthru']));
+			if (!empty($list)) {
+				$contents = str_replace("\r", "", base64_decode($list['suppresspassthru']));
+			}
+			else {
+				$contents = gettext("The Suppress List is empty.");
+			}
 		}
-		elseif ($type == "externalnet") {
+		elseif ($rule && $type == "externalnet") {
 			if (empty($wlist) || $wlist == "default") {
 				$list = snort_build_list($rule, $rule['homelistname']);
 				$contents = "";
@@ -103,8 +104,8 @@ else
 	$action = "";
 
 $pconfig = array();
-if (empty($config['installedpackages']['snortglobal']['rule'][$id]['uuid'])) {
-	/* Adding new interface, so generate a UUID and flag the rules to build. */
+if (!config_path_enabled('installedpackages/snortglobal/rule', $id)) {
+	/* Adding a new interface, so generate new UUID and flag rules to rebuild. */
 	$pconfig['uuid'] = snort_generate_id();
 	$rebuild_rules = true;
 	$new_interface = true;
@@ -268,16 +269,16 @@ if ($_POST['save'] && !$input_errors) {
 		}
 	}
 
-	// If Snort is disabled on this interface, stop any running instance,
-	// save the change, and exit.
-	if ($_POST['enable'] != 'on') {
+	// If Snort is now disabled on this interface, stop any running instance
+	// on an active interface, save the change, and exit.
+	if ($_POST['enable'] != 'on' && config_path_enabled('installedpackages/snortglobal/rule', $id)) {
 		$a_rule[$id]['enable'] = $_POST['enable'] ? 'on' : 'off';
 		touch("{$g['varrun_path']}/snort_{$a_rule[$id]['uuid']}.disabled");
 		snort_stop($a_rule[$id], get_real_interface($a_rule[$id]['interface']));
+		config_set_path('installedpackages/snortglobal/rule', $a_rule);
 		write_config("Snort pkg: modified interface configuration for {$a_rule[$id]['interface']}.");
 		$rebuild_rules = false;
 		sync_snort_package_config();
-		unset($a_rule);
 		header( 'Expires: Sat, 26 Jul 1997 05:00:00 GMT' );
 		header( 'Last-Modified: ' . gmdate( 'D, d M Y H:i:s' ) . ' GMT' );
 		header( 'Cache-Control: no-store, no-cache, must-revalidate' );
@@ -287,12 +288,17 @@ if ($_POST['save'] && !$input_errors) {
 		exit;
 	}
 
-	/* if no errors write to conf */
+	/* if no errors, generate and save the interface configuration */
 	if (!$input_errors) {
 		/* Most changes don't require a rules rebuild, so default to "off" */
 		$rebuild_rules = FALSE;
+		$natent = array();
 
-		$natent = $a_rule[$id];
+		// Grab the existing configuration for modifications if it exists
+		if (config_path_enabled('installedpackages/snortglobal/rule', $id)) {
+			$natent = $a_rule[$id];
+		}
+
 		$natent['interface'] = $_POST['interface'];
 		$natent['enable'] = $_POST['enable'] ? 'on' : 'off';
 		$natent['uuid'] = $pconfig['uuid'];
@@ -516,6 +522,7 @@ if ($_POST['save'] && !$input_errors) {
 			snort_stop($natent, $if_real);
 
 		/* Save configuration changes */
+		config_set_path('installedpackages/snortglobal/rule', $a_rule);
 		write_config("Snort pkg: modified interface configuration for {$natent['interface']}.");
 
 		/* Update snort.conf and snort.sh files for this interface */
@@ -567,22 +574,17 @@ if ($_POST['save'] && !$input_errors) {
 }
 
 function snort_get_config_lists($lists) {
-	global $config;
 
 	// This returns the array of lists identified by $lists
 	// stored in the config file if one exists.  Always
 	// return at least the single entry, "default".
 	$result = array();
-	$result['default'] = 'default';
-	if (is_array($config['installedpackages']['snortglobal'][$lists]['item'])) {
-		foreach ($config['installedpackages']['snortglobal'][$lists]['item'] as $v)
+	$result['default'] = gettext("default");
+	foreach (config_get_path("installedpackages/snortglobal/{$lists}/item", []) as $v) {
 		$result[$v['name']] = gettext($v['name']);
 	}
 	return $result;
 }
-
-// Finished with config array reference, so release it
-unset($a_rule);
 
 $pglinks = array("", "/snort/snort_interfaces.php", "@self");
 $pgtitle = array("Services", "Snort", "{$if_friendly} - Interface Settings");
@@ -600,7 +602,12 @@ if ($savemsg) {
 }
 
 // If using Inline IPS, check that CSO, TSO and LRO are all disabled
-if ($pconfig['enable'] == 'on' && $pconfig['ips_mode'] == 'ips_mode_inline' && (!isset($config['system']['disablechecksumoffloading']) || !isset($config['system']['disablesegmentationoffloading']) || !isset($config['system']['disablelargereceiveoffloading']))) {
+if ($pconfig['enable'] == 'on' &&
+    $pconfig['ips_mode'] == 'ips_mode_inline' &
+    (!config_path_enabled('system', 'disablechecksumoffloading') ||
+     !config_path_enabled('system', 'disablesegmentationoffloading') ||
+     !config_path_enabled('system', 'disablelargereceiveoffloading'))
+    ) {
 	print_info_box(gettext('WARNING! IPS inline mode requires that Hardware Checksum Offloading, Hardware TCP Segmentation Offloading and Hardware Large Receive Offloading ' .
 				'all be disabled for proper operation. This firewall currently has one or more of these Offloading settings NOT disabled. Visit the ') . '<a href="/system_advanced_network.php">' . 
 			        gettext('System > Advanced > Networking') . '</a>' . gettext(' tab and ensure all three of these Offloading settings are disabled.'));

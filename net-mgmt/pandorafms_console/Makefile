@@ -1,17 +1,16 @@
-# Created by: KIKUCHI Koichiro <koichiro@rworks.jp>
-
 PORTNAME=	pandora_console
 CATEGORIES=	net-mgmt
 
 MAINTAINER=	koichiro@rworks.jp
 COMMENT=	Pandora FMS console
+WWW=		https://pandorafms.com/
 
 LICENSE=	${PANDORA_LICENSE}
 LICENSE_FILE=	${PANDORA_LICENSE_FILE}
 
 RUN_DEPENDS=	${LOCALBASE}/bin/twopi:graphics/graphviz
 
-USES=		apache:run,2.2+ php:web shebangfix
+USES=		apache:run php:web shebangfix
 SHEBANG_FILES=	include/languages/extract_newlines.sh \
 		include/languages/util-all \
 		include/languages/util-bzr-update \

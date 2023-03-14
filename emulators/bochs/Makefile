@@ -1,5 +1,3 @@
-# Created by: alex
-
 PORTNAME=	bochs
 PORTVERSION=	2.7
 PORTEPOCH=	2
@@ -8,6 +6,7 @@ MASTER_SITES=	SF
 
 MAINTAINER=	nc@FreeBSD.org
 COMMENT=	IA-32 (x86) PC emulator that runs DOS, Win 95, and more
+WWW=		http://bochs.sourceforge.net/
 
 LICENSE=	LGPL21
 
@@ -24,7 +23,8 @@ CPE_VENDOR=	bochs_project
 
 SUB_FILES=	pkg-message
 
-CFLAGS+=	-fomit-frame-pointer
+CFLAGS+=	-fomit-frame-pointer \
+		-I${LOCALBASE}/include
 CXXFLAGS+=	-fno-exceptions
 CPPFLAGS+=	-I${LOCALBASE}/include
 LDFLAGS+=	-L${LOCALBASE}/lib
@@ -139,6 +139,7 @@ RFB_DESC=			RFB protocol support (works with VNC viewer)
 RFB_CONFIGURE_WITH=		rfb
 SB16_DESC=			Sound Blaster 16 emulation
 SB16_CONFIGURE_ENABLE=		sb16
+SB16_LIB_DEPENDS=		libsamplerate.so:audio/libsamplerate
 SDL1_DESC=			Simple Direct Media Layer 1 support
 SDL1_USES=			sdl
 SDL1_USE=			SDL=sdl

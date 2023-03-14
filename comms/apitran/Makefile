@@ -6,6 +6,7 @@ PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
 
 MAINTAINER=	hamradio@FreeBSD.org
 COMMENT=	Toolkit to handle the automatic picture transmission protocol
+WWW=		https://github.com/rsj56/apitran
 
 LICENSE=	GPLv3
 LICENSE_FILE=	${WRKSRC}/LICENSE
@@ -13,11 +14,10 @@ LICENSE_FILE=	${WRKSRC}/LICENSE
 RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}tkinter>0:x11-toolkits/py-tkinter@${PY_FLAVOR} \
 		${PYTHON_PKGNAMEPREFIX}scipy>0:science/py-scipy@${PY_FLAVOR} \
 		${PYNUMPY} \
-		${PY_PILLOW} \
-		sox:audio/sox \
-		display:graphics/ImageMagick6
+		${PYTHON_PKGNAMEPREFIX}pillow>=7.0.0:graphics/py-pillow@${PY_FLAVOR} \
+		sox:audio/sox
 
-USES=		python:3.6+,run shebangfix
+USES=		magick:6,run python:3.6+,run shebangfix
 USE_GITHUB=	yes
 GH_ACCOUNT=	rsj56
 GH_TAGNAME=	d209347

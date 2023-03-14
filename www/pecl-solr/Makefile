@@ -1,11 +1,10 @@
-# Created by: Hung-Yi Chen <gaod@hychen.org>
-
 PORTNAME=	solr
-PORTVERSION=	2.5.1
+PORTVERSION=	2.6.0
 CATEGORIES=	www
 
 MAINTAINER=	gaod@hychen.org
 COMMENT=	PHP extension for Apache Solr
+WWW=		https://pecl.php.net/package/solr
 
 LICENSE=	PHP301
 LICENSE_FILE=	${WRKSRC}/LICENSE

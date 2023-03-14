@@ -1,5 +1,3 @@
-# Created by: Stephen Weeks <sweeks@sweeks.com>
-
 # Previously maintained by Jesper Louis Andersen
 # (jesper.louis.andersen@gmail.com) and Geoffrey Mainland
 # (mainland@apeiron.net)
@@ -21,6 +19,7 @@ DISTFILES+= ${BOOTNAME}.i386-${OPSYS:tl}-13.txz:bootstrap \
 
 MAINTAINER=	beyert@cs.ucr.edu
 COMMENT=	Optimizing Standard ML compiler
+WWW=		http://mlton.org/
 
 LICENSE=	HPND
 LICENSE_GROUPS=	COPYFREE OSI
@@ -84,8 +83,9 @@ MAKE_ARGS=	DESTDIR='' MLTON_VERSION=${PORTVERSION} \
 .if ${PORT_OPTIONS:MDOCS}
 BUILD_DEPENDS+=	htmldoc:textproc/htmldoc
 MAKE_ARGS+=	MLTON_BINARY_RELEASE_WITH_DOCS=true
-#USE_TEX=	latex:build
-USE_TEX=	latex:formats
+USES+=		tex
+USE_TEX=	latex:build
+#USE_TEX=	latex:formats
 INSTALL_TARGET=	install-docs install
 ALL_TARGET=	install-docs all
 .else

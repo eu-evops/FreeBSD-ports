@@ -1,11 +1,12 @@
 PORTNAME=	jenkins-job-builder
-PORTVERSION=	3.11.0
+PORTVERSION=	4.1.0
 CATEGORIES=	devel python
-MASTER_SITES=	CHEESESHOP
+MASTER_SITES=	PYPI
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
 
 MAINTAINER=	lwhsu@FreeBSD.org
 COMMENT=	Manage Jenkins jobs with YAML
+WWW=		https://docs.openstack.org/infra/jenkins-job-builder/
 
 LICENSE=	APACHE20
 LICENSE_FILE=	${WRKSRC}/LICENSE

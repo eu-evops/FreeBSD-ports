@@ -1,5 +1,3 @@
-# Created by: Brian Handy <handy@physics.montana.edu>
-
 PORTNAME=	windowmaker
 PORTVERSION=	0.95.9
 PORTREVISION=	1
@@ -9,6 +7,7 @@ DISTNAME=	WindowMaker-${PORTVERSION}
 
 MAINTAINER=	hrs@FreeBSD.org
 COMMENT=	GNUstep-compliant NeXTstep window manager clone
+WWW=		https://windowmaker.org/
 
 LICENSE=	GPLv2
 
@@ -54,7 +53,7 @@ OPTIONS_DEFINE=	IMAGEMAGICK DOCS NLS
 OPTIONS_DEFAULT=	IMAGEMAGICK
 OPTIONS_SUB=	yes
 
-IMAGEMAGICK_LIB_DEPENDS=	libMagickWand-${IMAGEMAGICK_DEFAULT}.so:graphics/ImageMagick${IMAGEMAGICK_DEFAULT}
+IMAGEMAGICK_USES=		magick
 IMAGEMAGICK_CONFIGURE_OFF=	--disable-magick
 
 NLS_USES=	gettext

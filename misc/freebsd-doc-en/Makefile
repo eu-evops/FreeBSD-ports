@@ -1,7 +1,5 @@
-# Created by: Marc Fonvieille <blackend@FreeBSD.org>
-
 PORTNAME=	freebsd-doc
-PORTVERSION=	20211029
+PORTVERSION=	20230224
 PORTEPOCH=	1
 CATEGORIES=	misc docs
 MASTER_SITES=	LOCAL/blackend
@@ -12,9 +10,8 @@ COMMENT?=	Documentation from the FreeBSD Documentation Project
 
 LICENSE=	BSD2CLAUSE
 
-BUILD_DEPENDS=	docproj>=4.0:textproc/docproj
+BUILD_DEPENDS=	docproj>=4.1:textproc/docproj
 
-USES=		python:build,3.6+
 WRKSRC=		${WRKDIR}/doc/documentation
 PLIST_SUB=	DOCSDIR=${DOCBASE} \
 		DOCLANG=${DOCLANG} \
@@ -33,7 +30,12 @@ DOCLANG?=		en
 DOCLANG_PREFIX?=	${DOCLANG:C/_.*$//}
 DOCBASE?=		share/doc/freebsd
 
+# HTML format disabled until separate localized-only build will work again
+.if ${DOCLANG:Men}
 AVAILABLEFORMATS=	HTML PDF
+.else
+AVAILABLEFORMATS=	PDF
+.endif
 
 OPTIONS_DEFINE=		${AVAILABLEFORMATS}
 OPTIONS_DEFAULT=	PDF
@@ -54,6 +56,13 @@ PLIST_FORMATS+=	${O:tl}
 .endif
 .endfor
 
+.if ${PORT_OPTIONS:MPDF}
+BUILD_DEPENDS+=	asciidoctor-pdf:textproc/rubygem-asciidoctor-pdf
+.if ${DOCLANG:Mzh-cn} || ${DOCLANG:Mzh-tw}
+BUILD_DEPENDS+=	docproj-fonts-cjk>0:textproc/docproj-fonts-cjk
+.endif
+.endif
+
 # when html is defined as the format, add HTML_COMMON.
 .if ${PORT_OPTIONS:MHTML}
 PLIST_FORMATS+=	html-common
@@ -63,13 +72,16 @@ PLIST_FORMATS+=	html-common
 # directories for all formats.
 PLIST_FORMATS+=	extras common
 
+post-patch:
+	@${REINPLACE_CMD} -e 's|enableGitInfo = true|#enableGitInfo = true|' \
+		${WRKSRC}/config/_default/config.toml
+
 pre-build:
 .for i in ${PLIST_FORMATS:S,^,${.CURDIR}/pkg-plist.,}
 	if ${TEST} -f ${i}; then \
 		${CAT} ${i} >> ${PLIST}; \
 	fi
 .endfor
-	${REINPLACE_CMD} -e 's/python3/${PYTHON_CMD:T}/' ${WRKSRC}/Makefile
 
 do-build:
 	cd ${WRKSRC} && ${SETENV} ${MAKE_ENV} \
@@ -78,5 +90,10 @@ do-build:
 do-install:
 	${MKDIR} ${STAGEDIR}${DESTDIR}${PREFIX}/${DOCBASE}
 	${CP} -R ${WRKSRC}/public/* ${STAGEDIR}${DESTDIR}${PREFIX}/${DOCBASE}
+	if ${TEST} -f ${.CURDIR}/pkg-plist.extras; then \
+		${CAT} ${.CURDIR}/pkg-plist.extras | \
+		${SED} -e 's|%%DOCSDIR%%/%%DOCLANG%%||' | \
+		${XARGS} -t -I % ${CP} -v ${WRKSRC}/static/source/% ${STAGEDIR}${DESTDIR}${PREFIX}/${DOCBASE}/${DOCLANG}%; \
+	fi
 
 .include <bsd.port.mk>

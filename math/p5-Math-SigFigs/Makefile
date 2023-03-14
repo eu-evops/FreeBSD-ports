@@ -6,9 +6,12 @@ PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	swills@FreeBSD.org
 COMMENT=	Do math with correct handling of significant figures
+WWW=		https://metacpan.org/release/Math-SigFigs
 
 USES=		perl5
 USE_PERL5=	configure
+
+CONFLICTS_INSTALL=	latte latte-integrale schilyutils # # bin/count
 
 PLIST_FILES=	bin/count bin/format
 

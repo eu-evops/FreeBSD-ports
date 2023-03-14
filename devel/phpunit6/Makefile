@@ -1,5 +1,3 @@
-# Created by: Jochen Neumeister (<joneum@bsdproject.de>)
-
 PORTNAME=	phpunit
 DISTVERSION=	6.5.14
 CATEGORIES=	devel www
@@ -9,8 +7,12 @@ EXTRACT_SUFX=	.phar
 
 MAINTAINER=	joneum@FreeBSD.org
 COMMENT=	Testing framework for unit tests
+WWW=		https://www.phpunit.de
 
 LICENSE=	BSD3CLAUSE
+
+DEPRECATED=	End of Life since February 1, 2019
+EXPIRATION_DATE=2023-03-31
 
 CONFLICTS_INSTALL=	phpunit7 phpunit8
 

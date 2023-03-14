@@ -3,7 +3,7 @@
  * haproxy.inc
  *
  * part of pfSense (https://www.pfsense.org)
- * Copyright (c) 2009-2022 Rubicon Communications, LLC (Netgate)
+ * Copyright (c) 2009-2023 Rubicon Communications, LLC (Netgate)
  * Copyright (c) 2013-2016 PiBa-NL
  * All rights reserved.
  *
@@ -1561,10 +1561,7 @@ function haproxy_writeconf($configpath) {
 		}
 
 		fwrite ($fd, "\tgid\t\t\t80\n");
-		// Set numprocs if defined or use system default (#cores)
-		$numprocs = $a_global['nbproc'] ? $a_global['nbproc'] : "1";
 		$numthread = $a_global['nbthread'] ? $a_global['nbthread'] : "1";
-		fwrite ($fd, "\tnbproc\t\t\t{$numprocs}\n");
 		if (haproxy_version() >= "1.8") {
 			fwrite ($fd, "\tnbthread\t\t\t{$numthread}\n");
 		}
@@ -2180,11 +2177,6 @@ function haproxy_writeconf($configpath) {
 			}
 
 			fwrite ($fd, $config_actions);
-			// CVE-2021-40346 workaround
-			if ($backend_type == 'http') {
-				fwrite ($fd, "\thttp-request  deny if { req.hdr_cnt(content-length) gt 1 }\n");
-				fwrite ($fd, "\thttp-response deny if { res.hdr_cnt(content-length) gt 1 }\n");
-			}
 			// Write backends after advanced options so custom use_backend rules can be applied first.
 			fwrite ($fd, $config_usebackends);
 			fwrite ($fd, $config_usedefaultbackends);

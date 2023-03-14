@@ -1,5 +1,3 @@
-# Created by: Matthias Fechner <mfechner@FreeBSD.org>
-
 PORTNAME=	openid_connect
 PORTVERSION=	1.2.0
 PORTREVISION=	1
@@ -8,6 +6,7 @@ MASTER_SITES=	RG
 
 MAINTAINER=	mfechner@FreeBSD.org
 COMMENT=	OpenID Connect Server & Client Library
+WWW=		https://github.com/nov/openid_connect
 
 LICENSE=	MIT
 LICENSE_FILE=	${WRKSRC}/LICENSE
@@ -23,7 +22,6 @@ RUN_DEPENDS=	rubygem-activemodel61>=0:databases/rubygem-activemodel61 \
 		rubygem-webfinger>=1.0.1:devel/rubygem-webfinger
 
 USES=		gem
-USE_RUBY=	yes
 
 NO_ARCH=	yes
 

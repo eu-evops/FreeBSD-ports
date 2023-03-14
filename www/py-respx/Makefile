@@ -1,13 +1,12 @@
-# Created by: Po-Chuan Hsieh <sunpoet@FreeBSD.org>
-
 PORTNAME=	respx
-PORTVERSION=	0.19.0
+PORTVERSION=	0.20.1
 CATEGORIES=	www python
-MASTER_SITES=	CHEESESHOP
+MASTER_SITES=	PYPI
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
 
 MAINTAINER=	sunpoet@FreeBSD.org
 COMMENT=	Utility for mocking out the Python HTTPX and HTTP Core libraries
+WWW=		https://lundberg.github.io/respx/
 
 LICENSE=	BSD3CLAUSE
 LICENSE_FILE=	${WRKSRC}/LICENSE.md

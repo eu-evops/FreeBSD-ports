@@ -1,14 +1,13 @@
-# Created by: Shinya Esu <esu@yk.rim.or.jp>
-
 PORTNAME=	macopix
 PORTVERSION=	1.7.4
-PORTREVISION=	12
+PORTREVISION=	13
 CATEGORIES=	games
 MASTER_SITES=	http://rosegray.sakura.ne.jp/macopix/
 DISTFILES=	${DISTNAME}${EXTRACT_SUFX} ${LICENSE_DISTFILES_DATA}
 
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Window sitter for X11
+WWW=		http://rosegray.sakura.ne.jp/macopix/index-e.html
 
 LICENSE=	GPLv2+ DATA
 LICENSE_COMB=	multi

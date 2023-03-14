@@ -1,13 +1,11 @@
-# Created by: TAKATSU Tomonari <tota@FreeBSD.org>
-
 PORTNAME=	rjson
-PORTVERSION=	0.2.20
-PORTREVISION=	3
+PORTVERSION=	0.2.21
 CATEGORIES=	converters
 DISTNAME=	${PORTNAME}_${PORTVERSION}
 
 MAINTAINER=	tota@FreeBSD.org
 COMMENT=	JSON for R
+WWW=		https://cran.r-project.org/web/packages/rjson/
 
 LICENSE=	GPLv2
 

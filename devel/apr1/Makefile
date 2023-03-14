@@ -1,8 +1,6 @@
-# Created by: Garrett Rooney <rooneg@electricjellyfish.net>
-
 PORTNAME=	apr
 PORTVERSION=	${APR_VERSION}.${APU_VERSION}
-PORTREVISION=	1
+PORTREVISION=	2
 CATEGORIES=	devel
 MASTER_SITES=	APACHE/apr
 DISTFILES=	apr-${APR_VERSION}.tar.gz \
@@ -10,9 +8,11 @@ DISTFILES=	apr-${APR_VERSION}.tar.gz \
 
 MAINTAINER=	apache@FreeBSD.org
 COMMENT=	Apache Portability Library
+WWW=		https://apr.apache.org/
 
 LICENSE=	APACHE20
 
+BUILD_DEPENDS+=	automake>=1.16.1:devel/automake
 LIB_DEPENDS=	libexpat.so:textproc/expat2
 
 USES=		iconv pathfix libtool cpe
@@ -43,7 +43,7 @@ SSL_DESC=		OpenSSL crypto driver
 # APR-Util Options
 BDB_USES=		bdb:5+
 GDBM_LIB_DEPENDS=	libgdbm.so:databases/gdbm
-LDAP_USE=		OPENLDAP=yes
+LDAP_USES=		ldap
 MYSQL_USES=		mysql
 NSS_LIB_DEPENDS=	libnss3.so:security/nss
 ODBC_LIB_DEPENDS=	libodbc.so:databases/unixODBC
@@ -112,10 +112,6 @@ APU_CONF_ENV+=	${CONFIGURE_ENV:O:u} CC="${CC}" CFLAGS="${CFLAGS}" CPPFLAGS="${AP
 
 .include <bsd.port.options.mk>
 
-.if ${ARCH} == powerpc || ${ARCH} == powerpcspe
-CONFIGURE_ENV+=	ap_cv_atomic_builtins=no
-.endif
-
 .if ${PORT_OPTIONS:MSSL} || ${PORT_OPTIONS:MNSS}
 APU_CONF_ARGS+=	--with-crypto
 .else
@@ -138,6 +134,7 @@ do-configure:
 		${SETENV} ${APR_CONF_ENV} ./configure ${APR_CONF_ARGS} ${CONFIGURE_ARGS})
 	@${ECHO_MSG} "# ===> ${.TARGET} apr-util-${APU_VERSION}"
 	(cd ${APU_WRKDIR} && \
+		autoreconf -f -i && \
 		${SETENV} ${APU_CONF_ENV} ./configure ${APU_CONF_ARGS} ${CONFIGURE_ARGS})
 
 do-build:

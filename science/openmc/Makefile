@@ -1,11 +1,12 @@
 PORTNAME=	openmc
 DISTVERSIONPREFIX=	v
-DISTVERSION=	0.12.2
+DISTVERSION=	0.13.1
 PORTREVISION=	1
 CATEGORIES=	science
 
 MAINTAINER=	yuri@FreeBSD.org
 COMMENT=	Monte Carlo neutron and photon transport simulation code
+WWW=		https://openmc.org/
 
 LICENSE=	MIT
 LICENSE_FILE=	${WRKSRC}/LICENSE
@@ -13,8 +14,9 @@ LICENSE_FILE=	${WRKSRC}/LICENSE
 BUILD_DEPENDS=	xtensor>0:math/xtensor
 LIB_DEPENDS=	libfmt.so:devel/libfmt \
 		libhdf5.so:science/hdf5 \
+		libpng16.so:graphics/png \
 		libpugixml.so:textproc/pugixml \
-		libsz.so:science/szip
+		libsz.so:science/libaec
 
 USES=		cmake:noninja eigen:3 pkgconfig
 

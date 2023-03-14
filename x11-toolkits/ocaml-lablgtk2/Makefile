@@ -1,13 +1,12 @@
-# Created by: Rene Ladan <rene@FreeBSD.org>
-
 PORTNAME=	lablgtk2
-PORTVERSION=	2.18.11
-PORTREVISION=	4
+PORTVERSION=	2.18.12
+PORTREVISION=	1
 CATEGORIES=	x11-toolkits
 PKGNAMEPREFIX=	ocaml-
 
 MAINTAINER=	danfe@FreeBSD.org
 COMMENT=	Objective Caml interface to GTK+ 2.x
+WWW=		https://garrigue.github.io/lablgtk/
 
 LICENSE=	LGPL21
 LICENSE_FILE=	${WRKSRC}/COPYING

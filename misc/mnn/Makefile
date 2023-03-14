@@ -1,17 +1,18 @@
 PORTNAME=	mnn
 DISTVERSION=	1.2.0
-PORTREVISION=	1
+PORTREVISION=	5
 CATEGORIES=	misc # machine-learning
 
 MAINTAINER=	yuri@FreeBSD.org
 COMMENT=	Lightweight deep neural network inference engine
+WWW=		https://github.com/alibaba/MNN
 
 LICENSE=	APACHE20
 
 BROKEN_i386=	always_inline function '_mm_set1_ps' requires target feature 'sse', but would be inlined into function 'Vec4' that is compiled without support for 'sse'
 
 BUILD_DEPENDS=	bash:shells/bash \
-		flatc:devel/flatbuffers
+		flatc:devel/flatbuffers205 # until https://github.com/alibaba/MNN/issues/1922 is fixed
 
 USES=		cmake compiler:c++11-lang localbase shebangfix
 USE_GITHUB=	yes

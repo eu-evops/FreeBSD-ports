@@ -1,11 +1,12 @@
 PORTNAME=	sphinx-argparse
 PORTVERSION=	0.2.5
 CATEGORIES=	textproc python
-MASTER_SITES=	CHEESESHOP
+MASTER_SITES=	PYPI
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
 
 MAINTAINER=	swills@FreeBSD.org
 COMMENT=	Sphinx extension that automatically documents argparse
+WWW=		https://github.com/ribozz/sphinx-argparse
 
 LICENSE=	MIT
 

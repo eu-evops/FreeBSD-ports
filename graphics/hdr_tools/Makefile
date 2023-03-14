@@ -1,5 +1,3 @@
-# Created by: Alexey Dokuchaev <danfe@FreeBSD.org>
-
 PORTNAME=	hdr_tools
 PORTVERSION=	0.0.2010.11.23	# unspecified by the author, so use the date
 PORTREVISION=	18
@@ -10,15 +8,15 @@ DISTNAME=	hdr_src
 
 MAINTAINER=	danfe@FreeBSD.org
 COMMENT=	Command-line tools for creating and manipulating HDR images
+WWW=		https://ttic.uchicago.edu/~cotter/projects/hdr_tools/
 
 LICENSE=	GPLv3
 
 LIB_DEPENDS=	libpopt.so:devel/popt \
 		libtiff.so:graphics/tiff \
 		libOpenEXR.so:graphics/openexr \
-		libMagick++-6.so:graphics/ImageMagick6
 
-USES=		compiler:c++11-lang gmake pkgconfig tar:tgz
+USES=		compiler:c++11-lang gmake magick:6 pkgconfig tar:tgz
 NO_WRKSUBDIR=	yes
 
 PROGRAMS=	hdr_adjust hdr_convert hdr_create hdr_denoise hdr_fix_ca \

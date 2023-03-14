@@ -24,6 +24,7 @@ lib/gstreamer-%%VERSION%%/libgstinterleave.so
 lib/gstreamer-%%VERSION%%/libgstisomp4.so
 lib/gstreamer-%%VERSION%%/libgstlevel.so
 lib/gstreamer-%%VERSION%%/libgstmatroska.so
+lib/gstreamer-%%VERSION%%/libgstmonoscope.so
 lib/gstreamer-%%VERSION%%/libgstmulaw.so
 lib/gstreamer-%%VERSION%%/libgstmultifile.so
 lib/gstreamer-%%VERSION%%/libgstmultipart.so
@@ -69,6 +70,7 @@ share/locale/hu/LC_MESSAGES/gst-plugins-good-%%VERSION%%.mo
 share/locale/id/LC_MESSAGES/gst-plugins-good-%%VERSION%%.mo
 share/locale/it/LC_MESSAGES/gst-plugins-good-%%VERSION%%.mo
 share/locale/ja/LC_MESSAGES/gst-plugins-good-%%VERSION%%.mo
+share/locale/ka/LC_MESSAGES/gst-plugins-good-%%VERSION%%.mo
 share/locale/ky/LC_MESSAGES/gst-plugins-good-%%VERSION%%.mo
 share/locale/lt/LC_MESSAGES/gst-plugins-good-%%VERSION%%.mo
 share/locale/lv/LC_MESSAGES/gst-plugins-good-%%VERSION%%.mo

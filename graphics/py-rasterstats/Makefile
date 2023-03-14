@@ -1,13 +1,12 @@
-# Created by: Po-Chuan Hsieh <sunpoet@FreeBSD.org>
-
 PORTNAME=	rasterstats
-PORTVERSION=	0.16.0
+PORTVERSION=	0.17.0
 CATEGORIES=	graphics python
-MASTER_SITES=	CHEESESHOP
+MASTER_SITES=	PYPI
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
 
 MAINTAINER=	sunpoet@FreeBSD.org
 COMMENT=	Summarize geospatial raster datasets based on vector geometries
+WWW=		https://github.com/perrygeo/python-rasterstats
 
 LICENSE=	BSD3CLAUSE
 LICENSE_FILE=	${WRKSRC}/LICENSE.txt
@@ -20,7 +19,7 @@ RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}affine>=0<3.0:math/py-affine@${PY_FLAVOR} \
 		${PYTHON_PKGNAMEPREFIX}Shapely>=0:devel/py-shapely@${PY_FLAVOR} \
 		${PYTHON_PKGNAMEPREFIX}simplejson>=0:devel/py-simplejson@${PY_FLAVOR}
 
-USES=		python:3.6+
+USES=		python:3.8+
 USE_PYTHON=	autoplist concurrent distutils
 
 NO_ARCH=	yes

@@ -1,11 +1,12 @@
 PORTNAME=	zipp
 PORTVERSION=	3.4.0
 CATEGORIES=	devel
-MASTER_SITES=	CHEESESHOP
+MASTER_SITES=	PYPI
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
 
 MAINTAINER=	swills@FreeBSD.org
 COMMENT=	Backport of pathlib-compatible object wrapper for zip files
+WWW=		https://github.com/jaraco/zipp
 
 LICENSE=	MIT
 LICENSE_FILE=	${WRKSRC}/LICENSE

@@ -1,9 +1,10 @@
 PORTNAME=	dolibarr
-DISTVERSION=	14.0.3
+DISTVERSION=	16.0.3
 CATEGORIES=	www finance
 
 MAINTAINER=	acm@FreeBSD.org
 COMMENT=	Modern software package to manage your company or foundation
+WWW=		https://www.dolibarr.org/
 
 LICENSE=	GPLv3
 

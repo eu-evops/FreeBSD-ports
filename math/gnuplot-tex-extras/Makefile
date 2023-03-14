@@ -6,10 +6,11 @@ PKGNAMESUFFIX=	-tex-extras
 
 MAINTAINER=	glewis@FreeBSD.org
 COMMENT=	Extra files for Gnuplot TeX support
+WWW=		http://www.gnuplot.info/
 
 RUN_DEPENDS=	gnuplot:math/gnuplot
 
-USES=		cpe
+USES=		cpe tex
 USE_TEX=	texmf
 NO_BUILD=	yes
 PLIST_FILES=	${TEX_FILES:S,^,${TEX_DIR}/,}

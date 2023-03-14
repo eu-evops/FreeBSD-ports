@@ -1,5 +1,3 @@
-# Created by: gahr
-
 PORTNAME=	gervill
 PORTVERSION=	1.0
 CATEGORIES=	audio java
@@ -7,9 +5,13 @@ MASTER_SITES=	SF/rasmusdsp/${PORTNAME}/Gervill%20${PORTVERSION}
 
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Generic sound synthesizer for Java
+WWW=		https://java.net/projects/gervill/pages/Home
 
 LICENSE=	GPLv2 # only
 LICENSE_FILE=	${WRKSRC}/LICENSE
+
+DEPRECATED=	Integrated as of JDK6
+EXPIRATION_DATE=2023-03-31
 
 BROKEN_armv6=		fails to package: find: *: No such file or directory
 BROKEN_armv7=		fails to package: find: *: No such file or directory

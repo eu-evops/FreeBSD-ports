@@ -1,13 +1,13 @@
-# Created by: ijliao
-
 PORTNAME=	matplotlib
-PORTVERSION=	3.4.1
+PORTVERSION=	3.4.3
+PORTREVISION=	5
 CATEGORIES=	math python
-MASTER_SITES=	CHEESESHOP
+MASTER_SITES=	PYPI
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
 
 MAINTAINER=	mainland@apeiron.net
 COMMENT=	Plotting library uses a syntax familiar to MATLAB users
+WWW=		https://matplotlib.org/
 
 LICENSE=	PSFL
 
@@ -16,7 +16,7 @@ BUILD_DEPENDS=	${PYNUMPY} \
 		${PYTHON_PKGNAMEPREFIX}pyparsing>=0:devel/py-pyparsing@${PY_FLAVOR} \
 		${PYTHON_PKGNAMEPREFIX}certifi>=0.10:security/py-certifi@${PY_FLAVOR}
 LIB_DEPENDS=	libfreetype.so:print/freetype2 \
-		libqhull.so:math/qhull \
+		libqhull_r.so:math/qhull \
 		libpng.so:graphics/png \
 		libfontconfig.so:x11-fonts/fontconfig
 RUN_DEPENDS=	${PYNUMPY} \
@@ -46,7 +46,7 @@ QT5AGGBACKEND_DESC=	Qt5Agg backend support
 TKAGGBACKEND_DESC=	TKAgg backend support
 
 QT5AGGBACKEND_USES=	display pyqt:5
-QT5AGGBACKEND_USE=	PYQT=sip,widgets
+QT5AGGBACKEND_USE=	PYQT=pyqt5,sip
 QT5AGGBACKEND_VARS=	QT5AGG_BACKEND=True
 QT5AGGBACKEND_VARS_OFF=	QT5AGG_BACKEND=False
 TKAGGBACKEND_BUILD_DEPENDS=	${PYTHON_PKGNAMEPREFIX}tkinter>0:x11-toolkits/py-tkinter@${PY_FLAVOR}

@@ -1,14 +1,13 @@
-# Created by: Martin Matuska <mm@FreeBSD.org>
-
 PORTNAME=	ffmpeg
-PORTVERSION=	4.4.1
-PORTREVISION=	3
+PORTVERSION=	4.4.3
+PORTREVISION=	5
 PORTEPOCH=	1
 CATEGORIES=	multimedia audio net
 MASTER_SITES=	https://ffmpeg.org/releases/
 
 MAINTAINER=	multimedia@FreeBSD.org
 COMMENT=	Realtime audio/video encoder/converter and streaming server
+WWW=		https://ffmpeg.org/
 
 LICENSE=	GPLv2+ LGPL21+
 LICENSE_COMB=	multi
@@ -19,8 +18,6 @@ BUILD_DEPENDS_amd64=	nasm:devel/nasm
 BUILD_DEPENDS_armv6=	as:devel/binutils
 BUILD_DEPENDS_armv7=	as:devel/binutils
 BUILD_DEPENDS_i386=	nasm:devel/nasm
-BUILD_DEPENDS_powerpc64=as:devel/binutils
-BUILD_DEPENDS_powerpc=	as:devel/binutils
 
 HAS_CONFIGURE=	yes
 CONFIGURE_LOG=	ffbuild/config.log
@@ -38,25 +35,26 @@ OPTIONS_DEFINE=	ALSA AMR_NB AMR_WB AOM ARIBB24 ASM ASS BS2B CACA CDIO \
 		CODEC2 DAV1D DAVS2 DC1394 DEBUG DOCS DRM FDK_AAC FLITE \
 		FONTCONFIG FREETYPE FREI0R FRIBIDI GLSLANG GME GSM ICONV ILBC \
 		JACK KLVANC KVAZAAR LADSPA LAME LENSFUN LIBBLURAY LIBRSVG2 \
-		LIBXML2 LTO LV2 MFX MODPLUG MYSOFA OPENAL OPENCL OPENGL \
+		LIBXML2 LTO LV2 MODPLUG MYSOFA NETWORK NVENC OPENAL OPENCL OPENGL \
 		OPENH264 OPENJPEG OPENMPT OPENVINO OPTIMIZED_CFLAGS OPUS POCKETSPHINX \
 		PULSEAUDIO RAV1E RABBITMQ RIST RTCPU RUBBERBAND SDL SMB SNAPPY \
 		SNDIO SOXR SPEEX SRT SSH SVTAV1 SVTHEVC SVTVP9 TENSORFLOW \
 		TESSERACT THEORA TWOLAME UAVS3D V4L VAAPI VAPOURSYNTH VDPAU VIDSTAB \
 		VMAF VO_AMRWBENC VORBIS VPX VULKAN WEBP X264 X265 \
 		XAVS2 XCB XVID XVIDEO ZIMG ZMQ ZVBI
+# intel-media-sdk only for i386/amd64
+OPTIONS_DEFINE_amd64=	MFX
+OPTIONS_DEFINE_i386=	MFX
 
 OPTIONS_DEFAULT=	AOM ASM ASS DAV1D DRM FONTCONFIG FREETYPE FREI0R GMP \
-			GNUTLS ICONV LAME LIBXML2 OPTIMIZED_CFLAGS OPUS RTCPU \
-			THEORA V4L VAAPI VDPAU VMAF VORBIS VPX X264 X265 XCB XVID
+			GNUTLS ICONV LAME LIBXML2 NETWORK OPTIMIZED_CFLAGS OPUS \
+			RTCPU SVTAV1 V4L VAAPI VDPAU VMAF VORBIS VPX WEBP X264 \
+			X265 XCB
+OPTIONS_DEFAULT_amd64=	NVENC
+OPTIONS_DEFAULT_i386=	NVENC
 
 # i386 is too register-starved for LTO (PR257124)
 OPTIONS_EXCLUDE_i386=	LTO
-
-.if !exists(${.CURDIR:H:H}/multimedia/aribb24)
-# https://git.ffmpeg.org/gitweb/ffmpeg.git/commitdiff/100bfac6d6ec
-OPTIONS_EXCLUDE+=	ARIBB24
-.endif
 
 .if !exists(${.CURDIR:H:H}/multimedia/davs2)
 # https://git.ffmpeg.org/gitweb/ffmpeg.git/commitdiff/5985a1bf7233
@@ -81,11 +79,6 @@ OPTIONS_EXCLUDE+=	KLVANC
 .if !exists(${.CURDIR:H:H}/science/openvino)
 # https://git.ffmpeg.org/gitweb/ffmpeg.git/commitdiff/ff37ebaf30e6
 OPTIONS_EXCLUDE+=	OPENVINO
-.endif
-
-.if !exists(${.CURDIR:H:H}/science/tensorflow)
-# https://git.ffmpeg.org/gitweb/ffmpeg.git/commitdiff/d8c0bbb0aa4
-OPTIONS_EXCLUDE+=	TENSORFLOW
 .endif
 
 OPTIONS_RADIO=	RTMP SSL
@@ -116,7 +109,9 @@ LICENSE_DESC=	Licensing options
 LV2_DESC=	LV2 audio filtering
 MFX_DESC=	Intel MediaSDK (aka Quick Sync Video)
 MYSOFA_DESC=	SOFAlizer binaural filter
+NETWORK_DESC=	Networking support
 NONFREE_DESC=	Allow use of nonfree code
+NVENC_DESC=	NVIDIA decoder/encoder with CUDA support
 OPENMPT_DESC=	Decoding tracked files via libopenmpt
 OPENH264_DESC=	H.264 video codec support via OpenH264
 OPENVINO_DESC=	OpenVINO as a DNN module backend for DNN based filters like dnn_processing
@@ -134,6 +129,7 @@ SVTVP9_DESC=	VP9 encoding via SVT-VP9
 LIBRTMP_DESC=	${RTMP_DESC} via librtmp
 TENSORFLOW_DESC=TensorFlow as a DNN module backend for DNN based filters like sr
 TESSERACT_DESC=	Optical Character Recognition via Tesseract
+THEORA_DESC=	Encoding support for theora via libtheora
 UAVS3D_DESC=	AVS3 decoding via libuavs3d
 VAPOURSYNTH_DESC=	VapourSynth demuxer
 VIDSTAB_DESC=	Video stabilization filter
@@ -141,6 +137,7 @@ VMAF_DESC=	VMAF filter via libvmaf
 VULKAN_DESC=	Vulkan filters
 XAVS2_DESC=	AVS2 encoding via libxavs2
 XCB_DESC=	X11 grabbing using XCB
+XVID_DESC=	Encoding support for MPEG-4 ASP via libxvid
 ZIMG_DESC=	"z" library video scaling filter
 ZMQ_DESC=	Message passing via libzmq${ZMQ_VERSION}
 ZVBI_DESC=	Teletext support via libzvbi
@@ -350,6 +347,13 @@ MODPLUG_CONFIGURE_ENABLE=	libmodplug
 MYSOFA_LIB_DEPENDS=	libmysofa.so:audio/libmysofa
 MYSOFA_CONFIGURE_ENABLE=	libmysofa
 
+# network
+NETWORK_CONFIGURE_ENABLE=	network
+
+# nvenc
+NVENC_BUILD_DEPENDS=	${LOCALBASE}/include/ffnvcodec/nvEncodeAPI.h:multimedia/ffnvcodec-headers
+NVENC_CONFIGURE_ENABLE=	nvenc
+
 # OpenAL
 OPENAL_LIB_DEPENDS=	libopenal.so:audio/openal-soft
 OPENAL_CONFIGURE_ENABLE=	openal
@@ -482,7 +486,7 @@ SVTVP9_PATCHFILES=	master-0001-Add-ability-for-ffmpeg-to-run-svt-vp9.patch:-p1:s
 .endif
 
 # tensorflow
-TENSORFLOW_LIB_DEPENDS=	libtensorflow.so:science/tensorflow
+TENSORFLOW_LIB_DEPENDS=	libtensorflow.so:science/py-tensorflow
 TENSORFLOW_CONFIGURE_ENABLE=	libtensorflow
 
 # tesseract

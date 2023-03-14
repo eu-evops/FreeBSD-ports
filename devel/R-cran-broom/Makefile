@@ -1,12 +1,11 @@
-# Created by: TAKATSU Tomonari <tota@FreeBSD.org>
-
 PORTNAME=	broom
-DISTVERSION=	0.7.10
+DISTVERSION=	1.0.1
 CATEGORIES=	devel
 DISTNAME=	${PORTNAME}_${DISTVERSION}
 
 MAINTAINER=	tota@FreeBSD.org
 COMMENT=	Convert Statistical Analysis Objects into Tidy Data Frames
+WWW=		https://cran.r-project.org/web/packages/broom/
 
 LICENSE=	MIT
 

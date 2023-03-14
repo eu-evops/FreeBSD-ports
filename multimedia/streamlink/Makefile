@@ -1,11 +1,12 @@
 PORTNAME=	streamlink
 PORTVERSION=	2.1.2
 CATEGORIES=	multimedia
-MASTER_SITES=	CHEESESHOP
+MASTER_SITES=	PYPI
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
 
 MAINTAINER=	takefu@airport.fm
 COMMENT=	Command-line utility that pipes video streams
+WWW=		https://streamlink.github.io/
 
 LICENSE=	BSD2CLAUSE
 LICENSE_FILE=	${WRKSRC}/LICENSE

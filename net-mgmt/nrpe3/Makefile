@@ -1,5 +1,3 @@
-# Created by: Paul Dlug<paul@nerdlabs.com>
-
 PORTNAME=	nrpe
 PORTVERSION=	3.2.1
 DISTVERSIONPREFIX=	nrpe-
@@ -7,8 +5,9 @@ PORTREVISION?=	0
 CATEGORIES=	net-mgmt
 PKGNAMESUFFIX=	3
 
-MAINTAINER=	zeising@FreeBSD.org
+MAINTAINER=	ports@FreeBSD.org
 COMMENT?=	Nagios Remote Plugin Executor
+WWW=		https://www.nagios.org/
 
 LICENSE=	GPLv2+
 LICENSE_FILE=	${WRKSRC}/LICENSE.md

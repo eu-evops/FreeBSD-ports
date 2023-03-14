@@ -1,10 +1,11 @@
 PORTNAME=	snakemake
-DISTVERSION=	6.12.1
+DISTVERSION=	6.15.5
 CATEGORIES=	misc python
-MASTER_SITES=	CHEESESHOP
+MASTER_SITES=	PYPI
 
 MAINTAINER=	yuri@FreeBSD.org
 COMMENT=	Workflow management system
+WWW=		https://github.com/snakemake/snakemake
 
 LICENSE=	MIT
 

@@ -1,0 +1,16 @@
+--- web-apps/build/package.json.orig	2021-12-12 18:45:10 UTC
++++ web-apps/build/package.json
+@@ -29,8 +29,9 @@
+     "vinyl-fs": "^3.0.3"
+   },
+   "devDependencies": {
+-    "chai": "1.9.1",
+-    "grunt-mocha": "^1.0.0",
+-    "mocha": "^9.2.0"
+-  }
++    "chai": "1.9.1"
++  },
++  "scripts": {
++    "postinstall": "patch-package"
++   }
+ }

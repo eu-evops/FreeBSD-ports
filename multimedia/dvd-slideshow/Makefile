@@ -1,5 +1,3 @@
-# Created by: Phil Oleson <oz@nixil.net>
-
 PORTNAME=	dvd-slideshow
 PORTVERSION=	0.8.4
 DISTVERSIONSUFFIX=	-2
@@ -12,9 +10,9 @@ THEMEVERSION=	0.8.4
 
 MAINTAINER=	oz@nixil.net
 COMMENT=	Script to create slideshow-style DVD with some simple menus
+WWW=		http://dvd-slideshow.sourceforge.net/
 
 RUN_DEPENDS=	bash:shells/bash \
-		identify:graphics/ImageMagick6 \
 		mpeg2enc:multimedia/mjpegtools \
 		ffmpeg:multimedia/ffmpeg \
 		sox:audio/sox \
@@ -23,6 +21,8 @@ RUN_DEPENDS=	bash:shells/bash \
 		flvtool2:multimedia/rubygem-flvtool2 \
 		${LOCALBASE}/share/fonts/urwfonts-ttf/README:x11-fonts/urwfonts-ttf \
 		cdrecord:sysutils/cdrtools
+
+USES=		magick:6,run
 
 NO_BUILD=	yes
 DATADIR=	${PREFIX}/share/apps/${PORTNAME}

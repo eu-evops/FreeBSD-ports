@@ -1,5 +1,3 @@
-# Created by: michael johnson <ahze@ahze.net>
-
 PORTNAME=	mkxvcd
 PORTVERSION=	2.0.2
 PORTREVISION=	13
@@ -8,9 +6,13 @@ MASTER_SITES=	SF/kvcd4nix/${PORTNAME}/${PORTNAME}-${PORTVERSION}/
 
 MAINTAINER=	se@FreeBSD.org
 COMMENT=	Makes high quality X/K/S/VCD movies from many formats
+WWW=		http://kvcd4nix.sourceforge.net/
 
 LICENSE=	GPLv2
 LICENSE_FILE=	${WRKSRC}/COPYING
+
+DEPRECATED=	Depends on broken transcode port
+EXPIRATION_DATE=	2023-03-31
 
 RUN_DEPENDS=	mpeg2enc:multimedia/mjpegtools \
 		bash:shells/bash \

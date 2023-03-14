@@ -1,15 +1,14 @@
-# Created by: Pakhom Golynga <pg@pakhom.spb.ru>
-
 PORTNAME=	zabbix5
-DISTVERSION=	5.0.17
+DISTVERSION=	5.0.31
 PORTREVISION?=	0
 CATEGORIES=	net-mgmt
 MASTER_SITES=	https://cdn.zabbix.com/zabbix/sources/stable/${DISTVERSION:R}/
 PKGNAMESUFFIX?=	-server
 DISTNAME=	zabbix-${DISTVERSION}
 
-MAINTAINER=	pg@pakhom.spb.ru
+MAINTAINER=	otis@FreeBSD.org
 COMMENT=	Enterprise-class open source distributed monitoring (${PKGNAMESUFFIX:S/^-//}) LTS
+WWW=		https://www.zabbix.com/
 
 LICENSE=	GPLv2+
 LICENSE_FILE=	${WRKSRC}/COPYING
@@ -20,7 +19,6 @@ CONFLICTS_INSTALL=	zabbix[0-9][0-9]${PKGNAMESUFFIX} zabbix[0-46-9]${PKGNAMESUFFI
 
 ZABBIX_BUILD=	${PKGNAMESUFFIX:S/^-//}
 
-.if ${ZABBIX_BUILD} != "frontend" # frontend only needs the version/distribution settings
 .if ${ZABBIX_BUILD} != "agent"
 CONFIGURE_ARGS+=	--with-libevent=${LOCALBASE} --cache-file=${WRKSRC}/config.cache
 LIB_DEPENDS+=	libevent.so:devel/libevent
@@ -63,13 +61,15 @@ LIB_DEPENDS+=	libnetsnmp.so:net-mgmt/net-snmp
 
 CPPFLAGS+=	-I${LOCALBASE}/include
 
+PORTSCOUT=	limit:^5\.0\.
+
 SUB_FILES=	pkg-message
 
 CONFIGURE_ARGS+=	--with-net-snmp
 
 OPTIONS_DEFINE=		IPV6 FPING CURL LDAP IPMI SSH NMAP LIBXML2 UNIXODBC
 
-OPTIONS_DEFAULT=	FPING CURL UNIXODBC MYSQL OPENSSL
+OPTIONS_DEFAULT=	IPV6 FPING CURL LIBXML2 MYSQL OPENSSL UNIXODBC
 OPTIONS_SUB=		yes
 
 FPING_DESC=		Build/install fping for ping checks
@@ -96,7 +96,7 @@ SQLITE_USES+=		sqlite:3
 ORACLE_CONFIGURE_WITH=	oracle
 
 LDAP_CONFIGURE_WITH=	ldap
-LDAP_USE=		OPENLDAP=yes
+LDAP_USES=		ldap
 
 IPMI_CONFIGURE_WITH=	openipmi
 IPMI_LIB_DEPENDS=	libOpenIPMI.so:sysutils/openipmi
@@ -213,10 +213,6 @@ post-install:
 .if ${ZABBIX_BUILD} == "proxy"
 	${MV} ${STAGEDIR}${LOCALBASE}/bin/zabbix_js \
 		${STAGEDIR}${LOCALBASE}/bin/zabbix_proxy_js
-.endif
-
-.else # frontend
-.include <bsd.port.pre.mk>
 .endif
 
 .include <bsd.port.post.mk>

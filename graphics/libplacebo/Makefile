@@ -1,10 +1,15 @@
 PORTNAME=	libplacebo
 DISTVERSIONPREFIX=	v
-DISTVERSION=	4.157.0
+DISTVERSION=	5.229.2
+PORTREVISION=	1
 CATEGORIES=	graphics
+
+PATCH_SITES=	https://github.com/${GH_ACCOUNT}/${GH_PROJECT}/commit/
+PATCHFILES+=	baec0e53c959.patch:-p1 # https://code.videolan.org/videolan/libplacebo/-/issues/249
 
 MAINTAINER=	jbeich@FreeBSD.org
 COMMENT=	Reusable library for GPU-accelerated video/image rendering
+WWW=		https://code.videolan.org/videolan/libplacebo
 
 LICENSE=	LGPL21+
 LICENSE_FILE=	${WRKSRC}/LICENSE
@@ -15,10 +20,11 @@ USE_LDCONFIG=	yes
 GH_ACCOUNT=	haasn
 MESON_ARGS=	-Ddemos=false
 
-OPTIONS_DEFINE=	LCMS2 OPENGL TEST VULKAN
-OPTIONS_DEFAULT=LCMS2 OPENGL SHADERC
+OPTIONS_DEFINE=	LCMS2 LIBUNWIND OPENGL TEST VULKAN
+OPTIONS_DEFAULT=LCMS2 LIBUNWIND OPENGL SHADERC
 OPTIONS_SINGLE=	VULKAN
 OPTIONS_SINGLE_VULKAN=	GLSLANG SHADERC
+OPTIONS_EXCLUDE+=	${ARCH:Naarch64:Namd64:Narmv[67]:Ni386:Npowerpc64:Npowerpc64le:Nx86_64:C/.+/LIBUNWIND/}
 OPTIONS_SUB=	yes
 
 GLSLANG_DESC=		glslang SPIR-V compiler
@@ -29,7 +35,11 @@ GLSLANG_IMPLIES=	VULKAN
 LCMS2_LIB_DEPENDS=	liblcms2.so:graphics/lcms2
 LCMS2_MESON_ENABLED=		lcms
 
-OPENGL_LIB_DEPENDS=	libepoxy.so:graphics/libepoxy
+LIBUNWIND_DESC=		Use libunwind for stacktraces
+LIBUNWIND_LIB_DEPENDS=	libunwind.so:devel/libunwind
+LIBUNWIND_MESON_ENABLED=	unwind
+
+OPENGL_GH_TUPLE=	Dav1dde:glad:v2.0.1:glad/3rdparty/glad
 OPENGL_MESON_ENABLED=	opengl
 
 SHADERC_DESC=		libshaderc SPIR-V compiler
@@ -41,7 +51,7 @@ TEST_MESON_TRUE=	tests
 
 VULKAN_DESC=		Vulkan-based renderer
 VULKAN_BUILD_DEPENDS=	${LOCALBASE}/include/vulkan/vulkan.h:graphics/vulkan-headers \
-			${PYTHON_PKGNAMEPREFIX}mako>0:textproc/py-mako@${PY_FLAVOR}
+			${PYTHON_PKGNAMEPREFIX}Jinja2>0:devel/py-Jinja2@${PY_FLAVOR}
 VULKAN_LIB_DEPENDS=	libvulkan.so:graphics/vulkan-loader
 VULKAN_MESON_ENABLED=	vulkan
 

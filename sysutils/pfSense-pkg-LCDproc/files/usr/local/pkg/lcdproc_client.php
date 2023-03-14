@@ -3,7 +3,7 @@
  * lcdproc_client.php
  *
  * part of pfSense (https://www.pfsense.org/)
- * Copyright (c) 2016-2022 Rubicon Communications, LLC (Netgate)
+ * Copyright (c) 2016-2023 Rubicon Communications, LLC (Netgate)
  * Copyright (c) 2016 Treer
  * Copyright (c) 2011 Michele Di Maria
  * Copyright (c) 2007-2009 Seth Mos <seth.mos@dds.nl>
@@ -1254,7 +1254,7 @@ function loop_status($lcd) {
 					$title = ($lcdpanel_width >= 20) ? "Interface bps IN/OUT" : "Intf. bps IN/OUT";
 					$lcd_cmds[] = "widget_set $name title_wdgt 1 1 \"{$title}\"";
 
-					for($i = 0; $i < ($lcdpanel_height - 1) && i < count($interfaceTrafficStrings); $i++) {
+					for($i = 0; $i < ($lcdpanel_height - 1) && $i < count($interfaceTrafficStrings); $i++) {
 
 						$lcd_cmds[] = "widget_set $name text_wdgt{$i} 1 " . ($i + 2) . " \"{$interfaceTrafficStrings[$i]}\"";
 					}
@@ -1267,7 +1267,7 @@ function loop_status($lcd) {
 					$title = ($lcdpanel_width >= 20) ? "Total today   IN/OUT" : "Today   IN / OUT";
 					$lcd_cmds[] = "widget_set $name title_wdgt 1 1 \"{$title}\"";
 
-					for($i = 0; $i < ($lcdpanel_height - 1) && i < count($interfaceTrafficStrings); $i++) {
+					for($i = 0; $i < ($lcdpanel_height - 1) && $i < count($interfaceTrafficStrings); $i++) {
 
 						$lcd_cmds[] = "widget_set $name text_wdgt{$i} 1 " . ($i + 2) . " \"{$interfaceTrafficStrings[$i]}\"";
 					}
@@ -1280,7 +1280,7 @@ function loop_status($lcd) {
 					$title = ($lcdpanel_width >= 20) ? "Total         IN/OUT" : "Total   IN / OUT";
 					$lcd_cmds[] = "widget_set $name title_wdgt 1 1 \"{$title}\"";
 
-					for($i = 0; $i < ($lcdpanel_height - 1) && i < count($interfaceTrafficStrings); $i++) {
+					for($i = 0; $i < ($lcdpanel_height - 1) && $i < count($interfaceTrafficStrings); $i++) {
 
 						$lcd_cmds[] = "widget_set $name text_wdgt{$i} 1 " . ($i + 2) . " \"{$interfaceTrafficStrings[$i]}\"";
 					}
@@ -1392,11 +1392,11 @@ while ($lcdproc_connect_errors <= $lcdproc_max_connect_errors) {
 	lcdproc_warn("Start client procedure. Error counter: ($lcdproc_connect_errors)");
 	sleep(1);
 	$lcd = fsockopen(LCDPROC_HOST, LCDPROC_PORT, $errno, $errstr, 10);
-	stream_set_timeout($lcd, 0 , 25000); // Sets the socket timeout as 25ms
 	if (!$lcd) {
 		lcdproc_warn("Failed to connect to LCDd process $errstr ($errno)");
 		$lcdproc_connect_errors++;
 	} else {
+		stream_set_timeout($lcd, 0 , 25000); // Sets the socket timeout as 25ms
 		/* Allow the script to run forever (0) */
 		set_time_limit(0);
 		build_interface($lcd);

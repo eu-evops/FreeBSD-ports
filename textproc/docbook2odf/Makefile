@@ -1,5 +1,3 @@
-# Created by: Rusmir Dusko <nemysis@FreeBSD.org>
-
 PORTNAME=	docbook2odf
 PORTVERSION=	0.244
 PORTREVISION=	1
@@ -8,16 +6,16 @@ MASTER_SITES=	http://open.comsultia.com/docbook2odf/dwn/
 
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Convert docbook document to Oasis Open Document
+WWW=		http://open.comsultia.com/docbook2odf/
 
 LICENSE=	GPLv2
 
 LIB_DEPENDS=	libsablot.so:textproc/sablotron \
 		libxslt.so:textproc/libxslt
-RUN_DEPENDS=	convert:graphics/ImageMagick6 \
-		zip:archivers/zip \
+RUN_DEPENDS=	zip:archivers/zip \
 		p5-Archive-Zip>=0:archivers/p5-Archive-Zip
 
-USES=		desktop-file-utils perl5 shebangfix
+USES=		desktop-file-utils magick:6,run perl5 shebangfix
 SHEBANG_FILES=	utils/maketests utils/${PORTNAME}
 USE_PERL5=	run
 NO_BUILD=	yes

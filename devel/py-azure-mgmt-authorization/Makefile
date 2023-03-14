@@ -1,11 +1,12 @@
 PORTNAME=	azure-mgmt-authorization
 PORTVERSION=	0.61.0
 CATEGORIES=	devel python
-MASTER_SITES=	CHEESESHOP
+MASTER_SITES=	PYPI
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
 
 MAINTAINER=	dbaio@FreeBSD.org
 COMMENT=	Microsoft Azure Authorization Management Client Library for Python
+WWW=		https://pypi.org/project/azure-mgmt-authorization/
 
 LICENSE=	MIT
 

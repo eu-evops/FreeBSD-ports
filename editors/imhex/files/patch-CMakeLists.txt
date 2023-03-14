@@ -1,0 +1,11 @@
+--- CMakeLists.txt.orig	2023-02-15 08:39:23 UTC
++++ CMakeLists.txt
+@@ -28,8 +28,6 @@ project(imhex
+ 
+ # Make sure project is configured correctly
+ setDefaultBuiltTypeIfUnset()
+-detectBadClone()
+-verifyCompiler()
+ 
+ # List plugin names here. Project name must match folder name
+ set(PLUGINS

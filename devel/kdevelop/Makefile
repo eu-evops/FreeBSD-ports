@@ -2,56 +2,52 @@
 #  devel/kdev-php
 #  devel/kdev-python
 PORTNAME=	kdevelop
-DISTVERSION=	5.6.2
-PORTREVISION=	1
-CATEGORIES=	devel kde
-MASTER_SITES=	KDE/stable/kdevelop/${DISTVERSION}/src
-DIST_SUBDIR=	KDE/kdevelop
+DISTVERSION=	${KDE_APPLICATIONS_VERSION}
+CATEGORIES=	devel kde kde-applications
 
 MAINTAINER=	kde@FreeBSD.org
 COMMENT=	Plugin extensible IDE for C/C++ and other languages
+WWW=		https://www.kdevelop.org/
 
 LICENSE=	GPLv2+ LGPL20+
 LICENSE_COMB=	multi
-LICENSE_FILE_GPLv2+ =	${WRKSRC}/COPYING
-LICENSE_FILE_LGPL20+ =	${WRKSRC}/COPYING.LIB
 
-BUILD_DEPENDS=	kdev-pg-qt:devel/kdevelop-pg-qt \
-		llvm${LLVM_DEFAULT}>0:devel/llvm${LLVM_DEFAULT}
+BUILD_DEPENDS=	kdev-pg-qt:devel/kdevelop-pg-qt
 LIB_DEPENDS=	libKasten4Controllers.so:devel/okteta \
 		libapr-1.so:devel/apr1 \
 		libsvn_client-1.so:devel/subversion \
 		libboost_thread.so:devel/boost-libs \
 		libkomparediff2.so:textproc/libkomparediff2
-RUN_DEPENDS=	gmake:devel/gmake \
-		llvm${LLVM_DEFAULT}>0:devel/llvm${LLVM_DEFAULT}
+RUN_DEPENDS=	gmake:devel/gmake
 
-USES=		cmake compiler:c++11-lib desktop-file-utils \
-		gettext grantlee:5 kde:5 qt:5 shared-mime-info shebangfix tar:xz
+USES=		cmake compiler:c++11-lib desktop-file-utils gettext grantlee:5 \
+		kde:5 llvm:build,run qt:5 shared-mime-info shebangfix tar:xz xorg
 USE_KDE=	archive attica auth bookmarks codecs completion config configwidgets \
 		coreaddons crash guiaddons emoticons i18n iconthemes init \
 		itemmodels itemviews jobwidgets kcmutils kdeclarative \
 		kio libksysguard newstuff notifications \
 		notifyconfig package parts plasma-framework purpose \
-		runner service solid sonnet texteditor textwidgets threadweaver \
+		runner service solid sonnet syntaxhighlighting texteditor \
+		textwidgets threadweaver \
 		widgetsaddons windowsystem xmlgui
-USE_QT=		concurrent core dbus declarative gui help network \
-		script sql widgets xml buildtools_build qmake_build
+USE_QT=		concurrent core dbus declarative gui help network printsupport \
+		script sql widgets xml buildtools:build qmake:build
+USE_XORG=	x11
 SHEBANG_FILES=	kdevplatform/util/kdevplatform_shell_environment.sh \
 		kdevplatform/util/.zshrc
-# Most ports have ecm_build, testlib_build, but because this is an
+# Most ports have ecm:build, testlib:build, but because this is an
 # IDE, which **probably** is used for Qt / KDE development (also
 # other things, but let's guess a target market), pull in some
 # additional development things that are otherwise build-dep-only.
 USE_KDE+=	ecm
 USE_QT+=	testlib
 
-CMAKE_ARGS=	-DCMAKE_POLICY_DEFAULT_CMP0074=NEW -DLLVM_ROOT=${LOCALBASE}/llvm${LLVM_DEFAULT}
+CMAKE_ARGS=	-DCMAKE_POLICY_DEFAULT_CMP0074=NEW -DLLVM_ROOT=${LLVM_PREFIX}
 
 # Versioning values, to reduce plist churn
-PLATFORM_VER=	34
-SO_VER=		56
-PLIST_SUB+=	PLATFORM_VER=${PLATFORM_VER} SO_VER=${SO_VER} SO_VER_LONG=${DISTVERSION}
+SO_VER=		510
+SO_VER_LONG=	5.10.221203
+PLIST_SUB+=	SO_VER=${SO_VER} SO_VER_LONG=${SO_VER_LONG}
 
 OPTIONS_DEFINE=	WEBENGINE
 WEBENGINE_DESC=	Use WebEngine as help reader
@@ -63,12 +59,5 @@ WEBENGINE_CMAKE_OFF=	-DCMAKE_DISABLE_FIND_PACKAGE_Qt5WebEngineWidgets:BOOL=TRUE
 SHEBANG_LANG=	zsh
 zsh_OLD_CMD=	/bin/zsh
 zsh_CMD=	${LOCALBASE}/bin/zsh
-
-.include <bsd.port.options.mk>
-
-.if ${PORT_OPTIONS:MWEBENGINE}
-DEPRECATED=	Uses EOL Pyton 2.7 via www/qt5-webengine
-EXPIRATION_DATE=2021-06-23
-.endif
 
 .include <bsd.port.mk>

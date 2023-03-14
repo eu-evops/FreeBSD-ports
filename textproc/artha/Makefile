@@ -1,13 +1,12 @@
-# Created by: Zhihao Yuan <lichray@gmail.com>
-
 PORTNAME=	artha
 PORTVERSION=	1.0.3
-PORTREVISION=	2
+PORTREVISION=	3
 CATEGORIES=	textproc
 MASTER_SITES=	SF
 
 MAINTAINER=	lichray@gmail.com
 COMMENT=	Free cross-platform English thesaurus
+WWW=		http://artha.sourceforge.net/wiki/index.php/Home
 
 LICENSE=	GPLv2
 

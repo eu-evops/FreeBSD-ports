@@ -1,10 +1,10 @@
 PORTNAME=	neomutt
-PORTVERSION=	20211029
-PORTREVISION=	1
+PORTVERSION=	20220429
 CATEGORIES=	mail
 
 MAINTAINER=	bapt@FreeBSD.org
 COMMENT=	Bringing together all the Mutt Code
+WWW=		https://neomutt.org
 
 LICENSE=	GPLv2
 LICENSE_FILE=	${WRKSRC}/LICENSE.md
@@ -47,6 +47,7 @@ CONFIGURE_ARGS=	--with-ssl="${OPENSSLBASE}" \
 		--pcre2 \
 		--mandir=${PREFIX}/man \
 		${ICONV_CONFIGURE_ARGS}
+CONFIGURE_ENV=	CC_FOR_BUILD="${CC}"
 
 # Header cache
 BDB_CONFIGURE_ON=		--bdb

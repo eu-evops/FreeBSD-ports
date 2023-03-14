@@ -1,3 +1,3 @@
-TIMESTAMP = 1588524861
-SHA256 (mongoengine-0.20.0.tar.gz) = db9e5d587e5d74e52851e0e4a53fd744725bfa9918ae6070139f5ba9c62c6edf
-SIZE (mongoengine-0.20.0.tar.gz) = 158735
+TIMESTAMP = 1675192015
+SHA256 (mongoengine-0.26.0.tar.gz) = 3f284bdcbe8d1a3a9b8ab7d3c3ed672d10b8fd2e545447cd1d75e40d6e978332
+SIZE (mongoengine-0.26.0.tar.gz) = 166790

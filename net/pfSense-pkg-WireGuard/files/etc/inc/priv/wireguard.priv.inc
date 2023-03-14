@@ -3,7 +3,7 @@
  * wireguard.priv.inc
  *
  * part of pfSense (https://www.pfsense.org)
- * Copyright (c) 2021-2022 Rubicon Communications, LLC (Netgate)
+ * Copyright (c) 2021-2023 Rubicon Communications, LLC (Netgate)
  * Copyright (c) 2021 R. Christian McDonald
  * All rights reserved.
  *
@@ -27,10 +27,10 @@ $priv_list['page-vpn-wireguard']['name'] = "WebCfg - VPN: WireGuard";
 $priv_list['page-vpn-wireguard']['descr'] = "Allow access to the 'VPN: WireGuard' page.";
 $priv_list['page-vpn-wireguard']['match'] = array();
 
-$priv_list['page-vpn-wireguard']['match'][] = "wg/vpn_wg_tunnels.php";
-$priv_list['page-vpn-wireguard']['match'][] = "wg/vpn_wg_tunnels_edit.php";
-$priv_list['page-vpn-wireguard']['match'][] = "wg/vpn_wg_peers.php";
-$priv_list['page-vpn-wireguard']['match'][] = "wg/vpn_wg_peers_edit.php";
+$priv_list['page-vpn-wireguard']['match'][] = "wg/vpn_wg_tunnels.php*";
+$priv_list['page-vpn-wireguard']['match'][] = "wg/vpn_wg_tunnels_edit.php*";
+$priv_list['page-vpn-wireguard']['match'][] = "wg/vpn_wg_peers.php*";
+$priv_list['page-vpn-wireguard']['match'][] = "wg/vpn_wg_peers_edit.php*";
 $priv_list['page-vpn-wireguard']['match'][] = "wg/vpn_wg_settings.php";
 
 $priv_list['page-status-wireguard'] = array();

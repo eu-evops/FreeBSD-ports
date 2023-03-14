@@ -2,11 +2,12 @@ PORTNAME=	fbprophet
 PORTVERSION=	0.5
 PORTREVISION=	1
 CATEGORIES=	devel python
-MASTER_SITES=	CHEESESHOP
+MASTER_SITES=	PYPI
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
 
 MAINTAINER=	gmm@tutanota.com
 COMMENT=	Forecasting time series data based on an additive model
+WWW=		https://github.com/facebook/prophet
 
 LICENSE=	MIT
 LICENSE_FILE=	${WRKSRC}/LICENSE

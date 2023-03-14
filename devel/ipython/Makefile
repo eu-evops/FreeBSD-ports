@@ -1,13 +1,12 @@
-# Created by: Dryice Liu
-
 PORTNAME=	ipython
-PORTVERSION=	7.29.0
+PORTVERSION=	7.34.0
 CATEGORIES=	devel python
-MASTER_SITES=	CHEESESHOP
+MASTER_SITES=	PYPI
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
 
 MAINTAINER=	python@FreeBSD.org
 COMMENT=	Enhanced Interactive Python shell
+WWW=		https://ipython.org/
 
 LICENSE=	BSD3CLAUSE
 LICENSE_FILE=	${WRKSRC}/COPYING.rst
@@ -25,6 +24,8 @@ RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}backcall>=0:devel/py-backcall@${PY_FLAVOR} \
 
 USES=		cpe python:3.7+
 USE_PYTHON=	autoplist distutils
+
+CONFLICTS_INSTALL=	py*-ipython5
 
 NO_ARCH=	yes
 

@@ -6,6 +6,7 @@ MASTER_SITES=	RG
 
 MAINTAINER=	ruby@FreeBSD.org
 COMMENT=	OAuth2 provider for Rails and Grape
+WWW=		https://github.com/doorkeeper-gem/doorkeeper
 
 LICENSE=	MIT
 LICENSE_FILE=	${WRKSRC}/MIT-LICENSE
@@ -13,7 +14,6 @@ LICENSE_FILE=	${WRKSRC}/MIT-LICENSE
 RUN_DEPENDS=	rubygem-railties61>=5:www/rubygem-railties61
 
 USES=		cpe gem
-USE_RUBY=	yes
 
 NO_ARCH=	yes
 

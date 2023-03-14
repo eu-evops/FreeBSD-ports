@@ -1,12 +1,13 @@
 PORTNAME=	pre-commit
 PORTVERSION=	1.21.0
 CATEGORIES=	devel python
-MASTER_SITES=	CHEESESHOP
+MASTER_SITES=	PYPI
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
 DISTNAME=	pre_commit-${PORTVERSION}
 
 MAINTAINER=	swills@FreeBSD.org
 COMMENT=	Framework for managing and maintaining multi-language pre-commit hooks
+WWW=		https://pre-commit.com/
 
 LICENSE=	MIT
 LICENSE_FILE=	${WRKSRC}/LICENSE

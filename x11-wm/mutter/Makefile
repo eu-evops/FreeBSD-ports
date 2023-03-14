@@ -1,7 +1,5 @@
-# Created by: Pawel Worach <pawel.worach@gmail.com>
-
 PORTNAME=	mutter
-PORTVERSION=	41.1
+PORTVERSION=	42.4
 PORTREVISION=	1
 CATEGORIES=	x11-wm
 MASTER_SITES=	GNOME/sources/${PORTNAME}/${PORTVERSION:C/^([0-9]+)\..*/\1/}
@@ -9,6 +7,7 @@ DIST_SUBDIR=	gnome
 
 MAINTAINER=	gnome@FreeBSD.org
 COMMENT=	Window and compositing manager based on Clutter
+WWW=		https://gitlab.gnome.org/GNOME/mutter
 
 LICENSE=	GPLv2+
 LICENSE_FILE=	${WRKSRC}/COPYING

@@ -1,5 +1,3 @@
-# Created by: Brett Taylor <brett@peloton.physics.montana.edu>
-
 PORTNAME=	splaytk
 PORTVERSION=	2.0
 PORTREVISION=	2
@@ -10,6 +8,9 @@ MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Tk based interface for splay
 
 LICENSE=	GPLv2
+
+DEPRECATED=	Abandonware, no development in 20 years and uses obsolete decoding library
+EXPIRATION_DATE=2023-03-31
 
 RUN_DEPENDS=	splay:audio/splay
 

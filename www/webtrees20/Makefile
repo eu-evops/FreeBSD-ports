@@ -1,12 +1,12 @@
 PORTNAME=	webtrees
-PORTVERSION=	2.0.17
+PORTVERSION=	2.0.25
 CATEGORIES=	www
-MASTER_SITES=	http://github.com/fisharebest/${PORTNAME}/releases/download/${PORTVERSION}/ \
-		https://freebsd.ark-ict.nl/ports/
+MASTER_SITES=	https://github.com/fisharebest/${PORTNAME}/releases/download/${PORTVERSION}/
 PKGNAMESUFFIX=	20
 
-MAINTAINER=	freebsd-ports@misc.ark-ict.nl
+MAINTAINER=	ports@bsdserwis.com
 COMMENT=	Online genealogy viewer (for PHP 7.1-7.4)
+WWW=		https://webtrees.net/
 
 LICENSE=	GPLv3+
 

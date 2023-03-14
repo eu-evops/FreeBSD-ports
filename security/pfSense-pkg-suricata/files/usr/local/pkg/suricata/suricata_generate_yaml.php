@@ -3,11 +3,11 @@
  * suricata_generate_yaml.php
  *
  * part of pfSense (https://www.pfsense.org)
- * Copyright (c) 2006-2022 Rubicon Communications, LLC (Netgate)
- * Copyright (C) 2005 Bill Marquette <bill.marquette@gmail.com>.
- * Copyright (C) 2003-2004 Manuel Kasper <mk@neon1.net>.
- * Copyright (C) 2009 Robert Zelaya Sr. Developer
- * Copyright (C) 2021 Bill Meeks
+ * Copyright (c) 2006-2023 Rubicon Communications, LLC (Netgate)
+ * Copyright (c) 2005 Bill Marquette <bill.marquette@gmail.com>.
+ * Copyright (c) 2003-2004 Manuel Kasper <mk@neon1.net>.
+ * Copyright (c) 2009 Robert Zelaya Sr. Developer
+ * Copyright (c) 2023 Bill Meeks
  * All rights reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -82,16 +82,16 @@ $suricata_servers = array (
 	"sip_servers" => "\$HOME_NET"
 );
 $addr_vars = "";
-	foreach ($suricata_servers as $alias => $avalue) {
-		if (!empty($suricatacfg["def_{$alias}"]) && is_alias($suricatacfg["def_{$alias}"])) {
-			$avalue = trim(filter_expand_alias($suricatacfg["def_{$alias}"]));
-			$avalue = preg_replace('/\s+/', ', ', trim($avalue));
-		}
-		$addr_vars .= "    " . strtoupper($alias) . ": \"{$avalue}\"\n";
+foreach ($suricata_servers as $alias => $avalue) {
+	if (!empty($suricatacfg["def_{$alias}"]) && is_alias($suricatacfg["def_{$alias}"])) {
+		$avalue = trim(filter_expand_alias($suricatacfg["def_{$alias}"]));
+		$avalue = preg_replace('/\s+/', ', ', trim($avalue));
 	}
+	$addr_vars .= "    " . strtoupper($alias) . ": \"{$avalue}\"\n";
+}
 $addr_vars = trim($addr_vars);
-if(is_array($config['system']['ssh']) && isset($config['system']['ssh']['port']))
-        $ssh_port = $config['system']['ssh']['port'];
+if(config_get_path('system/ssh/port'))
+        $ssh_port = config_get_path('system/ssh/port');
 else
         $ssh_port = "22";
 $suricata_ports = array(
@@ -105,13 +105,13 @@ $suricata_ports = array(
 	"sip_ports" => "5060, 5061, 5600"
 );
 $port_vars = "";
-	foreach ($suricata_ports as $alias => $avalue) {
-		if (!empty($suricatacfg["def_{$alias}"]) && is_alias($suricatacfg["def_{$alias}"])) {
-			$avalue = trim(filter_expand_alias($suricatacfg["def_{$alias}"]));
-			$avalue = preg_replace('/\s+/', ', ', trim($avalue));
-		}
-		$port_vars .= "    " . strtoupper($alias) . ": \"{$avalue}\"\n";
+foreach ($suricata_ports as $alias => $avalue) {
+	if (!empty($suricatacfg["def_{$alias}"]) && is_alias($suricatacfg["def_{$alias}"])) {
+		$avalue = trim(filter_expand_alias($suricatacfg["def_{$alias}"]));
+		$avalue = preg_replace('/\s+/', ', ', trim($avalue));
 	}
+	$port_vars .= "    " . strtoupper($alias) . ": \"{$avalue}\"\n";
+}
 $port_vars = trim($port_vars);
 
 // Define a Suppress List (Threshold) if one is configured
@@ -387,15 +387,15 @@ else {
 // EVE log output included information
 $eve_out_types = "";
 
-if (($suricatacfg['eve_log_alerts'] == 'on')) {
+if ($suricatacfg['eve_log_alerts'] == 'on') {
 	$eve_out_types .= "\n        - alert:";
-	$eve_out_types .= "\n            payload: ".($suricatacfg['eve_log_alerts_payload'] == 'on' || $suricatacfg['eve_log_alerts_payload'] == 'only-base64' ?'yes':'no ')."              # enable dumping payload in Base64";
+	$eve_out_types .= "\n            payload: " . (($suricatacfg['eve_log_alerts_payload'] == 'on' || $suricatacfg['eve_log_alerts_payload'] == 'only-base64') ? 'yes':'no ') . "              # enable dumping payload in Base64";
 	$eve_out_types .= "\n            payload-buffer-size: 4kb  # max size of payload buffer to output in eve-log";
-	$eve_out_types .= "\n            payload-printable: ".($suricatacfg['eve_log_alerts_payload'] == 'on' || $suricatacfg['eve_log_alerts_payload'] == 'only-printable' ?'yes':'no ')."    # enable dumping payload in printable (lossy) format";
-	$eve_out_types .= "\n            packet: ".($suricatacfg['eve_log_alerts_packet'] == 'on'?'yes':'no ')."               # enable dumping of packet (without stream segments)";
-	$eve_out_types .= "\n            http-body: ".($suricatacfg['eve_log_alerts_payload'] == 'on'?'yes':'no ' || $suricatacfg['eve_log_alerts_payload'] == 'only-base64' ?'yes':'no ')."            # enable dumping of http body in Base64";
-	$eve_out_types .= "\n            http-body-printable: ".($suricatacfg['eve_log_alerts_payload'] == 'on' || $suricatacfg['eve_log_alerts_payload'] == 'only-printable' ?'yes':'no ')."  # enable dumping of http body in printable format";
-	$eve_out_types .= "\n            metadata: ".($suricatacfg['eve_log_alerts_metadata'] == 'on'?'yes':'no ')."             # enable inclusion of app layer metadata with alert";
+	$eve_out_types .= "\n            payload-printable: " . (($suricatacfg['eve_log_alerts_payload'] == 'on' || $suricatacfg['eve_log_alerts_payload'] == 'only-printable') ? 'yes':'no ') . "    # enable dumping payload in printable (lossy) format";
+	$eve_out_types .= "\n            packet: " . ($suricatacfg['eve_log_alerts_packet'] == 'on' ? 'yes':'no ') . "               # enable dumping of packet (without stream segments)";
+	$eve_out_types .= "\n            http-body: " . (($suricatacfg['eve_log_alerts_payload'] == 'on'|| $suricatacfg['eve_log_alerts_payload'] == 'only-base64') ?'yes':'no ') . "            # enable dumping of http body in Base64";
+	$eve_out_types .= "\n            http-body-printable: " . (($suricatacfg['eve_log_alerts_payload'] == 'on' || $suricatacfg['eve_log_alerts_payload'] == 'only-printable') ? 'yes':'no ') . "  # enable dumping of http body in printable format";
+	$eve_out_types .= "\n            metadata: " . ($suricatacfg['eve_log_alerts_metadata'] == 'on' ? 'yes':'no ') . "             # enable inclusion of app layer metadata with alert";
 	$eve_out_types .= "\n            tagged-packets: yes       # enable logging of tagged packets for rules using the 'tag' keyword";
 }
 
@@ -958,6 +958,12 @@ if (!empty($suricatacfg['dns_request_flood_limit']))
 else
 	$dns_request_flood_limit = "500";
 
+/* ENIP Parser */
+if (!empty($suricatacfg['enip_parser']))
+	$enip_parser = $suricatacfg['enip_parser'];
+else
+	$enip_parser = "yes";
+
 /* HTTP Parser */
 if (!empty($suricatacfg['http_parser']))
 	$http_parser = $suricatacfg['http_parser'];
@@ -967,6 +973,12 @@ if (!empty($suricatacfg['http_parser_memcap']))
 	$http_parser_memcap = $suricatacfg['http_parser_memcap'];
 else
 	$http_parser_memcap = "67108864";
+
+/* MQTT Parser */
+if (!empty($suricatacfg['mqtt_parser']))
+	$mqtt_parser = $suricatacfg['mqtt_parser'];
+else
+	$mqtt_parser = "yes";
 
 /* SMTP Parser */
 if (!empty($suricatacfg['smtp_parser'])) {
@@ -1119,18 +1131,18 @@ if (file_exists("{$suricatacfgdir}/rules/custom.rules")) {
 $rules_files = ltrim($rules_files, '\n -');
 
 // Add the general logging settings to the configuration (non-interface specific)
-if ($config['installedpackages']['suricata']['config'][0]['log_to_systemlog'] == 'on')
+if (config_get_path('installedpackages/suricata/config/0/log_to_systemlog') == 'on')
 	$suricata_use_syslog = "yes";
 else
 	$suricata_use_syslog = "no";
 
-if (!empty($config['installedpackages']['suricata']['config'][0]['log_to_systemlog_facility']))
-	$suricata_use_syslog_facility = $config['installedpackages']['suricata']['config'][0]['log_to_systemlog_facility'];
+if (!empty(config_get_path('installedpackages/suricata/config/0/log_to_systemlog_facility')))
+	$suricata_use_syslog_facility = config_get_path('installedpackages/suricata/config/0/log_to_systemlog_facility');
 else
 	$suricata_use_syslog_facility = "local1";
 
-if (!empty($config['installedpackages']['suricata']['config'][0]['log_to_systemlog_priority']))
-	$suricata_use_syslog_priority = $config['installedpackages']['suricata']['config'][0]['log_to_systemlog_priority'];
+if (!empty(config_get_path('installedpackages/suricata/config/0/log_to_systemlog_priority')))
+	$suricata_use_syslog_priority = config_get_path('installedpackages/suricata/config/0/log_to_systemlog_priority');
 else
 	$suricata_use_syslog_priority = "notice";
 
@@ -1184,5 +1196,5 @@ EOD;
 }
 
 $suricata_config_pass_thru = base64_decode($suricatacfg['configpassthru']);
-
+return true;
 ?>

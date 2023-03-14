@@ -3,7 +3,7 @@
  * suricata_filecheck.php
  *
  * part of pfSense (https://www.pfsense.org)
- * Copyright (c) 2006-2022 Rubicon Communications, LLC (Netgate)
+ * Copyright (c) 2006-2023 Rubicon Communications, LLC (Netgate)
  * All rights reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -22,15 +22,11 @@
 require('guiconfig.inc');
 require_once("/usr/local/pkg/suricata/suricata.inc");
 
-global $config;
-
 $file_hash = $_REQUEST['filehash'];
 $uuid = $_REQUEST['uuid'];
 $file_name = urldecode($_REQUEST['filename']);
 $file_size = urldecode($_REQUEST['filesize']);
-
-init_config_arr(array('installedpackages', 'suricata', 'rule'));
-$a_instance = &$config['installedpackages']['suricata']['rule'];
+$a_instance = config_get_path('installedpackages/suricata/rule', []);
 
 foreach ($a_instance as $instance) {
 	if (($instance['uuid'] == $uuid) &&

@@ -1,12 +1,11 @@
-# Created by: Jukka A. Ukkonen <jau@iki.fi>
-
 PORTNAME=	Rmpfr
-DISTVERSION=	0.8-7
+DISTVERSION=	0.8-9
 CATEGORIES=	math
 DISTNAME=	${PORTNAME}_${DISTVERSION}
 
 MAINTAINER=	tota@FreeBSD.org
 COMMENT=	R wrapper for the mpfr multiple precision library
+WWW=		https://cran.r-project.org/web/packages/Rmpfr/
 
 LICENSE=	GPLv2+
 

@@ -1,13 +1,12 @@
-# Created by: Po-Chuan Hsieh <sunpoet@FreeBSD.org>
-
 PORTNAME=	aioitertools
-PORTVERSION=	0.8.0
+PORTVERSION=	0.11.0
 CATEGORIES=	devel python
-MASTER_SITES=	CHEESESHOP
+MASTER_SITES=	PYPI
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
 
 MAINTAINER=	sunpoet@FreeBSD.org
 COMMENT=	Itertools and builtins for AsyncIO and mixed iterables
+WWW=		https://github.com/omnilib/aioitertools
 
 LICENSE=	MIT
 LICENSE_FILE=	${WRKSRC}/LICENSE
@@ -19,8 +18,11 @@ NO_ARCH=	yes
 
 .include <bsd.port.pre.mk>
 
-.if ${PYTHON_REL} < 30800
-RUN_DEPENDS+=	${PYTHON_PKGNAMEPREFIX}typing-extensions>=3.7:devel/py-typing-extensions@${PY_FLAVOR}
+.if ${PYTHON_REL} < 31000
+RUN_DEPENDS+=	${PYTHON_PKGNAMEPREFIX}typing-extensions>=4.0:devel/py-typing-extensions@${PY_FLAVOR}
 .endif
+
+post-patch:
+	@${SED} -e 's|%%PORTVERSION%%|${PORTVERSION}|' ${FILESDIR}/setup.py > ${WRKSRC}/setup.py
 
 .include <bsd.port.post.mk>

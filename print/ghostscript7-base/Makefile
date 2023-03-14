@@ -1,5 +1,3 @@
-# Created by: Andreas Klemm <andreas@klemm.gtn.com>
-
 PORTNAME=	ghostscript
 PORTVERSION=	7.07
 PORTREVISION=	32
@@ -13,18 +11,14 @@ EXTRACT_ONLY=	${DISTNAME}${EXTRACT_SUFX}
 
 MAINTAINER=	hrs@FreeBSD.org
 COMMENT=	Ghostscript 7.x PostScript interpreter
+WWW=		https://www.cs.wisc.edu/~ghost/doc/gnu/index.htm
 
 LICENSE=	GPLv2
 
 LIB_DEPENDS=	libpng.so:graphics/png
 RUN_DEPENDS=	${LOCALBASE}/share/ghostscript/fonts/a010013l.pfb:print/gsfonts
 
-CONFLICTS_INSTALL= \
-		gambc \
-		ghostscript[789] \
-		ghostscript[789]-nox11 \
-		ghostscript9-agpl \
-		ghostscript9-agpl-nox11
+CONFLICTS_INSTALL=	ghostscript*-base # CHECK
 
 USES=		autoreconf cpe gmake jpeg shebangfix tar:bzip2
 USE_LDCONFIG=	yes

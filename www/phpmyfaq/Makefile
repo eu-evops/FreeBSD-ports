@@ -1,19 +1,18 @@
-# Created by: chinsan <chinsan@mail2000.com.tw>
-
 PORTNAME=	phpmyfaq
-PORTVERSION=	3.0.8
+PORTVERSION=	3.1.11
 CATEGORIES=	www
 MASTER_SITES=	https://download.phpmyfaq.de/files/
 
 MAINTAINER=	flo@FreeBSD.org
 COMMENT=	Multilingual, completely database-driven FAQ-system
+WWW=		https://www.phpmyfaq.de/
 
 LICENSE=	MPL20
 
 WRKSRC=		${WRKDIR}/${PORTNAME}
 
 USES=		cpe php:web
-USE_PHP=	filter json mysqli pcre pdf session xml xmlrpc xmlwriter zlib
+USE_PHP=	filter json mysqli pcre session xml xmlrpc xmlwriter zlib
 FAQ_DIR=	attachments data images inc pdf xml
 NO_BUILD=	YES
 NO_ARCH=	YES

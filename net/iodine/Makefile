@@ -1,5 +1,3 @@
-# Created by: Rong-En Fan <rafan@FreeBSD.org>
-
 PORTNAME=	iodine
 PORTVERSION=	0.7.0
 PORTREVISION=	1
@@ -7,8 +5,9 @@ CATEGORIES=	net
 MASTER_SITES=	http://code.kryo.se/iodine/ \
 		http://redundancy.redundancy.org/mirror/
 
-MAINTAINER=	lx@FreeBSD.org
+MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Tunnel IPv4 data through a DNS server
+WWW=		https://code.kryo.se/iodine/
 
 LICENSE=	ISCL
 

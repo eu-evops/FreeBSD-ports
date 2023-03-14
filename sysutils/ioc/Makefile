@@ -1,14 +1,18 @@
 PORTNAME=	ioc
 PORTVERSION=	0.8.2
+PORTREVISION=	1
 CATEGORIES=	sysutils
 
 MAINTAINER=	stefan@gronke.net
 COMMENT=	Jail management CLI using libioc
+WWW=		https://github.com/bsdci/ioc
 
 LICENSE=	BSD2CLAUSE
 LICENSE_FILE=	${WRKSRC}/LICENSE.txt
 
 BROKEN=		needs devel/py-libioc
+DEPRECATED=	Broken since 2021
+EXPIRATION_DATE=	2023-03-21
 
 RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}click>0:devel/py-click@${PY_FLAVOR} \
 		${PYTHON_PKGNAMEPREFIX}libioc>0:devel/py-libioc@${PY_FLAVOR} \

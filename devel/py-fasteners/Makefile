@@ -1,22 +1,22 @@
-# Created by: Alexander Nusov <alexander.nusov@nfvexpress.com>
-
 PORTNAME=	fasteners
-PORTVERSION=	0.16.3
+PORTVERSION=	0.17.3
 CATEGORIES=	devel python
-MASTER_SITES=	CHEESESHOP
+MASTER_SITES=	PYPI
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
 
 MAINTAINER=	sunpoet@FreeBSD.org
 COMMENT=	Python package that provides useful locks
+WWW=		https://github.com/harlowja/fasteners
 
 LICENSE=	APACHE20
 LICENSE_FILE=	${WRKSRC}/LICENSE
-
-RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}six>=0:devel/py-six@${PY_FLAVOR}
 
 USES=		python:3.6+
 USE_PYTHON=	autoplist concurrent distutils
 
 NO_ARCH=	yes
+
+post-patch:
+	@${CP} ${FILESDIR}/setup.py ${WRKSRC}/
 
 .include <bsd.port.mk>

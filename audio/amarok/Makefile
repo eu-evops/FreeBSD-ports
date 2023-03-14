@@ -1,14 +1,18 @@
 PORTNAME=	amarok
 DISTVERSIONPREFIX=	v
 DISTVERSION=	2.9.71
-PORTREVISION=	2
+PORTREVISION=	5
 CATEGORIES=	audio kde
 
 MAINTAINER=	kde@FreeBSD.org
 COMMENT=	KDE music player
+WWW=		https://amarok.kde.org/
 
 LICENSE=	GPLv2
 LICENSE_FILE=	${WRKSRC}/COPYING
+
+DEPRECATED=	No longer actively maintained upstream.
+EXPIRATION_DATE=	2023-03-31
 
 LIB_DEPENDS=	libdbus-1.so:devel/dbus \
 		libfftw3.so:math/fftw3 \
@@ -20,11 +24,12 @@ LIB_DEPENDS=	libdbus-1.so:devel/dbus \
 
 USES=		cmake compiler:c++11-lang cpe desktop-file-utils \
 		kde:5 mysql:client,embedded pkgconfig qca qt:5 shebangfix ssl xorg
+IGNORE_WITH_MYSQL=80
 
 USE_QT=		core concurrent declarative dbus gui location network phonon4 \
 		quickcontrols2 script scripttools sql svg webchannel \
 		webkit widgets xml \
-		buildtools_build qmake_build testlib_build
+		buildtools:build qmake:build testlib:build
 
 USE_KDE=	archive auth attica bookmarks codecs config configwidgets \
 		completion coreaddons crash dbusaddons dnssd globalaccel \
@@ -32,7 +37,7 @@ USE_KDE=	archive auth attica bookmarks codecs config configwidgets \
 		kcmutils kio kirigami2 newstuff notifications notifyconfig \
 		package parts service solid sonnet texteditor textwidgets \
 		threadweaver wallet widgetsaddons windowsystem xmlgui \
-		doctools_build ecm_build
+		doctools:build ecm:build
 USE_XORG=	ice sm x11 xext
 USE_LDCONFIG=	yes
 
@@ -86,12 +91,5 @@ post-patch:
 
 post-install:
 	@${MKDIR} ${STAGEDIR}${PREFIX}/share/mime/packages
-
-.include <bsd.port.options.mk>
-
-.if ${PORT_OPTIONS:MQTWEBENGINE}
-DEPRECATED=	Uses EOL Python 2.7 via www/qt5-webengine
-EXPIRATION_DATE=2021-06-23
-.endif
 
 .include <bsd.port.mk>

@@ -1,12 +1,12 @@
 PORTNAME=	gcc
-PORTVERSION?=	8.4.0
-PORTREVISION=	3
+PORTVERSION?=	11.3.0
 CATEGORIES=	devel
 MASTER_SITES=	GCC
 PKGNAMEPREFIX?=	aarch64-none-elf-
 
 MAINTAINER=	manu@FreeBSD.org
 COMMENT?=	GNU Compiler Collection for bare metal aarch64 cross-development
+WWW=		https://gcc.gnu.org/
 
 LICENSE=	GPLv3 GPLv3RLE
 LICENSE_COMB=	multi

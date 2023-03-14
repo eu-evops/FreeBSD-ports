@@ -7,9 +7,13 @@ PKGNAMEPREFIX=	riscv64-
 
 MAINTAINER=	lwhsu@FreeBSD.org
 COMMENT=	Cross GNU Compiler Collection for ${PKGNAMEPREFIX:C/-//g}
+WWW=		https://github.com/freebsd-riscv/riscv-gcc
 
 LICENSE=	GPLv3 GPLv3RLE
 LICENSE_COMB=	multi
+
+DEPRECATED=	Unsupported version and users should move to devel/freebsd-gcc12@riscv64
+EXPIRATION_DATE=	2023-03-21
 
 BUILD_DEPENDS=	${PKGNAMEPREFIX}binutils>0:devel/binutils@${PKGNAMEPREFIX:C/-$//} \
 		objdump:devel/binutils

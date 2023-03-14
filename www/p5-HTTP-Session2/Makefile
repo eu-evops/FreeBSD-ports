@@ -1,12 +1,12 @@
 PORTNAME=	HTTP-Session2
-PORTVERSION=	1.09
-PORTREVISION=	1
+PORTVERSION=	1.10
 CATEGORIES=	www perl5
 MASTER_SITES=	CPAN
 PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	perl@FreeBSD.org
 COMMENT=	Perl extension for HTTP session management
+WWW=		https://metacpan.org/release/HTTP-Session2
 
 LICENSE=	ART10 GPLv1+
 LICENSE_COMB=	dual
@@ -20,7 +20,7 @@ RUN_DEPENDS=	\
 BUILD_DEPENDS=	${RUN_DEPENDS}
 
 USES=		perl5
-USE_PERL5=	modbuild
+USE_PERL5=	modbuildtiny
 NO_ARCH=	YES
 
 .include <bsd.port.mk>

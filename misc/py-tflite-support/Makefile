@@ -1,11 +1,12 @@
 PORTNAME=	tflite-support
 DISTVERSION=	0.1.0a1
 CATEGORIES=	misc # machine-learning
-MASTER_SITES=	CHEESESHOP
+MASTER_SITES=	PYPI
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
 
 MAINTAINER=	yuri@FreeBSD.org
 COMMENT=	Toolkit for developing/deploying ML/TFLite models
+WWW=		https://www.tensorflow.org/
 
 LICENSE=	APACHE20
 

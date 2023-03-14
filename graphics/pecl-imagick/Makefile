@@ -1,11 +1,10 @@
-# Created by: Andrey Slusar <anray@FreeBSD.org>
-
 PORTNAME=	imagick
-PORTVERSION=	3.5.1
+PORTVERSION=	3.7.0
 CATEGORIES=	graphics
 
 MAINTAINER=	000.fbsd@quip.cz
 COMMENT?=	PHP wrapper to the ImageMagick/GraphicsMagick library version 6
+WWW=		https://pecl.php.net/package/imagick
 
 LICENSE=	PHP301
 
@@ -17,8 +16,8 @@ CONFLICTS_INSTALL?=	${PKGNAMEPREFIX}${PORTNAME}-im7
 
 OPTIONS_DEFINE=	X11
 
-X11_LIB_DEPENDS?=	libMagickWand-6.so:graphics/ImageMagick6
-X11_LIB_DEPENDS_OFF?=	libMagickWand-6.so:graphics/ImageMagick6-nox11
+X11_USES?=		magick:6
+X11_USES_OFF?=		magick:6,nox11
 
 CONFIGURE_ARGS=	--with-imagick=${LOCALBASE}
 

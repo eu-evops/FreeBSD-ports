@@ -5,6 +5,7 @@ CATEGORIES=	multimedia
 
 MAINTAINER=	jbeich@FreeBSD.org
 COMMENT=	Video processing framework with simplicity in mind
+WWW=		https://www.vapoursynth.com/
 
 LICENSE=	LGPL21+
 
@@ -81,8 +82,7 @@ ASS_CONFIGURE_ENABLE=		subtext
 EEDI3_DESC=			Very slow edge directed interpolation
 EEDI3_CONFIGURE_ENABLE=		eedi3
 
-IMAGEMAGICK_LIB_DEPENDS=	libMagick++-7.so:graphics/ImageMagick7
-IMAGEMAGICK_USES=		compiler:c++11-lib
+IMAGEMAGICK_USES=		compiler:c++11-lib magick:7
 IMAGEMAGICK_CONFIGURE_ENABLE=	imwri
 
 TESSERACT_DESC=			Optical Character Recognition via Tesseract

@@ -1,13 +1,16 @@
 PORTNAME=	inputstream.adaptive
-DISTVERSION=	19.0.0
-DISTVERSIONSUFFIX=	-Matrix
+DISTVERSION=	20.3.2
+DISTVERSIONSUFFIX=	-Nexus
 CATEGORIES=	multimedia
 
 MAINTAINER=	decke@FreeBSD.org
 COMMENT=	Adaptive stream support for Kodi
+WWW=		https://github.com/peak3d/inputstream.adaptive
 
 LICENSE=	GPLv2
-LICENSE_FILE=	${WRKSRC}/LICENSE.GPL
+LICENSE_FILE=	${WRKSRC}/LICENSE.md
+
+BROKEN=		required headers missing in multimedia/Bento4
 
 BUILD_DEPENDS=	googletest>0:devel/googletest
 LIB_DEPENDS=	libexpat.so:textproc/expat2

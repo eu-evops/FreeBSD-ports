@@ -3,8 +3,8 @@
  * pfblockerng_threats.php
  *
  * part of pfSense (https://www.pfsense.org)
- * Copyright (c) 2016-2022 Rubicon Communications, LLC (Netgate)
- * Copyright (c) 2015-2021 BBcan177@gmail.com
+ * Copyright (c) 2016-2023 Rubicon Communications, LLC (Netgate)
+ * Copyright (c) 2015-2023 BBcan177@gmail.com
  * All rights reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the \"License\");
@@ -25,16 +25,43 @@ include('head.inc');
 
 $title = $host = $domain = $port = '';
 if (isset($_REQUEST)) {
-	if (isset($_REQUEST['host']) && is_ipaddr($_REQUEST['host'])) {
+	if (isset($_REQUEST['host'])) {
+		if (!is_ipaddr($_REQUEST['host'])) {
+			print_info_box("Invalid IP Address, cannot proceed!");
+			exit;
+		}
 		$title	= 'Source IP';
-		$host	= $_REQUEST['host'];
-	} elseif (isset($_REQUEST['domain']) && is_domain($_REQUEST['domain'])) {
-		$title	= 'Domain';
-		$domain = $_REQUEST['domain'];
-	} elseif (isset($_REQUEST['port']) && is_port($_REQUEST['port'])) {
-		$title	= 'Port';
-		$port	= $_REQUEST['port'];
+		$host	= htmlspecialchars($_REQUEST['host']);
 	}
+	elseif (isset($_REQUEST['domain'])) {
+		if (!filter_var($_REQUEST['domain'], FILTER_VALIDATE_DOMAIN, FILTER_FLAG_HOSTNAME)) {
+			print_info_box("Invalid Domain name, cannot proceed!");
+			exit;
+		}
+		$title	= 'Domain';
+		$domain	= htmlspecialchars($_REQUEST['domain']);
+	}
+	elseif (isset($_REQUEST['port'])) {
+		if (!is_port($_REQUEST['port'])) {
+			print_info_box("Invalid Port cannot proceed!");
+			exit;
+		}
+		$title	= 'Port';
+		$port	= htmlspecialchars($_REQUEST['port']);
+	}
+	else {
+		print_info_box("No Requests found, cannot proceed!");
+		exit;
+	}
+}
+else {
+	print_info_box("No Requests found, cannot proceed!");
+	exit;
+}
+
+if (empty($host) && empty($domain) && empty($port)) {
+	print_info_box("No Requests found, cannot proceed!");
+	exit;
 }
 
 $pgtitle = array(gettext('Firewall'), gettext('pfBlockerNG'), gettext('Alerts'), gettext("Threat {$title} Lookup"));

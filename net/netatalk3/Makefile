@@ -1,8 +1,5 @@
-# Created by: stb
-
 PORTNAME=	netatalk
-PORTVERSION=	3.1.12
-PORTREVISION=	4
+PORTVERSION=	3.1.14
 PORTEPOCH=	1
 CATEGORIES=	net
 MASTER_SITES=	SF
@@ -10,6 +7,7 @@ PKGNAMESUFFIX=	3
 
 MAINTAINER=	marcus@FreeBSD.org
 COMMENT=	File server for Mac OS X
+WWW=		http://netatalk.sourceforge.net/
 
 LICENSE=	GPLv2
 
@@ -59,7 +57,7 @@ MDNSRESPONDER_LIB_DEPENDS=		libdns_sd.so:net/mDNSResponder
 MDNSRESPONDER_SUB_LIST=	ZEROCONF="mdnsd"
 LDAP_CONFIGURE_ON=	--with-ldap=${LOCALBASE}
 LDAP_CFLAGS=		-I${LOCALBASE}/include -L${LOCALBASE}/lib
-LDAP_USE=	OPENLDAP=yes
+LDAP_USES=	ldap
 LDAP_CONFIGURE_OFF=	--without-ldap
 SENDFILE_CONFIGURE_ENABLE=sendfile
 DBUS_USES=	gnome python
@@ -75,7 +73,7 @@ LIBWRAP_CONFIGURE_ENABLE=tcp-wrappers
 
 SHEBANG_GLOB=	afpstats
 
-CONFLICTS=	bigloo-2.* cap-6.0.* tct-1.* netatalk-[12]* yudit
+CONFLICTS=	jday yudit # bin/dbd man/man1/uniconv.1.gz
 
 .include <bsd.port.pre.mk>
 

@@ -1,14 +1,17 @@
 PORTNAME=	flightgear-terragear
 PORTVERSION=	20171007
-PORTREVISION=	15
+PORTREVISION=	17
 CATEGORIES=	games
 
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Tools for building scenery for the FlightGear project
+WWW=		https://github.com/FlightGear/terragear
 
 LICENSE=	GPLv2
 
 BROKEN=		does not build: use of undeclared identifier 'sgClearWriteError'
+DEPRECATED=	Broken since 2021
+EXPIRATION_DATE=	2023-03-21
 
 BUILD_DEPENDS=	cgal>0:math/cgal
 LIB_DEPENDS=	libgdal.so:graphics/gdal \

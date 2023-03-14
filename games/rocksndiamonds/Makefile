@@ -1,8 +1,6 @@
-# Created by: Thomas Gellekum <tg@FreeBSD.org>
-
 PORTNAME=	rocksndiamonds
 PORTVERSION=	3.3.1.2
-PORTREVISION=	4
+PORTREVISION=	5
 CATEGORIES=	games
 MASTER_SITES=	http://www.artsoft.org/RELEASES/unix/rocksndiamonds/:game \
 		http://www.artsoft.org/RELEASES/rocksndiamonds/levels/:levels_artsoft \
@@ -21,6 +19,7 @@ EXTRACT_ONLY=	${PORTNAME}-${DISTVERSION}${EXTRACT_SUFX} \
 
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Colorful Boulderdash'n'Emerald Mine'n'Sokoban'n'Stuff
+WWW=		https://www.artsoft.org/rocksndiamonds/
 
 LICENSE=	GPLv2
 LICENSE_FILE=	${WRKSRC}/COPYING

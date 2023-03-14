@@ -1,5 +1,3 @@
-# Created by: js@jeannot.org
-
 PORTNAME=		visualworks
 PORTVERSION=		7.6
 PORTREVISION=		1
@@ -11,6 +9,7 @@ EXTRACT_ONLY=
 
 MAINTAINER=		ports@FreeBSD.org
 COMMENT=		High performance Smalltalk environment
+WWW=		https://smalltalk.cincom.com/
 
 # Converted from RESTRICTED
 LICENSE=	VISUALWORKS
@@ -19,6 +18,8 @@ LICENSE_TEXT=	Redistribution is probably not permitted
 LICENSE_PERMS=	auto-accept
 
 BROKEN=			does not fetch
+DEPRECATED=	Broken since 2021
+EXPIRATION_DATE=	2023-03-21
 
 DIST_SUBDIR=		${SUBDIR}
 SUBDIR=			vwnc${PORTVERSION}

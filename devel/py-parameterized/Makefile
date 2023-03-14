@@ -1,11 +1,12 @@
 PORTNAME=	parameterized
 PORTVERSION=	0.8.1
 CATEGORIES=	devel python
-MASTER_SITES=	CHEESESHOP
+MASTER_SITES=	PYPI
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
 
-MAINTAINER=	koobs@FreeBSD.org
+MAINTAINER=	bofh@FreeBSD.org
 COMMENT=	Parameterized testing with any Python test framework
+WWW=		https://github.com/wolever/parameterized
 
 LICENSE=	BSD2CLAUSE
 LICENSE_FILE=	${WRKSRC}/LICENSE.txt

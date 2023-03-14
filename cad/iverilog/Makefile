@@ -1,13 +1,12 @@
-# Created by: Ying-Chieh Liao <ijliao@FreeBSD.org>
-
 PORTNAME=	iverilog
 PORTVERSION=	11.0
 CATEGORIES=	cad
 MASTER_SITES=	ftp://icarus.com/pub/eda/verilog/v11/
 DISTNAME=	verilog-${PORTVERSION}
 
-MAINTAINER=	zeising@FreeBSD.org
+MAINTAINER=	kbowling@FreeBSD.org
 COMMENT=	Verilog simulation and synthesis tool
+WWW=		http://iverilog.icarus.com/
 
 LICENSE=	GPLv2
 

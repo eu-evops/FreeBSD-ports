@@ -1,15 +1,18 @@
 PORTNAME=	gitui
 DISTVERSIONPREFIX=	v
-DISTVERSION=	0.16.2
-PORTREVISION=	5
+DISTVERSION=	0.22.1-43
+DISTVERSIONSUFFIX=	-gad45102
+PORTREVISION=	1
 CATEGORIES=	devel
 
 MAINTAINER=	yuri@FreeBSD.org
 COMMENT=	Terminal UI for git
+WWW=		https://github.com/extrawurst/gitui
 
 LICENSE=	MIT
 LICENSE_FILE=	${WRKSRC}/LICENSE.md
 
+BROKEN_armv7=	error: conflicting types for 'get_proc_total', see https://github.com/FillZpp/sys-info-rs/issues/80
 BROKEN_i386=	error: conflicting types for 'get_proc_total', see https://github.com/FillZpp/sys-info-rs/issues/80
 BROKEN_powerpc=	error: conflicting types for 'get_proc_total', see https://github.com/FillZpp/sys-info-rs/issues/80
 
@@ -24,168 +27,227 @@ USE_XORG=	xcb
 USE_GITHUB=	yes
 GH_ACCOUNT=	extrawurst
 
-CARGO_CRATES=	addr2line-0.15.2 \
+CARGO_CRATES=	addr2line-0.19.0 \
 		adler-1.0.2 \
-		ahash-0.6.3 \
-		aho-corasick-0.7.18 \
-		ansi_term-0.12.1 \
-		anyhow-1.0.42 \
-		arrayvec-0.4.12 \
+		ahash-0.7.6 \
+		ahash-0.8.2 \
+		aho-corasick-0.7.20 \
+		android_system_properties-0.1.5 \
+		anyhow-1.0.68 \
+		arrayvec-0.7.2 \
 		atty-0.2.14 \
-		autocfg-1.0.1 \
-		backtrace-0.3.60 \
-		base64-0.13.0 \
+		autocfg-1.1.0 \
+		backtrace-0.3.67 \
+		base64-0.13.1 \
 		bincode-1.3.3 \
-		bit-set-0.5.2 \
+		bit-set-0.5.3 \
 		bit-vec-0.6.3 \
-		bitflags-1.2.1 \
-		bugreport-0.4.0 \
-		bytemuck-1.7.0 \
-		bytesize-1.0.1 \
+		bitflags-1.3.2 \
+		bugreport-0.5.0 \
+		bumpalo-3.11.1 \
+		bytemuck-1.12.3 \
+		bytesize-1.1.0 \
 		cassowary-0.3.0 \
-		cc-1.0.68 \
+		cc-1.0.78 \
 		cfg-if-1.0.0 \
-		chrono-0.4.19 \
-		clap-2.33.3 \
-		cpp_demangle-0.3.3 \
-		crc32fast-1.2.1 \
-		crossbeam-channel-0.5.1 \
-		crossbeam-deque-0.8.0 \
-		crossbeam-epoch-0.9.5 \
-		crossbeam-utils-0.8.5 \
-		crossterm-0.19.0 \
-		crossterm_winapi-0.7.0 \
-		ctor-0.1.20 \
-		debugid-0.7.2 \
-		diff-0.1.12 \
+		chrono-0.4.23 \
+		clap-4.0.32 \
+		clap_lex-0.3.0 \
+		codespan-reporting-0.11.1 \
+		core-foundation-sys-0.8.3 \
+		cpp_demangle-0.4.0 \
+		crc32fast-1.3.2 \
+		crossbeam-channel-0.5.6 \
+		crossbeam-deque-0.8.2 \
+		crossbeam-epoch-0.9.13 \
+		crossbeam-utils-0.8.14 \
+		crossterm-0.25.0 \
+		crossterm_winapi-0.9.0 \
+		ctor-0.1.26 \
+		cxx-1.0.85 \
+		cxx-build-1.0.85 \
+		cxxbridge-flags-1.0.85 \
+		cxxbridge-macro-1.0.85 \
+		dashmap-5.4.0 \
+		debugid-0.8.0 \
+		diff-0.1.13 \
+		dirs-4.0.0 \
 		dirs-next-2.0.0 \
+		dirs-sys-0.3.7 \
 		dirs-sys-next-0.1.2 \
-		easy-cast-0.4.4 \
-		either-1.6.1 \
-		fancy-regex-0.3.5 \
-		flate2-1.0.20 \
+		easy-cast-0.5.2 \
+		either-1.8.0 \
+		env_logger-0.10.0 \
+		errno-0.2.8 \
+		errno-dragonfly-0.1.2 \
+		fancy-regex-0.7.1 \
+		fastrand-1.8.0 \
+		filetime-0.2.19 \
+		findshlibs-0.10.2 \
+		flate2-1.0.25 \
 		fnv-1.0.7 \
-		form_urlencoded-1.0.1 \
-		getrandom-0.2.3 \
-		gimli-0.24.0 \
-		git-version-0.3.4 \
-		git-version-macro-0.3.4 \
-		git2-0.13.20 \
-		hashbrown-0.11.2 \
+		form_urlencoded-1.1.0 \
+		fsevent-sys-4.1.0 \
+		futures-0.3.25 \
+		futures-channel-0.3.25 \
+		futures-core-0.3.25 \
+		futures-executor-0.3.25 \
+		futures-io-0.3.25 \
+		futures-sink-0.3.25 \
+		futures-task-0.3.25 \
+		futures-util-0.3.25 \
+		fuzzy-matcher-0.3.7 \
+		getrandom-0.2.8 \
+		gh-emoji-1.0.7 \
+		gimli-0.27.0 \
+		git-version-0.3.5 \
+		git-version-macro-0.3.5 \
+		git2-0.16.0 \
+		hashbrown-0.12.3 \
 		hermit-abi-0.1.19 \
-		idna-0.2.3 \
-		indexmap-1.7.0 \
-		inferno-0.10.6 \
-		instant-0.1.9 \
-		itertools-0.10.1 \
-		itoa-0.4.7 \
-		jobserver-0.1.22 \
+		hermit-abi-0.2.6 \
+		humantime-2.1.0 \
+		iana-time-zone-0.1.53 \
+		iana-time-zone-haiku-0.1.1 \
+		idna-0.3.0 \
+		indexmap-1.9.2 \
+		inferno-0.11.13 \
+		inotify-0.9.6 \
+		inotify-sys-0.1.5 \
+		instant-0.1.12 \
+		io-lifetimes-1.0.3 \
+		is-terminal-0.4.2 \
+		itertools-0.10.5 \
+		itoa-1.0.5 \
+		jobserver-0.1.25 \
+		js-sys-0.3.60 \
+		kqueue-1.0.7 \
+		kqueue-sys-1.0.3 \
 		lazy_static-1.4.0 \
-		lazycell-1.3.0 \
-		libc-0.2.98 \
-		libgit2-sys-0.12.21+1.1.0 \
-		libssh2-sys-0.2.21 \
-		libz-sys-1.1.3 \
-		line-wrap-0.1.1 \
-		linked-hash-map-0.5.4 \
-		lock_api-0.4.4 \
-		log-0.4.14 \
-		matches-0.1.8 \
-		memchr-2.4.0 \
-		memmap-0.7.0 \
-		memoffset-0.6.4 \
-		miniz_oxide-0.4.4 \
-		mio-0.7.13 \
-		miow-0.3.7 \
-		nix-0.20.0 \
-		nodrop-0.1.14 \
-		ntapi-0.3.6 \
-		num-format-0.4.0 \
-		num-integer-0.1.44 \
-		num-traits-0.2.14 \
-		num_cpus-1.13.0 \
-		object-0.25.3 \
-		once_cell-1.8.0 \
-		openssl-probe-0.1.4 \
-		openssl-src-111.15.0+1.1.1k \
-		openssl-sys-0.9.65 \
-		output_vt100-0.1.2 \
-		parking_lot-0.11.1 \
-		parking_lot_core-0.8.3 \
-		percent-encoding-2.1.0 \
-		pkg-config-0.3.19 \
-		plist-1.1.0 \
-		pprof-0.4.3 \
-		ppv-lite86-0.2.10 \
-		pretty_assertions-0.7.2 \
-		proc-macro-hack-0.5.19 \
-		proc-macro2-1.0.27 \
-		quick-xml-0.20.0 \
-		quote-1.0.9 \
-		rand-0.8.4 \
-		rand_chacha-0.3.1 \
-		rand_core-0.6.3 \
-		rand_hc-0.3.1 \
-		rayon-core-1.9.1 \
-		redox_syscall-0.2.9 \
-		redox_users-0.4.0 \
-		regex-1.5.4 \
-		regex-syntax-0.6.25 \
+		libc-0.2.139 \
+		libgit2-sys-0.14.1+1.5.0 \
+		libssh2-sys-0.2.23 \
+		libz-sys-1.1.8 \
+		link-cplusplus-1.0.8 \
+		linux-raw-sys-0.1.4 \
+		lock_api-0.4.9 \
+		log-0.4.17 \
+		memchr-2.5.0 \
+		memmap2-0.5.8 \
+		memoffset-0.7.1 \
+		miniz_oxide-0.6.2 \
+		mio-0.8.5 \
+		nix-0.24.3 \
+		notify-5.0.0 \
+		notify-debouncer-mini-0.2.1 \
+		num-format-0.4.4 \
+		num-integer-0.1.45 \
+		num-traits-0.2.15 \
+		num_cpus-1.15.0 \
+		object-0.30.1 \
+		once_cell-1.17.0 \
+		onig-6.4.0 \
+		onig_sys-69.8.1 \
+		openssl-probe-0.1.5 \
+		openssl-src-111.24.0+1.1.1s \
+		openssl-sys-0.9.80 \
+		os_str_bytes-6.4.1 \
+		output_vt100-0.1.3 \
+		parking_lot-0.12.1 \
+		parking_lot_core-0.9.5 \
+		percent-encoding-2.2.0 \
+		phf-0.11.1 \
+		phf_shared-0.11.1 \
+		pin-project-lite-0.2.9 \
+		pin-utils-0.1.0 \
+		pkg-config-0.3.26 \
+		pprof-0.11.0 \
+		pretty_assertions-1.3.0 \
+		proc-macro-hack-0.5.20+deprecated \
+		proc-macro2-1.0.49 \
+		quick-xml-0.26.0 \
+		quote-1.0.23 \
+		rayon-core-1.10.1 \
+		redox_syscall-0.2.16 \
+		redox_users-0.4.3 \
+		regex-1.7.0 \
+		regex-syntax-0.6.28 \
 		remove_dir_all-0.5.3 \
-		rgb-0.8.27 \
-		ron-0.6.4 \
-		rustc-demangle-0.1.20 \
-		ryu-1.0.5 \
-		safemem-0.3.3 \
+		rgb-0.8.34 \
+		ron-0.8.0 \
+		rustc-demangle-0.1.21 \
+		rustix-0.36.6 \
+		ryu-1.0.12 \
 		same-file-1.0.6 \
 		scopeguard-1.1.0 \
-		serde-1.0.126 \
-		serde_derive-1.0.126 \
-		serde_json-1.0.64 \
-		serial_test-0.5.1 \
-		serial_test_derive-0.5.1 \
+		scratch-1.0.3 \
+		serde-1.0.152 \
+		serde_derive-1.0.152 \
+		serde_json-1.0.91 \
+		serial_test-0.10.0 \
+		serial_test_derive-0.10.0 \
 		shell-escape-0.1.5 \
-		signal-hook-0.1.17 \
+		shellexpand-3.0.0 \
+		signal-hook-0.3.14 \
+		signal-hook-mio-0.2.3 \
 		signal-hook-registry-1.4.0 \
-		simplelog-0.10.0 \
-		smallvec-1.6.1 \
+		simplelog-0.12.0 \
+		siphasher-0.3.10 \
+		slab-0.4.7 \
+		smallvec-1.10.0 \
 		smawk-0.3.1 \
 		stable_deref_trait-1.2.0 \
 		str_stack-0.1.0 \
-		symbolic-common-8.3.0 \
-		symbolic-demangle-8.3.0 \
-		syn-1.0.73 \
-		syntect-4.5.0 \
-		sys-info-0.9.0 \
-		tempfile-3.2.0 \
-		textwrap-0.11.0 \
-		textwrap-0.14.2 \
-		thiserror-1.0.26 \
-		thiserror-impl-1.0.26 \
-		time-0.1.43 \
-		tinyvec-1.2.0 \
+		strsim-0.10.0 \
+		symbolic-common-10.2.1 \
+		symbolic-demangle-10.2.1 \
+		syn-1.0.107 \
+		syntect-5.0.0 \
+		sys-info-0.9.1 \
+		tempfile-3.3.0 \
+		termcolor-1.1.3 \
+		textwrap-0.16.0 \
+		thiserror-1.0.38 \
+		thiserror-impl-1.0.38 \
+		thread_local-1.1.4 \
+		time-0.3.17 \
+		time-core-0.1.0 \
+		time-macros-0.2.6 \
+		tinyvec-1.6.0 \
 		tinyvec_macros-0.1.0 \
-		tui-0.15.0 \
-		unicode-bidi-0.3.5 \
-		unicode-linebreak-0.1.1 \
-		unicode-normalization-0.1.19 \
-		unicode-segmentation-1.8.0 \
+		tui-0.19.0 \
+		unicode-bidi-0.3.8 \
+		unicode-ident-1.0.6 \
+		unicode-linebreak-0.1.4 \
+		unicode-normalization-0.1.22 \
+		unicode-segmentation-1.10.0 \
 		unicode-truncate-0.2.0 \
-		unicode-width-0.1.8 \
-		unicode-xid-0.2.2 \
-		url-2.2.2 \
-		uuid-0.8.2 \
+		unicode-width-0.1.10 \
+		url-2.3.1 \
+		uuid-1.2.2 \
 		vcpkg-0.2.15 \
-		version_check-0.9.3 \
+		version_check-0.9.4 \
 		walkdir-2.3.2 \
-		wasi-0.10.2+wasi-snapshot-preview1 \
-		which-4.1.0 \
+		wasi-0.11.0+wasi-snapshot-preview1 \
+		wasm-bindgen-0.2.83 \
+		wasm-bindgen-backend-0.2.83 \
+		wasm-bindgen-macro-0.2.83 \
+		wasm-bindgen-macro-support-0.2.83 \
+		wasm-bindgen-shared-0.2.83 \
+		which-4.3.0 \
 		winapi-0.3.9 \
 		winapi-i686-pc-windows-gnu-0.4.0 \
 		winapi-util-0.1.5 \
 		winapi-x86_64-pc-windows-gnu-0.4.0 \
-		xml-rs-0.8.3 \
-		yaml-rust-0.4.5
+		windows-sys-0.42.0 \
+		windows_aarch64_gnullvm-0.42.0 \
+		windows_aarch64_msvc-0.42.0 \
+		windows_i686_gnu-0.42.0 \
+		windows_i686_msvc-0.42.0 \
+		windows_x86_64_gnu-0.42.0 \
+		windows_x86_64_gnullvm-0.42.0 \
+		windows_x86_64_msvc-0.42.0 \
+		yansi-0.5.1
 RUSTFLAGS+=	--cap-lints=warn
 PLIST_FILES=	bin/${PORTNAME}
 

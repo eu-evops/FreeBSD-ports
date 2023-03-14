@@ -1,11 +1,10 @@
-# Created by: Wen heping <wenheping@gmail.com>
-
 PORTNAME=	opencart
-PORTVERSION=	3.0.3.8
+PORTVERSION=	4.0.1.1
 CATEGORIES=	www misc
 
 MAINTAINER=	wen@FreeBSD.org
 COMMENT=	Open source PHP-based online shopping cart system
+WWW=		https://www.opencart.com/
 
 LICENSE=	GPLv3
 

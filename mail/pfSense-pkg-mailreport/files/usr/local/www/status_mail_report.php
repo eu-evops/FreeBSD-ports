@@ -3,7 +3,7 @@
  * status_mail_report.php
  *
  * part of pfSense (https://www.pfsense.org)
- * Copyright (c) 2011-2022 Rubicon Communications, LLC (Netgate)
+ * Copyright (c) 2011-2023 Rubicon Communications, LLC (Netgate)
  * All rights reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -27,7 +27,8 @@
 ##|-PRIV
 
 require("guiconfig.inc");
-require_once("mail_reports.inc");
+
+require_once('mailreport/mail_report.inc');
 
 init_config_arr(array('mailreports', 'schedule'));
 $a_mailreports = &$config['mailreports']['schedule'];
@@ -106,6 +107,9 @@ include("head.inc");
 			} else {
 				$friendly = "-";
 			}
+
+			array_init_path($mailreport, 'cmd/row');
+			array_init_path($mailreport, 'log/row');
 ?>
 		<tr>
 			<td><input type="checkbox" id="frc<?=$i?>" name="reports[]" value="<?=$i?>" onclick="fr_bgcolor('<?=$i?>')" /></td>

@@ -4,11 +4,14 @@ CATEGORIES=	devel
 
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Library to abstract vnc, rdp and spice protocols
+WWW=		https://github.com/freenas/libhyve-remote
 
 LICENSE=	BSD2CLAUSE GPLv2
 LICENSE_COMB=	dual
 
 BROKEN=		fails to build
+DEPRECATED=	Broken since 2020
+EXPIRATION_DATE=	2023-03-20
 
 LIB_DEPENDS=	libvncserver.so:net/libvncserver
 

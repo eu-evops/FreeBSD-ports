@@ -1,15 +1,12 @@
-# Created by: Hye-Shik Chang <perky@fallin.lv>
-
 PORTNAME=	pygsl
-PORTVERSION=	2.3.0
-DISTVERSIONSUFFIX=	.1
-PORTREVISION=	7
+PORTVERSION=	2.3.2
 CATEGORIES=	math python
-MASTER_SITES=	CHEESESHOP
+MASTER_SITES=	PYPI
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
 
 MAINTAINER=	sunpoet@FreeBSD.org
 COMMENT=	Python interface to GNU Scientific Library
+WWW=		https://github.com/pygsl/pygsl
 
 LICENSE=	GPLv2
 LICENSE_FILE=	${WRKSRC}/COPYING
@@ -20,8 +17,6 @@ RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}numpy>=0,1:math/py-numpy@${PY_FLAVOR}
 
 USES=		python:3.7+
 USE_PYTHON=	autoplist concurrent distutils
-
-WRKSRC=		${WRKDIR}/${PORTNAME}-${PORTVERSION}
 
 post-install:
 	${FIND} ${STAGEDIR}${PYTHON_SITELIBDIR} -name '*.so' -exec ${STRIP_CMD} {} +

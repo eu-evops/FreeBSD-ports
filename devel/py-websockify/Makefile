@@ -1,13 +1,12 @@
-# Created by: Alexander Nusov <alexander.nusov@nfvexpress.com>
-
 PORTNAME=	websockify
 PORTVERSION=	0.10.0
 CATEGORIES=	devel python
-MASTER_SITES=	CHEESESHOP
+MASTER_SITES=	PYPI
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
 
 MAINTAINER=	sunpoet@FreeBSD.org
 COMMENT=	WebSockets support for any application/server
+WWW=		https://github.com/novnc/websockify
 
 LICENSE=	LGPL3
 

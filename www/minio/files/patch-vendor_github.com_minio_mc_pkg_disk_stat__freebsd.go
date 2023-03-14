@@ -1,4 +1,4 @@
---- vendor/github.com/minio/mc/pkg/disk/stat_freebsd.go.orig	2021-06-26 00:21:08 UTC
+--- vendor/github.com/minio/mc/pkg/disk/stat_freebsd.go.orig	2022-07-17 15:41:36 UTC
 +++ vendor/github.com/minio/mc/pkg/disk/stat_freebsd.go
 @@ -35,7 +35,7 @@ func GetFileSystemAttrs(file string) (string, error) {
  

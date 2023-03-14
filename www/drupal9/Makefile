@@ -1,5 +1,5 @@
 PORTNAME=	drupal9
-PORTVERSION=	9.2.10
+PORTVERSION=	9.5.0
 CATEGORIES=	www
 MASTER_SITES=	http://ftp.drupal.org/files/projects/
 DISTNAME=	drupal-${PORTVERSION}
@@ -7,6 +7,7 @@ DIST_SUBDIR=	drupal
 
 MAINTAINER=	acm@FreeBSD.org
 COMMENT=	Database driven web content management system (CMS)
+WWW=		https://www.drupal.org/
 
 LICENSE=	GPLv2+
 

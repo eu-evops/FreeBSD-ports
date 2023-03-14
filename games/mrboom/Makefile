@@ -1,5 +1,3 @@
-# Created by: Emanuel Haupt <ehaupt@FreeBSD.org>
-
 PORTNAME=	mrboom
 PORTVERSION=	5.2
 CATEGORIES=	games
@@ -8,14 +6,16 @@ DISTNAME=	MrBoom-src-${PORTVERSION}
 
 MAINTAINER=	ehaupt@FreeBSD.org
 COMMENT=	8 players Bomberman clone
+WWW=		http://mrboom.mumblecore.org/
 
 LICENSE=	MIT
 LICENSE_FILE=	${WRKSRC}/LICENSE
 
-LIB_DEPENDS=	libminizip.so:archivers/minizip \
-		libmodplug.so:audio/libmodplug
+BROKEN_FreeBSD_14_i386=	lld crashes during build
 
-USES=		compiler:c++11-lang gmake sdl
+LIB_DEPENDS=	libmodplug.so:audio/libmodplug
+
+USES=		compiler:c++11-lang gmake minizip sdl
 USE_SDL=	mixer2 sdl2
 
 MAKE_ENV+=	LIBSDL2=1

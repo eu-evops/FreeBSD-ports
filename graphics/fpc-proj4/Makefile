@@ -1,5 +1,4 @@
-# Created by: Christopher Key <cjk32@cam.ac.uk>
-
+PORTREVISION=	5
 CATEGORIES=	graphics lang
 PKGNAMESUFFIX=	-proj4
 

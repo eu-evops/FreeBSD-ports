@@ -7,11 +7,12 @@ DISTNAME=	${PORTNAME}-src-v${DISTVERSION}-rtm
 
 MAINTAINER=	meta@FreeBSD.org
 COMMENT=	SoftEther VPN 4 (RTM version)
+WWW=		https://www.softether.org
 
 LICENSE=	APACHE20
 LICENSE_FILE=	${WRKSRC}/LICENSE
 
-ONLY_FOR_ARCHS=	amd64 armv7 i386 powerpc powerpc64 powerpc64le
+ONLY_FOR_ARCHS=	aarch64 amd64 armv7 i386 powerpc powerpc64 powerpc64le riscv64
 
 USES=		dos2unix gmake iconv:wchar_t localbase:ldflags ncurses \
 		readline ssl

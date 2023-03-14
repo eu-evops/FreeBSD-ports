@@ -1,14 +1,18 @@
 PORTNAME=	openethereum
 DISTVERSIONPREFIX=	v
 DISTVERSION=	3.2.6
-PORTREVISION=	5
+PORTREVISION=	17
 CATEGORIES=	net-p2p
 
 MAINTAINER=	ale@FreeBSD.org
 COMMENT=	Fast and feature-rich multi-network Ethereum client
+WWW=		https://github.com/openethereum/openethereum/
 
 LICENSE=	GPLv3
 LICENSE_FILE=	${WRKSRC}/LICENSE
+
+DEPRECATED=	yes
+EXPIRATION_DATE=2023-03-15
 
 USES=		cargo
 

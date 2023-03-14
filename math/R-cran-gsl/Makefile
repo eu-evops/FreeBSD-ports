@@ -1,12 +1,11 @@
-# Created by: Guangyuan Yang <ygy@FreeBSD.org>
-
 PORTNAME=	gsl
-DISTVERSION=	2.1-7.1
+DISTVERSION=	2.1-8
 CATEGORIES=	math
 DISTNAME=	${PORTNAME}_${DISTVERSION}
 
 MAINTAINER=	ygy@FreeBSD.org
 COMMENT=	Wrapper for the Gnu Scientific Library
+WWW=		https://github.com/RobinHankin/gsl
 
 LICENSE=	GPLv3
 

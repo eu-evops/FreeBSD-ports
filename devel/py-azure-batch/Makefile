@@ -1,11 +1,12 @@
 PORTNAME=	azure-batch
-PORTVERSION=	11.0.0
+PORTVERSION=	12.0.0
 CATEGORIES=	devel python
-MASTER_SITES=	CHEESESHOP
+MASTER_SITES=	PYPI
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
 
 MAINTAINER=	dbaio@FreeBSD.org
 COMMENT=	Microsoft Azure Batch Client Library for Python
+WWW=		https://pypi.org/project/azure-batch/
 
 LICENSE=	MIT
 

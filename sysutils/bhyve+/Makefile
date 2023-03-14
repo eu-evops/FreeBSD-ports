@@ -4,6 +4,7 @@ CATEGORIES=	sysutils
 
 MAINTAINER=	pali.gabor@gmail.com
 COMMENT=	BHyVe with unofficial extensions
+WWW=		https://github.com/pgj/freebsd-bhyve-plus-port
 
 LICENSE=	BSD2CLAUSE
 
@@ -18,7 +19,8 @@ SRCS=		${SRC_BASE}/sys/modules/vmm \
 		${SRC_BASE}/usr.sbin/bhyve \
 		${SRC_BASE}/usr.sbin/bhyvectl \
 		${SRC_BASE}/usr.sbin/bhyveload \
-		${SRC_BASE}/share/mk
+		${SRC_BASE}/share/mk \
+		${SRC_BASE}/contrib/bmake/mk
 
 .for _src in ${SRCS}
 .  if !exists(${_src}) && empty(IGNORE)
@@ -34,9 +36,9 @@ GH_TAGNAME=	7ef466772108856ee3e093735033232a6f1a3f04
 USE_LDCONFIG=	yes
 
 .if 1200000 <= ${OSVERSION} && ${OSVERSION} < 1300000
-EXTRA_PATCHES=	${PATCHDIR}/freebsd-12
-.elif 1300000 <= ${OSVERSION} && ${OSVERSION} < 1400000
-EXTRA_PATCHES=	${PATCHDIR}/freebsd-13
+EXTRA_PATCHES=	${PATCHDIR}/freebsd-12 ${PATCHDIR}/freebsd-12/3
+.elif 1301000 <= ${OSVERSION} && ${OSVERSION} < 1400000
+EXTRA_PATCHES=	${PATCHDIR}/freebsd-13/1
 .elif 1400000 <= ${OSVERSION} && ${OSVERSION} < 1500000
 EXTRA_PATCHES=	${PATCHDIR}/freebsd-14
 .else
@@ -48,6 +50,7 @@ IGNORE+=	cannot build: unsupported system
 WRKSRC=		${WRKDIR}
 
 _LINKS=		sys/cam/ctl \
+		sys/contrib/dev/acpica \
 		sys/dev/e1000 \
 		sys/dev/mii \
 		sys/dev/usb/controller \

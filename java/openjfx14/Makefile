@@ -1,6 +1,6 @@
 PORTNAME=	openjfx
 DISTVERSION=	14.0.2.1+1
-PORTREVISION=	4
+PORTREVISION=	9
 CATEGORIES=	java x11-toolkits devel
 MASTER_SITES=	https://repo.maven.apache.org/maven2/org/apache/lucene/lucene-core/7.7.1/:core \
 		https://repo.maven.apache.org/maven2/org/apache/lucene/lucene-grouping/7.7.1/:grouping \
@@ -16,13 +16,14 @@ DISTFILES=	lucene-core-7.7.1.jar:core \
 		lucene-sandbox-7.7.1.jar:sandbox \
 		antlr4-4.7.2-complete.jar:antlr
 
-MAINTAINER=	mikael@FreeBSD.org
+MAINTAINER=	ports@FreeBSD.org
 COMMENT=	JavaFX SDK overlay for OpenJDK 11
+WWW=		https://openjdk.java.net/projects/openjfx/
 
 LICENSE=	GPLv2
 LICENSE_FILE=	${WRKSRC}/LICENSE
 
-ONLY_FOR_ARCHS=	aarch64 amd64 powerpc64 powerpc64le
+ONLY_FOR_ARCHS=	aarch64 amd64 i386 powerpc64 powerpc64le
 
 BUILD_DEPENDS=	zip:archivers/zip \
 		apache-ant>0:devel/apache-ant \
@@ -45,7 +46,8 @@ JAVA_VERSION=	11
 USE_LDCONFIG=	yes
 USE_XORG=	x11 xtst xxf86vm
 
-CFLAGS+=	-Wno-unused-command-line-argument
+CFLAGS+=	-Wno-unused-command-line-argument \
+		-Wno-int-conversion
 
 PLIST_SUB=	INSTALLDIR=${_INSTALLDIR}
 
@@ -70,14 +72,13 @@ TEST_VARS=	AWT_TEST=true FULL_TEST=true
 
 # Gradle calls CMake during the build
 WEBKIT_IMPLIES=	MEDIA
-WEBKIT_BUILD_DEPENDS=	cmake:devel/cmake
+WEBKIT_BUILD_DEPENDS=	cmake:devel/cmake-core
 WEBKIT_LIB_DEPENDS=	libicui18n.so:devel/icu
-WEBKIT_USES=	bison gmake gperf perl5 python:3.5+,build
+WEBKIT_USES=	bison gmake gperf perl5 python:3.5+,build ruby:build
 WEBKIT_USE=	GNOME=libxslt,libxml2 \
 		PERL5=build \
-		RUBY=yes \
 		XORG=xcomposite,xdamage,xfixes,xrender,xt
-WEBKIT_VARS=	RUBY_NO_RUN_DEPENDS=yes COMPILE_WEBKIT=true
+WEBKIT_VARS=	COMPILE_WEBKIT=true
 
 # Move Gradle's home below ${WRKDIR} instead of using ${HOME}/.gradle
 _GRADLE_ENV=	CC=${WRKDIR}/bin/ccwrapper \
@@ -106,8 +107,8 @@ pre-patch:
 
 post-patch:
 	@${MKDIR} ${WRKDIR}/bin
-	@${PRINTF} '#!/bin/sh\nexec ${CCACHE_BIN} ${CC} ${CFLAGS} ${LDFLAGS} "$$@"\n' > ${WRKDIR}/bin/ccwrapper
-	@${PRINTF} '#!/bin/sh\nexec ${CCACHE_BIN} ${CXX} ${CXXFLAGS} ${LDFLAGS} "$$@"\n' > ${WRKDIR}/bin/cxxwrapper
+	@${PRINTF} '#!/bin/sh\nexport CCACHE_DIR=${CCACHE_DIR}\nexec ${CCACHE_BIN} ${CC} ${CFLAGS} ${LDFLAGS} "$$@"\n' > ${WRKDIR}/bin/ccwrapper
+	@${PRINTF} '#!/bin/sh\nexport CCACHE_DIR=${CCACHE_DIR}\nexec ${CCACHE_BIN} ${CXX} ${CXXFLAGS} ${LDFLAGS} "$$@"\n' > ${WRKDIR}/bin/cxxwrapper
 	@${CHMOD} +x ${WRKDIR}/bin/ccwrapper ${WRKDIR}/bin/cxxwrapper
 	@${REINPLACE_CMD} -e 's|gcc|${WRKDIR}/bin/ccwrapper|g' \
 			  -e 's|g\+\+|${WRKDIR}/bin/cxxwrapper|g' \
@@ -145,7 +146,7 @@ do-configure:
 # the java doc are not installed on FreeBSD so exclude the javadoc task
 # as it'll fail otherwise
 do-build:
-	@cd ${WRKSRC} && ${SETENV} ${_GRADLE_RUN} zips --exclude-task javadoc
+	@cd ${WRKSRC} && ${_GRADLE_RUN} zips --exclude-task javadoc
 
 # it's not recommended to install openjfx inside openjdk directory
 do-install:

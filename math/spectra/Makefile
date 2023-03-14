@@ -1,11 +1,11 @@
 PORTNAME=	spectra
 DISTVERSIONPREFIX=	v
-DISTVERSION=	1.0.0
-PORTREVISION=	1
+DISTVERSION=	1.0.1
 CATEGORIES=	math
 
 MAINTAINER=	yuri@FreeBSD.org
 COMMENT=	C++ library for large scale eigenvalue problems
+WWW=		https://spectralib.org
 
 LICENSE=	MPL20
 LICENSE_FILE=	${WRKSRC}/LICENSE

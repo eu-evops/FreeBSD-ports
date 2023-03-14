@@ -1,5 +1,5 @@
-TIMESTAMP = 1621699092
-SHA256 (go/www_owncast/owncast-v0.0.7/v0.0.7.mod) = 6c8f7d34644390290d78d7f28de6ad4d48039ef4bdee06d81209278e5d7bd499
-SIZE (go/www_owncast/owncast-v0.0.7/v0.0.7.mod) = 1195
-SHA256 (go/www_owncast/owncast-v0.0.7/v0.0.7.zip) = 57d49132a77284cfb4ca80a777dccd932e33624344de0268a6c8b08972f13cce
-SIZE (go/www_owncast/owncast-v0.0.7/v0.0.7.zip) = 8802792
+TIMESTAMP = 1659703364
+SHA256 (go/www_owncast/owncast-v0.0.12/v0.0.12.mod) = a1ae542457fafd0175e6bb7c23b6db9fb06a12178519d73c66ee855d94383c7a
+SIZE (go/www_owncast/owncast-v0.0.12/v0.0.12.mod) = 2868
+SHA256 (go/www_owncast/owncast-v0.0.12/v0.0.12.zip) = 04b65f1bd31300ba46e506e87e1768fae5fd54d6e16bab11786c4585dec68eb9
+SIZE (go/www_owncast/owncast-v0.0.12/v0.0.12.zip) = 10688276

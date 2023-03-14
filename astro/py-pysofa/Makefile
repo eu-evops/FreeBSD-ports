@@ -2,11 +2,12 @@ PORTNAME=	pysofa
 DISTVERSION=	0.1.1
 PORTREVISION=	2
 CATEGORIES=	astro devel python
-MASTER_SITES=	CHEESESHOP
+MASTER_SITES=	PYPI
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
 
 MAINTAINER=	yuri@FreeBSD.org
 COMMENT=	Python binding for SOFA, the fundamental astronomy library
+WWW=		https://code.google.com/archive/p/pysofa/
 
 LICENSE=	PD
 LICENSE_FILE=	${WRKSRC}/COPYING

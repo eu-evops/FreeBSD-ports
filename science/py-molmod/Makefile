@@ -1,11 +1,12 @@
 PORTNAME=	molmod
 DISTVERSION=	1.4.8
 CATEGORIES=	science python
-MASTER_SITES=	CHEESESHOP
+MASTER_SITES=	PYPI
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
 
 MAINTAINER=	yuri@FreeBSD.org
 COMMENT=	Collection of molecular modelling tools for python
+WWW=		https://github.com/molmod/molmod
 
 LICENSE=	GPLv3+
 LICENSE_FILE=	${WRKSRC}/LICENSE.txt

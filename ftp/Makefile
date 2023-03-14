@@ -36,7 +36,6 @@
     SUBDIR += libfilezilla
     SUBDIR += linux-c7-curl
     SUBDIR += mirror
-    SUBDIR += multiget
     SUBDIR += ncftp3
     SUBDIR += net2ftp
     SUBDIR += netdumpd
@@ -54,18 +53,16 @@
     SUBDIR += pavuk
     SUBDIR += pear-Net_FTP
     SUBDIR += pftpd
-    SUBDIR += php-fastdfs
-    SUBDIR += php73-curl
-    SUBDIR += php73-ftp
-    SUBDIR += php74-curl
-    SUBDIR += php74-ftp
     SUBDIR += php80-curl
     SUBDIR += php80-ftp
+    SUBDIR += php81-curl
+    SUBDIR += php81-ftp
+    SUBDIR += php82-curl
+    SUBDIR += php82-ftp
     SUBDIR += phpwebftp
     SUBDIR += proftpd
     SUBDIR += proftpd-mod_vroot
     SUBDIR += profxp
-    SUBDIR += puf
     SUBDIR += pure-ftpd
     SUBDIR += py-aioftp
     SUBDIR += py-ftputil
@@ -81,12 +78,12 @@
     SUBDIR += sftpgo
     SUBDIR += smbftpd
     SUBDIR += spegla
+    SUBDIR += termscp
     SUBDIR += tftp-hpa
     SUBDIR += tnftp
     SUBDIR += tnftpd
     SUBDIR += twoftpd
     SUBDIR += uftp
-    SUBDIR += urlgfe
     SUBDIR += vsftpd
     SUBDIR += vsftpd-ext
     SUBDIR += waiho
@@ -94,7 +91,6 @@
     SUBDIR += wget
     SUBDIR += wmget
     SUBDIR += wput
-    SUBDIR += wxdfast
     SUBDIR += wzdftpd
     SUBDIR += yafc
 

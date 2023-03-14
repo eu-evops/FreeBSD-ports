@@ -1,5 +1,3 @@
-# Created by: Thierry Thomas (<thierry@thomas.as>)
-
 PORTNAME=	kronolith
 PORTVERSION=	4.2.29
 CATEGORIES=	deskutils www pear
@@ -7,18 +5,18 @@ PKGNAMEPREFIX=	${PHP_PKGNAMEPREFIX}horde-
 
 MAINTAINER=	horde@FreeBSD.org
 COMMENT=	Horde web based calendar
+WWW=		https://www.horde.org/apps/kronolith/
 
 LICENSE=	GPLv2
 LICENSE_FILE=	${WRKSRC}/COPYING
 
-OPTIONS_DEFAULT=	DATE_HOLIDAYS TIMEOBJECTS
-OPTIONS_DEFINE=		DATE_HOLIDAYS TIMEOBJECTS XMLWRITER
-DATE_HOLIDAYS_DESC=	Depend on PEAR Date_Holidays
-TIMEOBJECTS_DESC=	Depenbd on Horde timeobjects
-XMLWRITER_DESC=		Depend on PHP xmlwriter extension
+DEPRECATED=	Requires php74
+EXPIRATION_DATE=	2023-03-31
+BROKEN=	runtime error with php80
+
+RUN_DEPENDS+=	${PEARDIR}/Date.php:devel/pear-Date@${PHP_FLAVOR}
 
 USES=		horde php cpe
-USE_PHP=	gettext json simplexml
 USE_HORDE_BUILD=	Horde_Role
 USE_HORDE_RUN=	Horde_Role \
 		content \
@@ -52,11 +50,16 @@ USE_HORDE_RUN=	Horde_Role \
 		Horde_Url \
 		Horde_Util \
 		Horde_View
+USE_PHP=	gettext json simplexml
+IGNORE_WITH_PHP=81 82
 
-RUN_DEPENDS+=	${PEARDIR}/Date.php:devel/pear-Date@${PHP_FLAVOR}
+OPTIONS_DEFINE=		DATE_HOLIDAYS TIMEOBJECTS XMLWRITER
+OPTIONS_DEFAULT=	DATE_HOLIDAYS TIMEOBJECTS
+DATE_HOLIDAYS_DESC=	Depend on PEAR Date_Holidays
+TIMEOBJECTS_DESC=	Depenbd on Horde timeobjects
+XMLWRITER_DESC=		Depend on PHP xmlwriter extension
 
 DATE_HOLIDAYS_RUN_DEPENDS=	${PEARDIR}/Date/Holidays.php:devel/pear-Date_Holidays@${PHP_FLAVOR}
-
 TIMEOBJECTS_USE=	HORDE_RUN=timeobjects
 XMLWRITER_USE=	PHP=xmlwriter
 

@@ -1,5 +1,3 @@
-# Created by: Oliver Heesakkers <dev2@heesakkers.info>
-
 PORTNAME=	zbar
 DISTVERSION=	0.23.90
 CATEGORIES=	graphics
@@ -7,6 +5,7 @@ MASTER_SITES=	https://linuxtv.org/downloads/zbar/
 
 MAINTAINER=	dev2@heesakkers.info
 COMMENT=	ZBar barcode reader
+WWW=		https://github.com/mchehab/zbar/
 
 LICENSE=	LGPL21
 
@@ -59,7 +58,7 @@ GTK_NONE_CONFIGURE_ON=		--with-gtk=no
 GRAPHICSMAGICK_LIB_DEPENDS=	libGraphicsMagickWand.so:graphics/GraphicsMagick
 GRAPHICSMAGICK_CONFIGURE_WITH=	graphicsmagick
 
-IMAGEMAGICK_LIB_DEPENDS=	libMagickWand-${IMAGEMAGICK_DEFAULT}.so:graphics/ImageMagick${IMAGEMAGICK_DEFAULT}
+IMAGEMAGICK_USES=		magick
 IMAGEMAGICK_CONFIGURE_WITH=	imagemagick
 
 JPEG_USES=			jpeg
@@ -70,7 +69,7 @@ NLS_LDFLAGS=			-lintl
 NLS_CONFIGURE_ENABLE=		nls
 
 QT5_USES=			qt:5
-QT5_USE=			QT=core,gui,widgets,x11extras,buildtools_build
+QT5_USE=			QT=core,gui,widgets,x11extras,buildtools:build
 QT5_CONFIGURE_WITH=		qt qt5
 QT5_IMPLIES=			X11
 

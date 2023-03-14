@@ -1,5 +1,3 @@
-# Created by: Yukihiro Nakai <nakai@FreeBSD.org>
-
 PORTNAME=	epplets
 PORTVERSION=	0.14
 PORTREVISION=	9
@@ -11,10 +9,9 @@ COMMENT=	Collection of Enlightenment dock applications
 
 BUILD_DEPENDS=	e16:x11-wm/e16
 LIB_DEPENDS=	libcdaudio.so:audio/libcdaudio
-RUN_DEPENDS=	e16:x11-wm/e16 \
-		import:graphics/ImageMagick6
+RUN_DEPENDS=	e16:x11-wm/e16
 
-USES=		gl gmake libtool pkgconfig xorg
+USES=		gl gmake libtool magick:6,run pkgconfig xorg
 USE_XORG=	xext
 USE_GL=		glut
 USE_LDCONFIG=	yes

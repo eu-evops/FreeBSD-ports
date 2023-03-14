@@ -1,10 +1,11 @@
 PORTNAME=	fcft
-DISTVERSION=	2.5.0
+DISTVERSION=	3.1.5
 CATEGORIES=	x11-fonts
 MASTER_SITES=	https://codeberg.org/dnkl/${PORTNAME}/archive/${DISTVERSIONFULL}${EXTRACT_SUFX}?dummy=/
 
 MAINTAINER=	jbeich@FreeBSD.org
 COMMENT=	Simple library for font loading and glyph rasterization
+WWW=		https://codeberg.org/dnkl/fcft
 
 LICENSE=	MIT
 LICENSE_FILE=	${WRKSRC}/LICENSE
@@ -19,8 +20,11 @@ USE_LDCONFIG=	yes
 USE_XORG=	pixman
 WRKSRC=		${WRKDIR}/${PORTNAME}
 
-OPTIONS_DEFINE=	HARFBUZZ UTF8PROC
+OPTIONS_DEFINE=	DOCS HARFBUZZ UTF8PROC
 OPTIONS_DEFAULT=HARFBUZZ UTF8PROC
+
+DOCS_BUILD_DEPENDS=	scdoc:textproc/scdoc
+DOCS_MESON_ENABLED=	docs
 
 HARFBUZZ_DESC=		Shaping of individual grapheme clusters via HarfBuzz
 HARFBUZZ_LIB_DEPENDS=	libharfbuzz.so:print/harfbuzz

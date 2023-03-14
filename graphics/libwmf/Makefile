@@ -1,12 +1,12 @@
-# Created by: Chris Piazza <cpiazza@FreeBSD.org>
-
 PORTNAME=	libwmf
 DISTVERSIONPREFIX=	v
 DISTVERSION=	0.2.12
+PORTREVISION=	1
 CATEGORIES=	graphics
 
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Tools and library for converting Microsoft WMF (windows metafile)
+WWW=		http://wvware.sourceforge.net/libwmf.html
 
 LICENSE=	GPLv2+
 LICENSE_FILE=	${WRKSRC}/COPYING
@@ -16,8 +16,9 @@ LIB_DEPENDS=	libpng.so:graphics/png \
 		libgd.so:graphics/gd \
 		libexpat.so:textproc/expat2
 
-USES=		autoreconf:build cpe jpeg libtool localbase pkgconfig
+USES=		autoreconf:build cpe gnome jpeg libtool localbase pkgconfig
 USE_GITHUB=	yes
+USE_GNOME=	gdkpixbuf2
 GH_ACCOUNT=	caolanm
 USE_LDCONFIG=	yes
 CPE_VENDOR=	wvware

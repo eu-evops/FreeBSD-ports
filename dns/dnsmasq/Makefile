@@ -1,7 +1,5 @@
-# Created by: Steven Honson
-
 PORTNAME=	dnsmasq
-DISTVERSION=	2.86
+DISTVERSION=	2.89
 # Leave the PORTREVISION in even if 0 to avoid accidental PORTEPOCH bumps:
 PORTREVISION=	0
 PORTEPOCH=	1
@@ -11,6 +9,7 @@ MASTER_SITES=	https://www.thekelleys.org.uk/dnsmasq/ \
 
 MAINTAINER=	mandree@FreeBSD.org
 COMMENT=	Lightweight DNS forwarder, DHCP, and TFTP server
+WWW=		https://www.thekelleys.org.uk/dnsmasq/doc.html
 
 LICENSE=	GPLv2
 

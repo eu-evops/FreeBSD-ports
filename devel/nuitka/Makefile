@@ -1,19 +1,20 @@
-# Created by: Alexey Dokuchaev <danfe@FreeBSD.org>
-
 PORTNAME=	nuitka
-PORTVERSION=	0.6.17
+PORTVERSION=	1.4
 CATEGORIES=	devel python
-MASTER_SITES=	CHEESESHOP
+MASTER_SITES=	PYPI
 PKGNAMESUFFIX=	${PYTHON_PKGNAMESUFFIX}
 DISTNAME=	Nuitka-${PORTVERSION}
 
 MAINTAINER=	python@FreeBSD.org
 COMMENT=	Compatible and efficient Python compiler
+WWW=		https://nuitka.net/
 
 LICENSE=	APACHE20
 LICENSE_FILE=	${WRKSRC}/LICENSE.txt
 
-USES=		python:3.6+
+USES=		cpe python:3.6+
 USE_PYTHON=	autoplist concurrent distutils
+
+NO_ARCH=	yes
 
 .include <bsd.port.mk>

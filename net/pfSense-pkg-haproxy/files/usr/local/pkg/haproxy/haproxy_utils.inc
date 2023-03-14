@@ -3,7 +3,7 @@
  * haproxy_utils.inc
  *
  * part of pfSense (https://www.pfsense.org)
- * Copyright (c) 2016-2022 Rubicon Communications, LLC (Netgate)
+ * Copyright (c) 2016-2023 Rubicon Communications, LLC (Netgate)
  * Copyright (c) 2013-2015 PiBa-NL
  * All rights reserved.
  *
@@ -30,7 +30,7 @@ require_once("config.inc");
 class haproxy_utils {
 	public static $pf_version;
 
-	public function query_dns($host, $querytype="A,AAAA") {
+	public static function query_dns($host, $querytype="A,AAAA") {
 		$result = array();
 		$types = explode(',',$querytype);
 		$recordtype = 0;

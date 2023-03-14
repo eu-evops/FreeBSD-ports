@@ -3,7 +3,7 @@
  * vpn_wg_tunnels_edit.php
  *
  * part of pfSense (https://www.pfsense.org)
- * Copyright (c) 2021-2022 Rubicon Communications, LLC (Netgate)
+ * Copyright (c) 2021-2023 Rubicon Communications, LLC (Netgate)
  * Copyright (c) 2021 R. Christian McDonald (https://github.com/theonemcdonald)
  * All rights reserved.
  *
@@ -290,12 +290,14 @@ if (!is_wg_tunnel_assigned($pconfig['name'])) {
 	));
 
 	// Init the addresses array if necessary
-	if (!is_array($pconfig['addresses']['row']) || empty($pconfig['addresses']['row'])) {
-		wg_init_config_arr($pconfig, array('addresses', 'row', 0));
+	if (!is_array($pconfig['addresses'])
+	    || !is_array($pconfig['addresses']['row'])
+	    || empty($pconfig['addresses']['row'])) {
+			wg_init_config_arr($pconfig, array('addresses', 'row', 0));
 
-		// Hack to ensure empty lists default to /128 mask
-		$pconfig['addresses']['row'][0]['mask'] = '128';
-	}
+			// Hack to ensure empty lists default to /128 mask
+			$pconfig['addresses']['row'][0]['mask'] = '128';
+		}
 
 	$last = count($pconfig['addresses']['row']) - 1;
 

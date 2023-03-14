@@ -4,6 +4,7 @@ CATEGORIES=	textproc
 
 MAINTAINER=	swills@FreeBSD.org
 COMMENT=	DocBook to AsciiDoc converter
+WWW=		https://github.com/asciidoctor/docbookrx
 
 LICENSE=	MIT
 LICENSE_FILE=	${WRKSRC}/LICENSE
@@ -14,7 +15,7 @@ BUILD_DEPENDS=	${LOCALBASE}/bin/rake:devel/rubygem-rake \
 		rubygem-rspec>=1.2.2:devel/rubygem-rspec
 RUN_DEPENDS=	rubygem-nokogiri>=1.8:textproc/rubygem-nokogiri
 
-USE_RUBY=	yes
+USES=	ruby
 USE_GITHUB=	yes
 
 OPTIONS_DEFINE=	DOCS
@@ -30,7 +31,7 @@ RUBYGEM_ARGS=	-l --no-update-sources --ignore-dependencies \
 		--install-dir  ${STAGEDIR}${PREFIX}/lib/ruby/gems/${RUBY_VER} \
 		--bindir=${STAGEDIR}${PREFIX}/bin
 
-RUBYGEMBIN=	${LOCALBASE}/bin/gem${RUBY_VER:S/.//}
+RUBYGEMBIN=	${LOCALBASE}/bin/gem
 GEMS_BASE_DIR=	lib/ruby/gems/${RUBY_VER}
 GEMS_DIR=	${GEMS_BASE_DIR}/gems
 DOC_DIR=	${GEMS_BASE_DIR}/doc

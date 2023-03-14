@@ -1,13 +1,12 @@
-# Created by: Alexander Logvinov <ports@logvinov.com>
-
 PORTNAME=	flashrom
-PORTVERSION=	1.2
+PORTVERSION=	1.2.1
 DISTVERSIONPREFIX=	v
 CATEGORIES=	sysutils
 MASTER_SITES=	https://download.flashrom.org/releases/
 
 MAINTAINER=	mizhka@gmail.com
 COMMENT=	Utility for reading, writing, verifying, and erasing flash ROM chips
+WWW=		https://www.flashrom.org/
 
 LICENSE=	GPLv2
 LICENSE_FILE=	${WRKSRC}/COPYING

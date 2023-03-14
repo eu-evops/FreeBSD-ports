@@ -1,11 +1,12 @@
 PORTNAME=	gdspy
-PORTVERSION=	1.6.8
+PORTVERSION=	1.6.11
 DISTVERSIONPREFIX=	v
 CATEGORIES=	cad python
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
 
 MAINTAINER=	hrs@FreeBSD.org
 COMMENT=	Python module for creating GDSII stream files
+WWW=		https://github.com/heitzmann/gdspy
 
 LICENSE=	BSL
 LICENSE_FILE=	${WRKSRC}/LICENSE
@@ -34,7 +35,7 @@ EXAMPLES_PLIST_FILES=	\
 	${EXAMPLESDIR}/tutils.py \
 	${EXAMPLESDIR}/maketestgds.py
 
-test:
+do-test:
 	cd ${WRKSRC} && \
 	    ${SETENV} PYTHONPATH=${STAGEDIR}${PYTHON_SITELIBDIR} \
 	    ${LOCALBASE}/bin/pytest

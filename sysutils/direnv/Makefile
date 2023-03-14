@@ -1,10 +1,12 @@
 PORTNAME=	direnv
 PORTVERSION=	2.27.0
 DISTVERSIONPREFIX=	v
+PORTREVISION=	10
 CATEGORIES=	sysutils
 
 MAINTAINER=	swills@FreeBSD.org
 COMMENT=	Environment variable manager for your shell
+WWW=		https://direnv.net/
 
 LICENSE=	MIT
 LICENSE_FILE=	${WRKSRC}/LICENSE

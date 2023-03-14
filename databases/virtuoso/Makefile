@@ -1,14 +1,13 @@
-# Created by: Max Khon <fjoe@FreeBSD.org>
-
 PORTNAME=	virtuoso
 PORTVERSION=	7.2.5
-PORTREVISION=	1
+PORTREVISION=	3
 CATEGORIES=	databases
 MASTER_SITES=	SF
 DISTNAME=	${PORTNAME}-opensource-${PORTVERSION}
 
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Universal SQL/Application Server
+WWW=		http://virtuoso.openlinksw.com/
 
 LICENSE=	GPLv2
 LICENSE_FILE=	${WRKSRC}/COPYING
@@ -74,7 +73,7 @@ BROKEN_FreeBSD_14=	OpenSSL version 1.1.0 or greater is currently not supported
 
 .if ${PORT_OPTIONS:MIMAGEMAGICK}
 CONFIGURE_ARGS+=--enable-imagemagick=${LOCALBASE}
-LIB_DEPENDS+=	libMagickWand-6.so:graphics/ImageMagick6
+USES+=		magick:6
 PLIST_SUB+=	WITH_IMAGEMAGICK=""
 .else
 CONFIGURE_ARGS+=--disable-imagemagick
@@ -100,7 +99,7 @@ CONFIGURE_ARGS+=--disable-krb
 
 .if ${PORT_OPTIONS:MLDAP}
 CONFIGURE_ARGS+=--enable-openldap=${LOCALBASE}
-USE_OPENLDAP=	yes
+USES=	ldap
 .else
 CONFIGURE_ARGS+=--disable-openldap
 .endif

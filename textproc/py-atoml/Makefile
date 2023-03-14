@@ -1,13 +1,12 @@
-# Created by: Po-Chuan Hsieh <sunpoet@FreeBSD.org>
-
 PORTNAME=	atoml
-PORTVERSION=	1.1.0
+PORTVERSION=	1.1.1
 CATEGORIES=	textproc python
-MASTER_SITES=	CHEESESHOP
+MASTER_SITES=	PYPI
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
 
 MAINTAINER=	sunpoet@FreeBSD.org
 COMMENT=	Yet another style preserving TOML library
+WWW=		https://github.com/frostming/atoml
 
 LICENSE=	MIT
 LICENSE_FILE=	${WRKSRC}/LICENSE

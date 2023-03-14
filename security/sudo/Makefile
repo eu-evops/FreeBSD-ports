@@ -1,16 +1,15 @@
-# Created by: erich@rrnet.com
-
 PORTNAME=	sudo
-PORTVERSION=	1.9.8p2
+PORTVERSION=	1.9.13p2
 CATEGORIES=	security
 MASTER_SITES=	SUDO
 
 MAINTAINER=	garga@FreeBSD.org
 COMMENT=	Allow others to run commands as root
+WWW=		https://www.sudo.ws/
 
 LICENSE=	sudo
 LICENSE_NAME=	Sudo license
-LICENSE_FILE=	${WRKSRC}/doc/LICENSE
+LICENSE_FILE=	${WRKSRC}/LICENSE.md
 LICENSE_PERMS=	dist-mirror dist-sell pkg-mirror pkg-sell auto-accept
 
 USES=		cpe libtool
@@ -64,7 +63,7 @@ NLS_CFLAGS=	-I${LOCALBASE}/include
 INSULTS_CONFIGURE_ON=	--with-insults
 INSULTS_CONFIGURE_ON+=	--with-all-insults
 
-LDAP_USE=	OPENLDAP=yes
+LDAP_USES=	ldap
 LDAP_CONFIGURE_ON=	--with-ldap=${PREFIX}
 SUDO_LDAP_CONF?=	ldap.conf
 LDAP_CONFIGURE_ON+=	--with-ldap-conf-file=${PREFIX}/etc/${SUDO_LDAP_CONF}
@@ -117,7 +116,7 @@ post-install:
 	${STRIP_CMD} ${STAGEDIR}${PREFIX}/sbin/sudo_logsrvd
 	${STRIP_CMD} ${STAGEDIR}${PREFIX}/sbin/sudo_sendlog
 	${STRIP_CMD} ${STAGEDIR}${PREFIX}/sbin/visudo
-.for f in audit_json.so group_file.so libsudo_util.so sample_approval.so sudoers.so system_group.so
+.for f in audit_json.so group_file.so libsudo_util.so sudoers.so system_group.so
 	${STRIP_CMD} ${STAGEDIR}${PREFIX}/libexec/sudo/${f}
 .endfor
 

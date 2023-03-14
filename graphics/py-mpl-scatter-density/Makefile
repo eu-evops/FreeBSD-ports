@@ -1,11 +1,12 @@
 PORTNAME=	mpl-scatter-density
 PORTVERSION=	0.7
 CATEGORIES=	graphics python
-MASTER_SITES=	CHEESESHOP
+MASTER_SITES=	PYPI
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
 
 MAINTAINER=	yuri@FreeBSD.org
 COMMENT=	Matplotlib helpers to make density scatter plots
+WWW=		https://github.com/astrofrog/mpl-scatter-density
 
 LICENSE=	BSD2CLAUSE
 LICENSE_FILE=	${WRKSRC}/LICENSE

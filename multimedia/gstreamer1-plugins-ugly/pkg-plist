@@ -25,6 +25,7 @@ share/locale/hu/LC_MESSAGES/gst-plugins-ugly-%%VERSION%%.mo
 share/locale/id/LC_MESSAGES/gst-plugins-ugly-%%VERSION%%.mo
 share/locale/it/LC_MESSAGES/gst-plugins-ugly-%%VERSION%%.mo
 share/locale/ja/LC_MESSAGES/gst-plugins-ugly-%%VERSION%%.mo
+share/locale/ka/LC_MESSAGES/gst-plugins-ugly-%%VERSION%%.mo
 share/locale/lt/LC_MESSAGES/gst-plugins-ugly-%%VERSION%%.mo
 share/locale/lv/LC_MESSAGES/gst-plugins-ugly-%%VERSION%%.mo
 share/locale/ms/LC_MESSAGES/gst-plugins-ugly-%%VERSION%%.mo
@@ -46,3 +47,4 @@ share/locale/tr/LC_MESSAGES/gst-plugins-ugly-%%VERSION%%.mo
 share/locale/uk/LC_MESSAGES/gst-plugins-ugly-%%VERSION%%.mo
 share/locale/vi/LC_MESSAGES/gst-plugins-ugly-%%VERSION%%.mo
 share/locale/zh_CN/LC_MESSAGES/gst-plugins-ugly-%%VERSION%%.mo
+share/locale/zh_TW/LC_MESSAGES/gst-plugins-ugly-%%VERSION%%.mo

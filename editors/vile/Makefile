@@ -1,10 +1,8 @@
-# Created by: pgf
-
 PORTNAME=	vile
-PORTVERSION=	9.8u
+PORTVERSION=	9.8w
 CATEGORIES=	editors
-MASTER_SITES=	ftp://dickey.his.com/vile/current/ \
-		ftp://ftp.invisible-island.net/vile/current/ \
+MASTER_SITES=	https://invisible-island.net/archives/vile/current/ \
+		ftp://ftp.invisible-island.net/pub/vile/current/ \
 		https://invisible-mirror.net/archives/vile/current/
 
 PATCH_SITES=	${MASTER_SITES:S,vile/current/,vile/patches/,g}
@@ -12,6 +10,7 @@ PATCH_SITES=	${MASTER_SITES:S,vile/current/,vile/patches/,g}
 
 MAINTAINER=	dickey@invisible-island.net
 COMMENT=	VI Like Emacs -- console version
+WWW=		https://invisible-island.net/vile/
 
 LICENSE=	GPLv2
 LICENSE_FILE=	${WRKSRC}/COPYING
@@ -24,8 +23,6 @@ GNU_CONFIGURE=	yes
 CONFIGURE_ENV=	cf_cv_crypt_works=yes
 MAKEFILE=	makefile
 INSTALL_TARGET=	install install-doc install-html
-
-CONFLICTS_INSTALL=	xvile
 
 OPTIONS_DEFINE=		DOCS FILTERS ICONV PERL
 OPTIONS_SUB=		yes

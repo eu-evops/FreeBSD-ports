@@ -1,15 +1,18 @@
-# Created by: Rainer Hurling <rhurlin@gwdg.de>
-
 PORTNAME=	saga
-PORTVERSION=	8.0.1
+PORTVERSION=	8.5.1
 CATEGORIES=	math
 MASTER_SITES=	SF/saga-gis/SAGA%20-%20${PORTVERSION:C/\.[[:digit:]]\.[[:digit:]]*$//}/SAGA%20-%20${PORTVERSION}
 
 MAINTAINER=	rhurlin@FreeBSD.org
 COMMENT=	System for Automated Geoscientific Analyses
+WWW=		http://www.saga-gis.org/en/index.html
 
 LICENSE=	GPLv2 LGPL21
 LICENSE_COMB=	multi
+
+.if !exists(/usr/include/omp.h)
+BROKEN=		requires OpenMP support that is missing on this architecture
+.endif
 
 BUILD_DEPENDS=	clang${LLVM_DEFAULT}:devel/llvm${LLVM_DEFAULT} \
 		swig:devel/swig
@@ -18,15 +21,13 @@ LIB_DEPENDS=	libcurl.so:ftp/curl \
 		libgdal.so:graphics/gdal \
 		libhdf5.so:science/hdf5 \
 		libhpdf.so:print/libharu \
-		libjasper.so:graphics/jasper \
-		liblas12.so:devel/liblas12 \
 		libodbc.so:databases/unixODBC \
 		libopencv_core.so:graphics/opencv \
 		libpdal_base.so:math/pdal \
 		libproj.so:graphics/proj \
 		libqhull_r.so:math/qhull \
 		libsvm.so:science/libsvm \
-		libsz.so:science/szip \
+		libsz.so:science/libaec \
 		libtiff.so:graphics/tiff
 RUN_DEPENDS:=	swig:devel/swig
 
@@ -34,14 +35,15 @@ USES=		cmake compiler:c++11-lib dos2unix gnome \
 		iconv:wchar_t libtool localbase pkgconfig python
 DOS2UNIX_GLOB=	*.cpp *.h
 USE_LDCONFIG=	yes
-USE_WX=		3.1+
+USE_WX=		3.2+
 
-CMAKE_ARGS+=	-DLAS_INCLUDE:PATH=${LOCALBASE}/include/liblas12/capi/liblas.h \
-		-DLAS_LIBRARY:FILEPATH=${LOCALBASE}/lib/liblas12.so \
-		-DSVM_INCLUDE:PATH=${LOCALBASE}/include/svm.h
-CMAKE_ON=	WITH_DEV_TOOLS WITH_EXCERCISES WITH_SYSTEM_SVM
+GIT_TAGNAME=	570fadfa8
+
+CMAKE_ARGS=	-DSVM_INCLUDE:PATH=${LOCALBASE}/include/svm.h
+CMAKE_ON=	WITH_DEV_TOOLS WITH_EXCERCISES WITH_MRMR WITH_SYSTEM_SVM
 CMAKE_ON+=	CMAKE_VERBOSE_MAKEFILE
-CMAKE_OFF+=	WITH_TRIANGLE
+CMAKE_OFF=	WITH_CLIPPER_ONE
+CMAKE_OFF+=	WITH_TOOLS_LAS WITH_TRIANGLE
 
 WRKSRC=		${WRKDIR}/${PORTNAME}-${PORTVERSION}/saga-gis
 
@@ -51,9 +53,11 @@ OPTIONS_DEFINE=	PGSQL OPENMP VIGRA
 OPTIONS_DEFAULT=	PGSQL VIGRA
 OPTIONS_DEFAULT_amd64=	OPENMP
 OPTIONS_DEFAULT_i386=	OPENMP
+OPTIONS_DEFAULT_powerpc64=	OPENMP
+OPTIONS_DEFAULT_powerpc64le=	OPENMP
 NO_OPTIONS_SORT=	yes
 OPTIONS_SUB=	yes
-OPENMP_DESC=	Enable Multiprocessing (only amd64 and i386)
+OPENMP_DESC=	Enable Multiprocessing (only amd64, i386 and powerpc64*)
 VIGRA_DESC=	Enable 'Vision with Generic Algorithms' Library
 
 OPENMP_CONFIGURE_ENABLE=	openmp
@@ -76,12 +80,11 @@ post-patch:
 	@${REINPLACE_CMD} -e 's|typedef unsigned long	DWORD;|typedef unsigned int	DWORD;|' \
 		${WRKSRC}/src/saga_core/saga_api/api_core.h
 .endif
-	@${REINPLACE_CMD} -e 's|PORTVERSION|${PORTVERSION}|' \
+	@${REINPLACE_CMD} -e 's|GIT_TAGNAME|${GIT_TAGNAME}|g' \
+		${WRKSRC}/src/saga_core/saga_gui/CMakeLists.txt \
 		${WRKSRC}/src/saga_core/saga_gui/dlg_about.cpp
 	@${REINPLACE_CMD} -e 's|-lgomp|-lomp|' \
 		${WRKSRC}/src/accessories/templates/template4saga-tools/my_tool_library/Makefile
-	@${REINPLACE_CMD} -e 's|COMMAND python -c|COMMAND python${PYTHON_VER} -c|' \
-		${WRKSRC}/src/saga_core/saga_api/saga_api_python/CMakeLists.txt
 
 post-install:
 	${MKDIR} ${STAGEDIR}${DATADIR}

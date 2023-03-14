@@ -1,9 +1,10 @@
-# Created by: Marc G. Fournier <scrappy@FreeBSD.org>
-
-DISTVERSION?=	10.19
+DISTVERSION?=	10.23
 # PORTREVISION must be ?= otherwise, all slave ports get this PORTREVISION and
 # not their own.  Probably best to keep it at ?=0 when reset here too.
-PORTREVISION?=	0
+PORTREVISION?=	2
+
+DEPRECATED=	PostgreSQL 10 has reached end-of-life
+EXPIRATION_DATE=2023-03-07
 
 MAINTAINER?=	pgsql@FreeBSD.org
 

@@ -1,13 +1,12 @@
-# Created by: Babak Farrokhi <farrokhi@FreeBSD.org>
-
 PORTNAME=	aiopg
-PORTVERSION=	1.3.3
+PORTVERSION=	1.4.0
 CATEGORIES=	databases python
-MASTER_SITES=	CHEESESHOP
+MASTER_SITES=	PYPI
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
 
 MAINTAINER=	farrokhi@FreeBSD.org
 COMMENT=	Python library for accessing PostgreSQL database using asyncio
+WWW=		https://github.com/aio-libs/aiopg
 
 LICENSE=	BSD2CLAUSE
 LICENSE_FILE=	${WRKSRC}/LICENSE

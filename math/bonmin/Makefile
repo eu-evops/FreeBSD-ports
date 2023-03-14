@@ -1,12 +1,13 @@
 PORTNAME=	bonmin
 DISTVERSIONPREFIX=	releases/
 DISTVERSION=	1.8.8
-PORTREVISION=	3
+PORTREVISION=	5
 CATEGORIES=	math
 PKGNAMEPREFIX=	coin-or-
 
 MAINTAINER=	yuri@FreeBSD.org
 COMMENT=	Basic Open-source Nonlinear Mixed INteger programming
+WWW=		https://projects.coin-or.org/Bonmin
 
 LICENSE=	EPL
 LICENSE_FILE=	${WRKSRC}/Bonmin/LICENSE

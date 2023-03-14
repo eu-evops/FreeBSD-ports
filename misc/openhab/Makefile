@@ -1,12 +1,13 @@
 PORTNAME=	openhab
-PORTVERSION=	3.1.0
-PORTREVISION=	1
+PORTVERSION=	3.4.2
+PORTREVISION=	0
 CATEGORIES=	misc java
 MASTER_SITES=	https://openhab.jfrog.io/artifactory/libs-release-local/org/openhab/distro/openhab/${PORTVERSION}/
 DISTNAME=	openhab-${PORTVERSION}
 
 MAINTAINER=	netchild@FreeBSD.org
 COMMENT=	Vendor and technology agnostic open source smart-home software
+WWW=		https://www.openhab.org/
 
 LICENSE=	EPL
 LICENSE_FILE=	${WRKSRC}/LICENSE.TXT

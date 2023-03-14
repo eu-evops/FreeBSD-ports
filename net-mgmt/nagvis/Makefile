@@ -1,12 +1,11 @@
-# Created by: Andrew 'derfi' Sidorov <derfi@vei.ru>
-
 PORTNAME=	nagvis
-PORTVERSION=	1.9.27
+PORTVERSION=	1.9.34
 CATEGORIES=	net-mgmt
 MASTER_SITES=	http://www.nagvis.org/share/
 
 MAINTAINER=	egypcio@FreeBSD.org
 COMMENT=	Visualization addon for Nagios
+WWW=		https://www.nagvis.org/
 
 LICENSE=	GPLv2
 LICENSE_FILE=	${WRKSRC}/COPYING

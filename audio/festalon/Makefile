@@ -1,5 +1,3 @@
-# Created by: Emanuel Haupt <ehaupt@critical.ch>
-
 PORTNAME=	festalon
 PORTVERSION=	0.5.5
 PORTREVISION=	14
@@ -9,11 +7,12 @@ MASTER_SITES=	http://projects.raphnet.net/festalon/ \
 
 MAINTAINER=	ehaupt@FreeBSD.org
 COMMENT=	Command line player for .nsf and .hes audio files
+WWW=		http://projects.raphnet.net/ #festalon
 
 LICENSE=	GPLv2+
 LICENSE_FILE=	${WRKSRC}/COPYING
 
-ONLY_FOR_ARCHS=	amd64
+ONLY_FOR_ARCHS=	amd64 powerpc powerpc64 powerpc64le
 
 LIB_DEPENDS=	libsamplerate.so:audio/libsamplerate
 

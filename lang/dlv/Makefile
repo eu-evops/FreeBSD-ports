@@ -1,5 +1,3 @@
-# Created by: arved
-
 PORTNAME=	dlv
 PORTVERSION=	20121217
 CATEGORIES=	lang
@@ -9,6 +7,7 @@ EXTRACT_SUFX=
 
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Disjunctive Datalog System
+WWW=		https://www.dlvsystem.com/dlv/
 
 # Converted from RESTRICTED
 LICENSE=	dlv
@@ -17,6 +16,8 @@ LICENSE_TEXT=	Not sure if we can redistribute it
 LICENSE_PERMS=	auto-accept
 
 BROKEN=		unfetchable
+DEPRECATED=	Broken since 2020
+EXPIRATION_DATE=	2023-03-20
 
 NO_WRKSUBDIR=	yes
 EXTRACT_CMD=	${CP}

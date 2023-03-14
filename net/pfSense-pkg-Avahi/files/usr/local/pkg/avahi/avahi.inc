@@ -73,13 +73,14 @@ function avahi_write_config($avahi_config) {
 	$txt .= "\n[reflector]\n";
 	$txt .= "enable-reflector=" . ($avahi_config['reflection'] ? "yes" : "no") . "\n";
 
-	if (($avahi_config['reflection'] == 'yes') && is_array($avahi_config['filtering']['rule']) &&
-	    !empty($avahi_config['filtering']['rule'])) {
+	if ($avahi_config['reflection'] == 'yes') {
 		$filtering = array();
-		foreach ($avahi_config['filtering']['rule'] as $rule) {
+		foreach (array_get_path($avahi_config, 'filtering/rule', []) as $rule) {
 			$filtering[] = $rule['destination'];
 		}
-		$txt .= "reflect-filters=" . implode(',', $filtering) . "\n";
+		if (!empty($filtering)) {
+			$txt .= "reflect-filters=" . implode(',', $filtering) . "\n";
+		}
 	}
 
 	if ($avahi_config['publishing'] == "yes") {
@@ -113,7 +114,7 @@ function avahi_sync_config() {
 		stop_service('avahi');
 	}
 
-	$avahi_config = &$config['installedpackages']['avahi']['config'][0];
+	$avahi_config = config_get_path('installedpackages/avahi/config/0', []);
 	if (isset($avahi_config['enable'])) {
 		$enable = $avahi_config['enable'];
 	} else {
@@ -191,9 +192,8 @@ function avahi_get_carp_list() {
 function avahi_plugin_carp($pluginparams) {
 	global $config;
 	/* If avahi is not configured, then stop */
-	if (is_array($config['installedpackages']['avahi']['config'])) {
-		$avahi_config = &$config['installedpackages']['avahi']['config'][0];
-	} else {
+	$avahi_config = config_get_path('installedpackages/avahi/config/0', []);
+	if (empty($avahi_config)) {
 		return null;
 	}
 	/* If there is no properly configured CARP status check IP, then stop */

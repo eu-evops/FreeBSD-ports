@@ -3,11 +3,11 @@
  * suricata_app_parsers.php
  *
  * part of pfSense (https://www.pfsense.org)
- * Copyright (c) 2006-2022 Rubicon Communications, LLC (Netgate)
+ * Copyright (c) 2006-2023 Rubicon Communications, LLC (Netgate)
  * Copyright (c) 2003-2004 Manuel Kasper
  * Copyright (c) 2005 Bill Marquette
  * Copyright (c) 2009 Robert Zelaya Sr. Developer
- * Copyright (c) 2021 Bill Meeks
+ * Copyright (c) 2023 Bill Meeks
  * All rights reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -42,40 +42,40 @@ init_config_arr( array('installedpackages', 'suricata', 'rule', $id, 'libhtp_pol
 
 // Initialize required array variables as necessary
 init_config_arr( array('aliases', 'alias') );
-$a_aliases = $config['aliases']['alias'];
+$a_aliases = config_get_path('aliases/alias', []);
 
-$a_nat = &$config['installedpackages']['suricata']['rule'];
+$a_nat = config_get_path("installedpackages/suricata/rule/{$id}", []);
 
-$libhtp_engine_next_id = count($a_nat[$id]['libhtp_policy']['item']);
+$libhtp_engine_next_id = count(array_get_path($a_nat, 'libhtp_policy/item', []));
 
 // Build a lookup array of currently used engine 'bind_to' Aliases
 // so we can screen matching Alias names from the list.
 $used = array();
-foreach ($a_nat[$id]['libhtp_policy']['item'] as $v)
+foreach (array_get_path($a_nat, 'libhtp_policy/item', []) as $v)
 	$used[$v['bind_to']] = true;
 
 $pconfig = array();
-if (isset($id) && $a_nat[$id]) {
+if (isset($id) && !empty($a_nat)) {
 	/* Get current values from config for page form fields */
-	$pconfig = $a_nat[$id];
+	$pconfig = $a_nat;
 
 	// See if Host-OS policy engine array is configured and use
 	// it; otherwise create a default engine configuration.
-	if (empty($pconfig['libhtp_policy']['item'])) {
+	if (!array_get_path($pconfig, 'libhtp_policy/item')) {
 		$default = array( "name" => "default", "bind_to" => "all", "personality" => "IDS",
 				  "request-body-limit" => 4096, "response-body-limit" => 4096,
 				  "double-decode-path" => "no", "double-decode-query" => "no",
 				  "uri-include-all" => "no", "meta-field-limit" => 18432 );
-		$pconfig['libhtp_policy']['item'] = array();
+		array_init_path($pconfig, 'libhtp_policy/item');
 		$pconfig['libhtp_policy']['item'][] = $default;
-		if (!is_array($a_nat[$id]['libhtp_policy']['item']))
-			$a_nat[$id]['libhtp_policy']['item'] = array();
-		$a_nat[$id]['libhtp_policy']['item'][] = $default;
-		write_config("Suricata pkg: created a new default HTTP server configuration for " . convert_friendly_interface_to_friendly_descr($a_nat[$id]['interface']));
+		array_init_path($a_nat, 'libhtp_policy/item');
+		$a_nat['libhtp_policy']['item'][] = $default;
+		config_set_path("installedpackages/suricata/rule/{$id}", $a_nat);
+		write_config("Suricata pkg: created a new default HTTP server configuration for " . convert_friendly_interface_to_friendly_descr($a_nat['interface']));
 		$libhtp_engine_next_id++;
 	}
 	else
-		$pconfig['libhtp_policy'] = $a_nat[$id]['libhtp_policy'];
+		$pconfig['libhtp_policy'] = $a_nat['libhtp_policy'];
 }
 
 // Check for "import or select alias mode" and set flags if TRUE.
@@ -157,18 +157,18 @@ if ($_POST['save_libhtp_policy']) {
 
 		// if no errors, write new entry to conf
 		if (!$input_errors) {
-			if (isset($eng_id) && isset($a_nat[$id]['libhtp_policy']['item'][$eng_id])) {
-				$a_nat[$id]['libhtp_policy']['item'][$eng_id] = $engine;
+			if (isset($eng_id) && isset($a_nat['libhtp_policy']['item'][$eng_id])) {
+				$a_nat['libhtp_policy']['item'][$eng_id] = $engine;
 			}
 			else
-				$a_nat[$id]['libhtp_policy']['item'][] = $engine;
+				$a_nat['libhtp_policy']['item'][] = $engine;
 
 			/* Reorder the engine array to ensure the */
 			/* 'bind_to=all' entry is at the bottom   */
 			/* if it contains more than one entry.	  */
-			if (count($a_nat[$id]['libhtp_policy']['item']) > 1) {
+			if (count($a_nat['libhtp_policy']['item']) > 1) {
 				$i = -1;
-				foreach ($a_nat[$id]['libhtp_policy']['item'] as $f => $v) {
+				foreach ($a_nat['libhtp_policy']['item'] as $f => $v) {
 					if ($v['bind_to'] == "all") {
 						$i = $f;
 						break;
@@ -177,15 +177,16 @@ if ($_POST['save_libhtp_policy']) {
 				/* Only relocate the entry if we  */
 				/* found it, and it's not already */
 				/* at the end.					  */
-				if ($i > -1 && ($i < (count($a_nat[$id]['libhtp_policy']['item']) - 1))) {
-					$tmp = $a_nat[$id]['libhtp_policy']['item'][$i];
-					unset($a_nat[$id]['libhtp_policy']['item'][$i]);
-					$a_nat[$id]['libhtp_policy']['item'][] = $tmp;
+				if ($i > -1 && ($i < (count($a_nat['libhtp_policy']['item']) - 1))) {
+					$tmp = $a_nat['libhtp_policy']['item'][$i];
+					unset($a_nat['libhtp_policy']['item'][$i]);
+					$a_nat['libhtp_policy']['item'][] = $tmp;
 				}
 			}
 
 			// Now write the new engine array to conf
-			write_config("Suricata pkg: saved updated HTTP server configuration for " . convert_friendly_interface_to_friendly_descr($a_nat[$id]['interface']));
+			config_set_path("installedpackages/suricata/rule/{$id}", $a_nat);
+			write_config("Suricata pkg: saved updated HTTP server configuration for " . convert_friendly_interface_to_friendly_descr($a_nat['interface']));
 			$add_edit_libhtp_policy = false;
 			header( 'Expires: Sat, 26 Jul 1997 05:00:00 GMT' );
 			header( 'Last-Modified: ' . gmdate( 'D, d M Y H:i:s' ) . ' GMT' );
@@ -212,7 +213,7 @@ elseif ($_POST['edit_libhtp_policy']) {
 	if ($_POST['eng_id'] != "") {
 		$add_edit_libhtp_policy = true;
 		$eng_id = $_POST['eng_id'];
-		$pengcfg = $a_nat[$id]['libhtp_policy']['item'][$eng_id];
+		$pengcfg = $a_nat['libhtp_policy']['item'][$eng_id];
 	}
 }
 elseif ($_POST['del_libhtp_policy']) {
@@ -223,9 +224,10 @@ elseif ($_POST['del_libhtp_policy']) {
 		unset($natent['libhtp_policy']['item'][$_POST['eng_id']]);
 		$pconfig = $natent;
 	}
-	if (isset($id) && isset($a_nat[$id])) {
-		$a_nat[$id] = $natent;
-		write_config("Suricata pkg: deleted a HTTP server configuration for " . convert_friendly_interface_to_friendly_descr($a_nat[$id]['interface']));
+	if (isset($id) && isset($a_nat)) {
+		$a_nat = $natent;
+		config_set_path("installedpackages/suricata/rule/{$id}", $a_nat);
+		write_config("Suricata pkg: deleted a HTTP server configuration for " . convert_friendly_interface_to_friendly_descr($a_nat['interface']));
 	}
 	$add_edit_libhtp_policy = false;
 	header( 'Expires: Sat, 26 Jul 1997 05:00:00 GMT' );
@@ -251,6 +253,7 @@ elseif ($_POST['ResetAll']) {
 	$pconfig['dns_parser_udp_ports'] = "53";
 	$pconfig['dns_parser_tcp'] = "yes";
 	$pconfig['dns_parser_tcp_ports'] = "53";
+	$pconfig['enip_parser'] = "yes";
 	$pconfig['http_parser'] = "yes";
 	$pconfig['tls_parser'] = "yes";
 	$pconfig['tls_detect_ports'] = "443";
@@ -280,6 +283,7 @@ elseif ($_POST['ResetAll']) {
 	$pconfig['snmp_parser'] = "yes";
 	$pconfig['http2_parser'] = "yes";
 	$pconfig['rfb_parser'] = "yes";
+	$pconfig['mqtt_parser'] = "yes";
 
 	/* Log a message at the top of the page to inform the user */
 	$savemsg = gettext("All flow and stream settings on this page have been reset to their defaults.  Click APPLY if you wish to keep these new settings.");
@@ -334,7 +338,7 @@ elseif ($_POST['save_import_alias']) {
 			foreach ($_POST['aliastoimport'] as $item) {
 				$engine['name'] = strtolower($item);
 				$engine['bind_to'] = $item;
-				$a_nat[$id]['libhtp_policy']['item'][] = $engine;
+				$a_nat['libhtp_policy']['item'][] = $engine;
 			}
 		}
 		else {
@@ -347,9 +351,9 @@ elseif ($_POST['save_import_alias']) {
 			// Reorder the engine array to ensure the
 			// 'bind_to=all' entry is at the bottom if
 			// the array contains more than one entry.
-			if (count($a_nat[$id]['libhtp_policy']['item']) > 1) {
+			if (count($a_nat['libhtp_policy']['item']) > 1) {
 				$i = -1;
-				foreach ($a_nat[$id]['libhtp_policy']['item'] as $f => $v) {
+				foreach ($a_nat['libhtp_policy']['item'] as $f => $v) {
 					if ($v['bind_to'] == "all") {
 						$i = $f;
 						break;
@@ -358,16 +362,17 @@ elseif ($_POST['save_import_alias']) {
 				// Only relocate the entry if we
 				// found it, and it's not already
 				// at the end.
-				if ($i > -1 && ($i < (count($a_nat[$id]['libhtp_policy']['item']) - 1))) {
-					$tmp = $a_nat[$id]['libhtp_policy']['item'][$i];
-					unset($a_nat[$id]['libhtp_policy']['item'][$i]);
-					$a_nat[$id]['libhtp_policy']['item'][] = $tmp;
+				if ($i > -1 && ($i < (count($a_nat['libhtp_policy']['item']) - 1))) {
+					$tmp = $a_nat['libhtp_policy']['item'][$i];
+					unset($a_nat['libhtp_policy']['item'][$i]);
+					$a_nat['libhtp_policy']['item'][] = $tmp;
 				}
-				$pconfig['libhtp_policy']['item'] = $a_nat[$id]['libhtp_policy']['item'];
+				$pconfig['libhtp_policy']['item'] = $a_nat['libhtp_policy']['item'];
 			}
 
 			// Write the new engine array to config file
-			write_config("Suricata pkg: saved an updated HTTP server configuration for " . convert_friendly_interface_to_friendly_descr($a_nat[$id]['interface']));
+			config_set_path("installedpackages/suricata/rule/{$id}", $a_nat);
+			write_config("Suricata pkg: saved an updated HTTP server configuration for " . convert_friendly_interface_to_friendly_descr($a_nat['interface']));
 			$importalias = false;
 			header( 'Expires: Sat, 26 Jul 1997 05:00:00 GMT' );
 			header( 'Last-Modified: ' . gmdate( 'D, d M Y H:i:s' ) . ' GMT' );
@@ -474,15 +479,18 @@ elseif ($_POST['save'] || $_POST['apply']) {
 		$natent['snmp_parser'] = $_POST['snmp_parser'];
 		$natent['http2_parser'] = $_POST['http2_parser'];
 		$natent['rfb_parser'] = $_POST['rfb_parser'];
+		$natent['enip_parser'] = $_POST['enip_parser'];
+		$natent['mqtt_parser'] = $_POST['mqtt_parser'];
 
 		/**************************************************/
 		/* If we have a valid rule ID, save configuration */
 		/* then update the suricata.conf file for this	  */
 		/* interface.									  */
 		/**************************************************/
-		if (isset($id) && $a_nat[$id]) {
-			$a_nat[$id] = $natent;
-			write_config("Suricata pkg: saved updated app-layer parser configuration for " . convert_friendly_interface_to_friendly_descr($a_nat[$id]['interface']));
+		if (isset($id) && $a_nat) {
+			$a_nat = $natent;
+			config_set_path("installedpackages/suricata/rule/{$id}", $a_nat);
+			write_config("Suricata pkg: saved updated app-layer parser configuration for " . convert_friendly_interface_to_friendly_descr($a_nat['interface']));
 			$rebuild_rules = false;
 			suricata_generate_yaml($natent);
 
@@ -733,6 +741,12 @@ if ($importalias) {
 		array(  "yes" => "yes", "no" => "no", "detection-only" => "detection-only" )
 	))->setHelp('Choose the parser/detection setting for DHCP. Default is yes. Selecting "yes" enables detection and parser, "no" disables both and "detection-only" disables parser.');
 	$section->addInput(new Form_Select(
+		'enip_parser',
+		'ENIP Parser',
+		$pconfig['enip_parser'],
+		array(  "yes" => "yes", "no" => "no", "detection-only" => "detection-only" )
+	))->setHelp('Choose the parser/detection setting for ENIP. Default is yes. Selecting "yes" enables detection and parser, "no" disables both and "detection-only" disables parser.');
+	$section->addInput(new Form_Select(
 		'http2_parser',
 		'HTTP2 Parser',
 		$pconfig['http2_parser'],
@@ -756,6 +770,12 @@ if ($importalias) {
 		$pconfig['krb5_parser'],
 		array(  "yes" => "yes", "no" => "no", "detection-only" => "detection-only" )
 	))->setHelp('Choose the parser/detection setting for Kerberos. Default is yes. Selecting "yes" enables detection and parser, "no" disables both and "detection-only" disables parser.');
+	$section->addInput(new Form_Select(
+		'mqtt_parser',
+		'MQTT Parser',
+		$pconfig['mqtt_parser'],
+		array(  "yes" => "yes", "no" => "no", "detection-only" => "detection-only" )
+	))->setHelp('Choose the parser/detection setting for MQTT. Default is yes. Selecting "yes" enables detection and parser, "no" disables both and "detection-only" disables parser.');
 	$section->addInput(new Form_Select(
 		'msn_parser',
 		'MSN Parser',

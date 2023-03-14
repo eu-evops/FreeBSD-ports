@@ -1,13 +1,13 @@
-# Created by: Li-Wen Hsu <lwhsu@lwhsu.org>
-
 PORTNAME=	python-igraph
-PORTVERSION=	0.8.3
+DISTVERSION=	0.9.9
+PORTREVISION=	2
 CATEGORIES=	math python
-MASTER_SITES=	CHEESESHOP
+MASTER_SITES=	PYPI
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
 
 MAINTAINER=	lwhsu@FreeBSD.org
 COMMENT=	High performance graph data structures and algorithms
+WWW=		https://igraph.org/python/
 
 LICENSE=	GPLv2
 
@@ -17,14 +17,12 @@ RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}texttable>=1.6.2:textproc/py-texttable@${PY_
 TEST_DEPENDS=	py.test:devel/py-pytest@${PY_FLAVOR}
 
 USES=		bison gnome pkgconfig python:3.6+
-USE_PYTHON=	distutils
+USE_PYTHON=	distutils concurrent autoplist
 USE_GNOME=	libxml2
-PYDISTUTILS_BUILDARGS=	--use-pkg-config
+
 PYDISTUTILS_INSTALLARGS=${PYDISTUTILS_BUILDARGS}
 
-pre-configure:
-	${REINPLACE_CMD} -e 's|%%LOCALBASE%%|${LOCALBASE}|'	\
-		${WRKSRC}/src/igraph/configuration.py
+NO_ARCH=	yes
 
 do-test: install
 	(cd ${WRKSRC} && py.test)

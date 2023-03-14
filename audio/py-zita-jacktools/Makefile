@@ -1,12 +1,12 @@
 PORTNAME=	zita-jacktools
-DISTVERSION=	1.5.3
-PORTREVISION=	1
+DISTVERSION=	1.6.0
 CATEGORIES=	audio python
 MASTER_SITES=	https://kokkinizita.linuxaudio.org/linuxaudio/downloads/
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
 
 MAINTAINER=	yuri@FreeBSD.org
 COMMENT=	Audio tools running as a Jack client
+WWW=		https://kokkinizita.linuxaudio.org/linuxaudio/
 
 LICENSE=	GPLv3
 LICENSE_FILE=	${WRKSRC}/COPYING
@@ -23,6 +23,6 @@ USES=		localbase python:3.6+ tar:bz2
 USE_PYTHON=	autoplist distutils
 
 post-install:
-	@${STRIP_CMD} ${STAGEDIR}${PYTHONPREFIX_SITELIBDIR}/jacktools/*.so
+	@${STRIP_CMD} ${STAGEDIR}${PYTHONPREFIX_SITELIBDIR}/zita_jacktools/*.so
 
 .include <bsd.port.mk>

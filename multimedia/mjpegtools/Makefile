@@ -1,13 +1,12 @@
-# Created by: Mario Sergio Fujikawa Ferreira <lioux@FreeBSD.org>
-
 PORTNAME=	mjpegtools
 PORTVERSION=	2.1.0
-PORTREVISION=	15
+PORTREVISION=	16
 CATEGORIES=	multimedia
 MASTER_SITES=	SF/${PORTNAME:S/tools//}/${PORTNAME}/${PORTVERSION}
 
 MAINTAINER=	multimedia@FreeBSD.org
 COMMENT=	Set of tools to record/playback/edit videos in MPEG format
+WWW=		http://mjpeg.sourceforge.net/
 
 LICENSE=	GPLv2+
 LICENSE_FILE=	${WRKSRC}/COPYING

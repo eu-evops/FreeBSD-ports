@@ -1,8 +1,6 @@
-# Created by: Martin Blapp
-
 PORTNAME=	apache-openoffice
 PORTVERSION=	${AOOVERSION1}.${AOOVERSION2}.${TIMESTAMP}
-PORTREVISION=	0
+PORTREVISION=	3
 PORTEPOCH=	4
 CATEGORIES=	editors java
 MASTER_SITES=	https://dist.apache.org/repos/dist/dev/openoffice/${AOOVERSION}-${AOORC}-${TIMESTAMP}/source/ \
@@ -24,6 +22,7 @@ MAINTAINER=	office@FreeBSD.org
 #de facto maintainer is truckman@FreeBSD.org
 #Frequent Patch submitters should (optionally) sign the Apache iCLA
 COMMENT=	Integrated wordprocessor/dbase/spreadsheet/drawing/chart/browser (developer version)
+WWW=		https://openoffice.apache.org/
 
 LICENSE=		APACHE20 ADOBE BSD3CLAUSE BSD4CLAUSE BSL ICU MIT MPL10 \
 			MPL11 PSFL TWAIN W3C
@@ -51,6 +50,7 @@ LICENSE_PERMS_W3C=	dist-mirror dist-sell pkg-mirror pkg-sell auto-accept
 
 ONLY_FOR_ARCHS=	amd64 i386 powerpc64
 BROKEN_powerpc64=	fails to compile: aoo-4.2.0/main/solver/420/unxfbsdppc64.pro/inc/stl/vector:31:11: fatal error: boost/tr1/tr1/vector: No such file or directory
+BROKEN=		does not build: fails to build vcl module with C++ errors in boost
 
 BUILD_DEPENDS=								\
 		p5-Archive-Zip>=0:archivers/p5-Archive-Zip		\
@@ -61,6 +61,7 @@ BUILD_DEPENDS=								\
 		epm:devel/epm						\
 		${LOCALBASE}/bin/gperf:devel/gperf			\
 		imake:devel/imake					\
+		libunwind>=20211201_1:devel/libunwind			\
 		gpatch:devel/patch					\
 		${LOCALBASE}/include/sane/sane.h:graphics/sane-backends	\
 		${JAVALIBDIR}/commons-lang3.jar:java/apache-commons-lang3 \
@@ -85,7 +86,7 @@ LIB_DEPENDS=								\
 		libClpSolver.so:math/clp				\
 		libCoinMP.so:math/coinmp				\
 		libCoinUtils.so:math/coinutils				\
-		libcoinmumps.so:math/ipopt				\
+		libcoinmumps.so:math/coin-or-mumps			\
 		libnauty.so:math/nauty					\
 		libopenblas.so:math/openblas				\
 		libOsi.so:math/osi					\
@@ -115,7 +116,7 @@ USES=		autoreconf bison compiler:c++11-lib cpe desktop-file-utils \
 		gettext-runtime gl gmake gnome iconv jpeg perl5 pkgconfig \
 		python:3.7 shared-mime-info ssl tar:${TARTYPE} xorg
 USE_GL=		gl glu
-USE_GNOME=	gtk20 libxslt libidl glib20
+USE_GNOME=	gdkpixbuf2 gtk20 libxslt libidl glib20
 USE_JAVA=	yes
 JAVA_BUILD=	jdk
 JAVA_RUN=	jdk
@@ -131,8 +132,8 @@ AOOVERSION2=	2
 AOOVERSION3=	0
 # From solenv/inc/minor.mk SOURCEREVISION LAST_MINOR BUILD
 AOOTAG=		AOO420m4\(Build:9823\)
-GITREVISION=	febe0adc7c
-TIMESTAMP=	1633255994
+GITREVISION=	5b75b699aa
+TIMESTAMP=	1649975926
 #AOORC=rc3
 EXTSRC=		ApacheOpenOffice.ext_sources.${AOOVERSION1}.x.x.20150707.tar.gz
 
@@ -190,7 +191,7 @@ GNOME_LIB_DEPENDS=		libdbus-1.so:devel/dbus \
 				libdbus-glib-1.so:devel/dbus-glib
 
 MMEDIA_CONFIGURE_ENABLE=	gstreamer
-MMEDIA_USE=			GSTREAMER1=yes
+MMEDIA_USES=			gstreamer
 
 MYSQL_CONFIGURE_ENABLE=		mysql-connector
 MYSQL_CONFIGURE_WITH=		system-mysql
@@ -229,6 +230,12 @@ WITH=	SDK
 .endif
 
 .include <bsd.port.pre.mk>
+
+.if ${OPSYS} == FreeBSD && ( \
+    (${OSVERSION} >= 1301500 && ${OSVERSION} < 1301502) || \
+    (${OSVERSION} >= 1400051 && ${OSVERSION} < 1400057))
+BROKEN=	please update FreeBSD base system first to fix an ABI incompatibility
+.endif
 
 .if defined(WITH_DEBUG)
 CONFIGURE_ARGS+=	--enable-symbols

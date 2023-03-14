@@ -1,7 +1,5 @@
-# Created by: Po-Chuan Hsieh <sunpoet@FreeBSD.org>
-
 PORTNAME=	xapian
-PORTVERSION=	1.4.18
+PORTVERSION=	1.4.21
 DISTVERSIONPREFIX=	bindings-
 CATEGORIES=	databases
 MASTER_SITES=	https://oligarchy.co.uk/xapian/${PORTVERSION}/ \
@@ -10,9 +8,14 @@ PKGNAMEPREFIX=	${PHP_PKGNAMEPREFIX}
 
 MAINTAINER=	sunpoet@FreeBSD.org
 COMMENT=	PHP binding for Xapian
+WWW=		https://xapian.org/
 
 LICENSE=	GPLv2
 LICENSE_FILE=	${WRKSRC}/COPYING
+
+DEPRECATED=	Requires php 7
+EXPIRATION_DATE=2023-03-31
+BROKEN=		Requires php 7 which has expired but php 8 support is WIP
 
 BUILD_DEPENDS=	xapian-core>=${PORTVERSION}:databases/xapian-core
 LIB_DEPENDS=	libxapian.so:databases/xapian-core
@@ -35,7 +38,7 @@ CONFIGURE_ARGS=	--datarootdir=${DATADIR} \
 		--without-tcl
 CONFIGURE_ENV=	PHP_CONFIG=${LOCALBASE}/bin/php-config
 GNU_CONFIGURE=	yes
-IGNORE_WITH_PHP=80
+IGNORE_WITH_PHP=81 82	# https://trac.xapian.org/ticket/817
 INSTALL_TARGET=	install-strip
 USE_CXXSTD=	c++11
 

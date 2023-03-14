@@ -8,6 +8,7 @@ MASTER_SITES=	http://www.tracanelli.com.br/l/dev/thunder/ \
 
 MAINTAINER=	eksffa@freebsdbrasil.com.br
 COMMENT=	Web reporting and trending analysis for Thunder Cache Pro
+WWW=		http://www.thundercache.com.br
 
 OPTIONS_DEFINE=	APACHE PHP PGSQL DOCS
 OPTIONS_DEFAULT=APACHE PHP PGSQL
@@ -18,6 +19,7 @@ PGSQL_DESC=	Install PostgreSQL (report data storing)
 USES=		tar:bzip2
 
 PHP_USES=	php
+PHP_VARS=	IGNORE_WITH_PHP=81 82
 
 NO_BUILD=	yes
 NO_ARCH=	yes
@@ -27,7 +29,7 @@ PLIST_SUB=	OWNER=${WWWOWN} GROUP=${WWWGRP}
 .include <bsd.port.options.mk>
 
 .if ${PORT_OPTIONS:MAPACHE}
-USES+=		apache:run,2.2+
+USES+=		apache:run
 .endif
 
 .if ${PORT_OPTIONS:MPGSQL}

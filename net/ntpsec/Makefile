@@ -1,11 +1,13 @@
 PORTNAME=	ntpsec
 DISTVERSIONPREFIX=	NTPsec_
-DISTVERSION=	1_2_0
-PORTREVISION=	2
+DISTVERSION=	1_2_1-52
+PORTREVISION=	1
+DISTVERSIONSUFFIX=	-g5943108da
 CATEGORIES=	net
 
 MAINTAINER=	yuri@FreeBSD.org
 COMMENT=	Network Time Protocol suite, refactored
+WWW=		https://gitlab.com/NTPsec/ntpsec/
 
 LICENSE=	BSD2CLAUSE
 
@@ -21,6 +23,8 @@ python_OLD_CMD=	@PYSHEBANG@
 CONFLICTS=	ntp ntp-devel openntpd
 
 MAKE_ENV=	NOSYNC=1 # workaround for the console problem: https://gitlab.com/NTPsec/ntpsec/issues/599
+
+TEST_TARGET=	check
 
 OPTIONS_DEFINE=			DOCS
 

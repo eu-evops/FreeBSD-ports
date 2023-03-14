@@ -9,14 +9,14 @@ PATCHFILES+=	00a13d4c9e31f9c4e68e8ab30e2f7ec5b0e4bf60.patch:-p1 # https://github
 
 MAINTAINER=	yuri@FreeBSD.org
 COMMENT=	C OpenGL Freetype engine library
+WWW=		https://github.com/rougier/freetype-gl
 
 LICENSE=	BSD2CLAUSE
 LICENSE_FILE=	${WRKSRC}/LICENSE
 
 LIB_DEPENDS=	libfreetype.so:print/freetype2
-TEST_DEPENDS=	ImageMagick${IMAGEMAGICK_DEFAULT}-nox11>0:graphics/ImageMagick${IMAGEMAGICK_DEFAULT}-nox11
 
-USES=		cmake:noninja gl
+USES=		cmake:noninja gl magick:test,nox11
 USE_GL=		glew
 USE_LDCONFIG=	yes
 

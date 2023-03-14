@@ -1,11 +1,13 @@
 PORTNAME=	serf
 PORTVERSION=	0.8.5
 DISTVERSIONPREFIX=	v
+PORTREVISION=	10
 CATEGORIES=	sysutils
 PKGNAMEPREFIX=	hashicorp-
 
 MAINTAINER=	swills@FreeBSD.org
 COMMENT=	Service discovery and configuration made easy
+WWW=		https://serfdom.io/
 
 LICENSE=	MPL20
 

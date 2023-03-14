@@ -1,8 +1,6 @@
-# Created by: Alexey Dokuchaev <danfe@FreeBSD.org>
-
 PORTNAME=	zcad
 PORTVERSION=	0.9.8.5
-PORTREVISION=	2
+PORTREVISION=	8
 CATEGORIES=	cad
 PKGNAMESUFFIX=	${LAZARUS_PKGNAMESUFFIX}
 
@@ -58,6 +56,8 @@ OPTIONS_DEFINE=		DOCS
 
 .if ${FLAVOR:Ugtk2:Mgtk2}
 MAKE_ENV+=	GUI=gtk2
+.elif ${FLAVOR:Ugtk2:Mqt5}
+BROKEN=		fails to build
 .endif
 
 post-patch:

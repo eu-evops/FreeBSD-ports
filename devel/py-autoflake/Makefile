@@ -1,11 +1,12 @@
 PORTNAME=	autoflake
 PORTVERSION=	1.3.1
 CATEGORIES=	devel python
-MASTER_SITES=	CHEESESHOP
+MASTER_SITES=	PYPI
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
 
 MAINTAINER=	meka@tilda.center
 COMMENT=	Removes unused imports and unused variables from Python code
+WWW=		https://github.com/myint/autoflake
 
 LICENSE=	MIT
 LICENSE_FILE=	${WRKSRC}/LICENSE

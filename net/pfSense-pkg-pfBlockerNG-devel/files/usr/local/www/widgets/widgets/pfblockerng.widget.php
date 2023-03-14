@@ -3,8 +3,8 @@
  * pfblockerng.widget.php
  *
  * part of pfSense (https://www.pfsense.org)
- * Copyright (c) 2016-2022 Rubicon Communications, LLC (Netgate)
- * Copyright (c) 2015-2021 BBcan177@gmail.com
+ * Copyright (c) 2016-2023 Rubicon Communications, LLC (Netgate)
+ * Copyright (c) 2015-2023 BBcan177@gmail.com
  * All rights reserved.
  *
  * Originally based Upon pfBlocker
@@ -73,14 +73,22 @@ if ($_POST) {
 
 	// Save widget customizations
 	if (isset($_POST['pfb_submit'])) {
-		$pfb['wglobal']['widget-popup']			= $_POST['pfb_popup']		?: 'off';
-		$pfb['wglobal']['widget-sortmix']		= $_POST['pfb_sortmix']		?: 'off';
-		$pfb['wglobal']['widget-sortcolumn']		= $_POST['pfb_sortcolumn']	?: 'none';
-		$pfb['wglobal']['widget-sortdir']		= $_POST['pfb_sortdir']		?: 'asc';
-		$pfb['wglobal']['widget-clearip']		= $_POST['pfb_clearip']		?: 'never';
-		$pfb['wglobal']['widget-cleardnsbl']		= $_POST['pfb_cleardnsbl']	?: 'never';
+		$pfb['wglobal']['widget-popup']			= pfb_filter($_POST['pfb_popup'], PFB_FILTER_ON_OFF, 'widget');
+		$pfb['wglobal']['widget-sortmix']		= pfb_filter($_POST['pfb_sortmix'], PFB_FILTER_ON_OFF, 'widget');
 
-		if (ctype_digit($_POST['pfb_dnsblquery'])) {
+		if (in_array($_POST['pfb_sortcolumn'], array('none', 'alias', 'count', 'packets', 'update'))) {
+			$pfb['wglobal']['widget-sortcolumn']	= $_POST['pfb_sortcolumn'];
+		}
+		if (in_array($_POST['pfb_sortdir'], array('asc', 'des'))) {
+			$pfb['wglobal']['widget-sortdir']	= $_POST['pfb_sortdir'];
+		}
+		if (in_array($_POST['pfb_clearip'], array('never', 'daily', 'weekly'))) {
+			$pfb['wglobal']['widget-clearip']	= $_POST['pfb_clearip'];
+		}
+		if (in_array($_POST['pfb_cleardnsbl'], array('never', 'daily', 'weekly'))) {
+			$pfb['wglobal']['widget-cleardnsbl']	= $_POST['pfb_cleardnsbl'];
+		}
+		if (is_numeric($_POST['pfb_dnsblquery']) && $_POST['pfb_dnsblquery'] < 10000) {
 			$pfb['wglobal']['widget-dnsblquery']	= $_POST['pfb_dnsblquery'];
 
 			// Restart pfb_dnsbl service on Query frequency changes
@@ -88,32 +96,50 @@ if ($_POST) {
 				restart_service('pfb_dnsbl');
 			}
 		}
-		if (ctype_digit($_POST['pfb_maxfails'])) {
+		if (is_numeric($_POST['pfb_maxfails']) && $_POST['pfb_maxfails'] < 100) {
 			$pfb['wglobal']['widget-maxfails']	= $_POST['pfb_maxfails'];
 		}
-		if (ctype_digit($_POST['pfb_maxheight'])) {
+		if (is_numeric($_POST['pfb_maxheight']) && $_POST['pfb_maxheight'] < 10000) {
 			$pfb['wglobal']['widget-maxheight']	= $_POST['pfb_maxheight'];
 		}
 
 		// Define pfBlockerNG clear [ dnsbl and/or IP ] counter CRON job
 		foreach (array( 'clearip', 'cleardnsbl') as $type) {
-			if (isset($pfb['wglobal']['widget-' . $type]) &&
-			    $pfb['wglobal']['widget-' . $type] != 'never') {
+			$pfb_cmd = "/usr/local/bin/php /usr/local/www/pfblockerng/pfblockerng.php {$type} >/dev/null 2>&1";
+			if (isset($pfb['wglobal']['widget-' . $type])) {
+				if ($pfb['wglobal']['widget-' . $type] != 'never') {
 
-				$pfb_cmd = "/usr/local/bin/php /usr/local/www/pfblockerng/pfblockerng.php {$type} >/dev/null 2>&1";
+					$pfb_day = '*';
+					if ($pfb['wglobal']['widget-' . $type] == 'weekly') {
+						$pfb_day = '7';
+					}
 
-				$pfb_day = '*';
-				if ($pfb['wglobal']['widget-' . $type] == 'weekly') {
-					$pfb_day = '7';
+					// Remove unreferenced 'daily' or 'weekly' cron job
+					$pfb_other = ($pfb_day == '*') ? '7' : '*';
+					if (pfblockerng_cron_exists($pfb_cmd, '0', '0', '*', $pfb_other)) {
+						install_cron_job("pfblockerng.php {$type}", false);
+					}
+
+					if (!pfblockerng_cron_exists($pfb_cmd, '0', '0', '*', $pfb_day)) {
+						install_cron_job($pfb_cmd, true, '0', '0', '*', '*', $pfb_day, 'root');
+					}
 				}
-
-				if (!pfblockerng_cron_exists($pfb_cmd, '0', '0', '*', $pfb_day)) {
-					install_cron_job("pfblockerng.php {$type}", false);
-					install_cron_job($pfb_cmd, true, '0', '0', '*', '*', $pfb_day, 'root');
+				else {
+					if (pfblockerng_cron_exists($pfb_cmd, '0', '0', '*', '*')) {
+						install_cron_job("pfblockerng.php {$type}", false);
+					}
+					if (pfblockerng_cron_exists($pfb_cmd, '0', '0', '*', '7')) {
+						install_cron_job("pfblockerng.php {$type}", false);
+					}
 				}
 			}
 			else {
-				install_cron_job("pfblockerng.php {$type}", false);
+				if (pfblockerng_cron_exists($pfb_cmd, '0', '0', '*', '*')) {
+					install_cron_job("pfblockerng.php {$type}", false);
+				}
+				if (pfblockerng_cron_exists($pfb_cmd, '0', '0', '*', '7')) {
+					install_cron_job("pfblockerng.php {$type}", false);
+				}
 			}
 		}
 
@@ -129,7 +155,7 @@ if ($_POST) {
 
 	// Clear widget Failed downloads
 	elseif ($_POST['pfblockerngack']) {
-		exec("{$pfb['sed']} -i '' 's/FAIL/Fail/g' {$pfb['errlog']}");
+		exec("{$pfb['sed']} -i '' 's/FAIL/Fail/g' /var/log/pfblockerng/error.log");
 		header("Location: /");
 		exit(0);
 	}
@@ -210,7 +236,7 @@ function pfbsort(&$array, $subkey, $sort_ascending) {
 
 // Collect all pfBlockerNG statistics
 function pfBlockerNG_update_table() {
-	global $config, $pfb;
+	global $pfb;
 	$pfb_table = $pfb_dtable = array();
 	$pfb['pfctlerr'] = FALSE;
 
@@ -231,14 +257,16 @@ function pfBlockerNG_update_table() {
 					unset($pfb_alias);
 					continue;
 				}
-				exec("{$pfb['grep']} -cv '^1\.1\.1\.1$' {$pfb['aliasdir']}/{$pfb_alias}.txt", $match);
-				if (!isset($match[1])) {
+
+				$pfb_aliasdir_esc = escapeshellarg("{$pfb['aliasdir']}/{$pfb_alias}.txt");
+				exec("{$pfb['grep']} -cv '^1\.1\.1\.1\$' {$pfb_aliasdir_esc}", $match);
+				if (!is_numeric($match[1])) {
 					$match[1] = 0;
 				}
 				$pfb_table[$pfb_alias] = array('count' => $match[1], 'img' => $pfb['down']);
-				exec("{$pfb['ls']} -l -D'%b %d %T' {$pfb['aliasdir']}/{$pfb_alias}.txt | {$pfb['awk']} '{ print $6,$7,$8 }'", $update);
+				exec("{$pfb['ls']} -l -D'%b %d %T' {$pfb_aliasdir_esc} | {$pfb['awk']} '{ print \$6,\$7,\$8 }'", $update);
 
-				$pfb_table[$pfb_alias]['update']	= $update[0];
+				$pfb_table[$pfb_alias]['update']	= htmlspecialchars($update[0]);
 				$pfb_table[$pfb_alias]['rule']		= 0;
 				$pfb_table[$pfb_alias]['packets']	= 0;
 				unset($match, $update);
@@ -248,6 +276,9 @@ function pfBlockerNG_update_table() {
 			if (isset($pfb_alias)) {
 				if (substr($line, 0, 9) == 'Addresses') {
 					$addr = trim(substr(strrchr($line, ':'), 1));
+					if (!is_numeric($addr)) {
+						$addr = 0;
+					}
 					$pfb_table[$pfb_alias]['count'] = $addr;
 					continue;
 				}
@@ -261,63 +292,74 @@ function pfBlockerNG_update_table() {
 	}
 
 	// Determine if firewall rules are defined
-	$pfb_packets = pfSense_get_pf_rules();
-	if (isset($config['filter']['rule'])) {
-		foreach ($config['filter']['rule'] as $rule) {
+	$pfb_filter_rules = config_get_path('filter/rule', []);
 
+	if (!empty($pfb_filter_rules)) {
+		$tracked_rules = array();
+
+		// Get the relevant pfB rules
+		foreach ($pfb_filter_rules as $rule) {
 			if (strpos($rule['descr'], 'pfB_DNSBL_Ping') !== FALSE || strpos($rule['descr'], 'pfB_DNSBL_Permit') !== FALSE) {
 				continue;
 			}
 
-			if (isset($rule['source']['address']) && stripos($rule['source']['address'], 'pfb_') !== FALSE) {
-				foreach ($pfb_packets as $pkey => $prule) {
-					if ($rule['tracker'] == $prule['tracker']) {
-						if (!isset($pfb_table[$rule['source']['address']]['packets'])) {
-							$pfb_table[$rule['source']['address']]['packets'] = 0;
-						}
-						if (isset($prule['packets']) && $prule['packets'] > 0) {
-							$pfb_table[$rule['source']['address']]['packets'] += $prule['packets'];
-						}
-						unset($pfb_packets[$pkey]);
-						break;
-					}
-				} 
+			$tracked_rules[$rule['tracker']] = array('packets' => 0);
 
+			if (isset($rule['source']['address']) && stripos($rule['source']['address'], 'pfb_') !== FALSE) {
+				$tracked_rules[$rule['tracker']]['source'] = $rule['source']['address'];
 				if (!isset($rule['disabled'])) {
 					$pfb_table[$rule['source']['address']]['img'] = $pfb['up'];
 					$pfb_table[$rule['source']['address']]['rule'] += 1;
+					if (!isset($pfb_table[$rule['source']['address']]['packets'])) {
+						$pfb_table[$rule['source']['address']]['packets'] = 0;
+					}
 					$pfb_table[$rule['source']['address']]['type'] = ucfirst($rule['type']) ?: 'unknown';
 				}
 			}
+			
 			if (isset($rule['destination']['address']) && stripos($rule['destination']['address'], 'pfb_') !== FALSE) {
-				foreach ($pfb_packets as $pkey => $prule) {
-					if ($rule['tracker'] == $prule['tracker']) {
-						if (!isset($pfb_table[$rule['destination']['address']]['packets'])) {
-							$pfb_table[$rule['destination']['address']]['packets'] = 0;
-						}
-						if (isset($prule['packets']) && $prule['packets'] > 0) {
-							$pfb_table[$rule['destination']['address']]['packets'] += $prule['packets'];
-						}
-						unset($pfb_packets[$pkey]);
-						break;
-					}
-				}
-
+				$tracked_rules[$rule['tracker']]['destination'] = $rule['destination']['address'];
 				if (!isset($rule['disabled'])) {
 					$pfb_table[$rule['destination']['address']]['img'] = $pfb['up'];
 					$pfb_table[$rule['destination']['address']]['rule'] += 1;
+					if (!isset($pfb_table[$rule['destination']['address']]['packets'])) {
+						$pfb_table[$rule['destination']['address']]['packets'] = 0;
+					}
 					$pfb_table[$rule['destination']['address']]['type'] = ucfirst($rule['type']) ?: 'unknown';
+				}
+			}
+		}
+
+		// Get the packet count for each pfB rule
+		if (!empty($tracked_rules)) {
+			foreach (pfSense_get_pf_rules() as $prule) {
+
+				// prule may be an error string if pftcl_get_rule() returned an error
+				if (!is_array($prule)) {
+					continue;
+				}
+
+				if (isset($prule['tracker'])) {
+					$prule_id = $prule['tracker'];
+					if (isset($tracked_rules[$prule_id])) {
+						if (isset($prule['packets']) && $prule['packets'] > 0) {
+							if (isset($tracked_rules[$prule_id]['source'])) {
+								$pfb_table[$tracked_rules[$prule_id]['source']]['packets'] += $prule['packets'];
+							}
+							if (isset($tracked_rules[$prule_id]['destination'])) {
+								$pfb_table[$tracked_rules[$prule_id]['destination']]['packets'] += $prule['packets'];
+							}
+						}
+					}
 				}
 			}
 		}
 	}
 
 	// Collect pfB Alias ID for popup
-	if (isset($config['aliases']['alias'])) {
-		foreach ($config['aliases']['alias'] as $key => $alias) {
-			if (isset($pfb_table[$alias['name']])) {
-				$pfb_table[$alias['name']]['id'] = $key;
-			}
+	foreach (config_get_path('aliases/alias', []) as $key => $alias) {
+		if (isset($pfb_table[$alias['name']])) {
+			$pfb_table[$alias['name']]['id'] = $key;
 		}
 	}
 
@@ -334,9 +376,19 @@ function pfBlockerNG_update_table() {
 					if ($res['entries'] == 'disabled') {
 						$pfb_dtable[$res['groupname']] = array ('count' => 'disabled', 'img' => $pfb['down']);
 					} else {
-						$pfb_dtable[$res['groupname']] = array ('count' => $res['entries'], 'img' => $pfb['up']);
+						if (!is_numeric($res['entries'])) {
+							$res['entries'] = 0;
+						}
+						if (!empty(pfb_filter($res['groupname'], PFB_FILTER_WORD, 'widget'))) {
+							$pfb_dtable[$res['groupname']] = array ('count' => $res['entries'], 'img' => $pfb['up']);
+						}
 					}
-					$pfb_dtable[$res['groupname']]['update'] = "{$res['timestamp']}";
+					$pfb_dtable[$res['groupname']]['update'] = htmlspecialchars("{$res['timestamp']}");
+
+					if (!is_numeric($res['counter'])) {
+						$res['counter'] = 0;
+					}
+
 					$pfb_dtable[$res['groupname']]['packets']= "{$res['counter']}";
 					$pfb_dtable[$res['groupname']]['type']   = 'DNSBL';
 
@@ -377,11 +429,12 @@ function pfBlockerNG_update_table() {
 
 // Called on initial load and Ajax to update Failed download contents (Create href to Alias/Group editor)
 function pfBlockerNG_get_failed() {
-	global $config, $pfb;
+	global $pfb;
 	$response = '';
 
 	// Collect any failed downloads
-	exec("{$pfb['grep']} 'FAIL' {$pfb['errlog']} | {$pfb['grep']} $(date +%m/%d/%y)", $results);
+	$today_date = date('m/j/y', time());
+	exec("{$pfb['grep']} 'FAIL' {$pfb['errlog']} | {$pfb['grep']} {$today_date}", $results);
 	$results = array_reverse($results);
 
 	if (!empty($results)) {
@@ -414,15 +467,13 @@ function pfBlockerNG_get_failed() {
 				$f_alias = $header;
 			}
 
-			if ($f_alias != $p_alias) {
+			if (!empty(pfb_filter($f_alias, PFB_FILTER_WORD, 'widget')) && $f_alias != $p_alias) {
 				$pfb_found = FALSE;
 				foreach ($list_type as $conf_type => $type) {
-					if (is_array($config['installedpackages'][$conf_type]['config'])) {
-						foreach ($config['installedpackages'][$conf_type]['config'] as $key => $alias) {
-							if ($alias['aliasname'] == $f_alias) {
-								$pfb_found = TRUE;
-								break 2;
-							}
+					foreach (config_get_path("installedpackages/{$conf_type}/config", []) as $key => $alias) {
+						if ($alias['aliasname'] == $f_alias) {
+							$pfb_found = TRUE;
+							break 2;
 						}
 					}
 				}
@@ -463,7 +514,7 @@ function pfBlockerNG_get_failed() {
 
 // Called on initial load and Ajax to update header contents
 function pfBlockerNG_get_header($mode='') {
-	global $config, $pfb;
+	global $pfb;
 	$response = '';
 
 	$pfb_table = pfBlockerNG_update_table();
@@ -593,32 +644,38 @@ function pfBlockerNG_get_header($mode='') {
 	$widget_head = 	array ( array (	'Deny'		=> '',
 					'Pass'		=> '',
 					'Match'		=> '',
-					'Suppression'	=> "{$pfb['supptxt']}"),
+					'Suppression'	=> "{$pfb['ipconfig']['v4suppression']}"),
 
 				array (	'DNSBL'		=> '',
 					'Queries'	=> '',
 					'Percent'	=> '',
-					'Whitelist'	=> "{$pfb['dnsbl_supptxt']}"));
+					'Whitelist'	=> "{$pfb['dnsblconfig']['suppression']}"));
 
 	foreach ($widget_head as $key => $line) {
-		foreach ($line as $type => $file_path) {
+		foreach ($line as $type => $config_path) {
 
 			$stats[$key][$type] = 0;
 			if ($type == 'DNSBL') {
 				if (isset($pfb['dnsbl_missing'])) {
 					$stats[$key][$type] = "<span title='*** SQLite database 'pfb_py_dnsbl.sqlite' is missing, Force Reload DNSBL to recover! ***'>Unknown</span>";
 				} else {
-					$stats[$key][$type] = $pfb_table['stats']['DNSBL'];
+					$stats[$key][$type] = htmlspecialchars($pfb_table['stats']['DNSBL']);
 				}
 			}
 
-			elseif (($type == 'Suppression' || $type == 'Whitelist') && file_exists("{$file_path}")) {
+			elseif ($type == 'Suppression' || $type == 'Whitelist') {
 
-				$gcount = exec("{$pfb['grep']} -c ^ {$file_path} 2>&1");
+				$gcount = 0;
+				foreach (pfbng_text_area_decode($config_path, TRUE, FALSE, TRUE) as $cline) {
+					if (substr(trim($cline), 0, 1) != '#' && !empty($cline)) {
+						$gcount++;
+					}
+				}
+
 				if (is_numeric($gcount)) {
 					$stats[$key][$type] = number_format( $gcount, 0, '', ',' ) ?: 0;
 				} else {
-					$stats[$key][$type] = $gcount ?: 0;
+					$stats[$key][$type] = htmlspecialchars($gcount) ?: 0;
 				}
 			}
 
@@ -646,6 +703,13 @@ function pfBlockerNG_get_header($mode='') {
 					}
 				}
 				pfb_close_sqlite($db_handle);
+
+				if (!is_numeric($resolver[0]['totalqueries'])) {
+					$resolver[0]['totalqueries'] = 0;
+				}
+				if (!is_numeric($resolver[0]['queries'])) {
+					$resolver[0]['queries'] = 0;
+				}
 				$stats[$key][$type] = ($resolver[0]['totalqueries'] ?: 0) + ($resolver[0]['queries'] ?: 0);
 			}
 
@@ -662,7 +726,7 @@ function pfBlockerNG_get_header($mode='') {
 			}
 
 			else {
-				$stats[$key][$type] = $pfb_table['stats'][$type] ?: 0;
+				$stats[$key][$type] = htmlspecialchars($pfb_table['stats'][$type]) ?: 0;
 			}
 		}
 	}
@@ -684,7 +748,7 @@ function pfBlockerNG_get_header($mode='') {
 			if (is_numeric($line)) {
 				$counts[$key] = number_format($line, 0, '', ',' ) ?: 0;
 			} else {
-				$counts[$key] = $line ?: 0;
+				$counts[$key] = htmlspecialchars($line) ?: 0;
 			}
 		}
 		unset($pfb_table['counts']);
@@ -699,8 +763,8 @@ function pfBlockerNG_get_header($mode='') {
 			if ($result) {
 				while ($res = $result->fetchArray(SQLITE3_ASSOC)) {
 					if ($res['lastipclear'] !== NULL) {
-						$ip_last_clear = "{$res['lastipclear']}";
-						$dnsbl_last_clear = "{$res['lastdnsblclear']}";
+						$ip_last_clear		= htmlspecialchars("{$res['lastipclear']}");
+						$dnsbl_last_clear	= htmlspecialchars("{$res['lastdnsblclear']}");
 						$pfb_found = TRUE;
 					}
 				}

@@ -1,13 +1,11 @@
-# Created by: Wen Heping <wen@FreeBSD.org>
-
 PORTNAME=	AER
-DISTVERSION=	1.2-9
-PORTREVISION=	1
+DISTVERSION=	1.2-10
 CATEGORIES=	finance
 DISTNAME=	${PORTNAME}_${DISTVERSION}
 
 MAINTAINER=	wen@FreeBSD.org
 COMMENT=	Applied Econometrics with R
+WWW=		https://cran.r-project.org/web/packages/AER/
 
 LICENSE=	GPLv2 GPLv3
 LICENSE_COMB=	dual

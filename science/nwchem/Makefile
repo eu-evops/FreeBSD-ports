@@ -1,6 +1,6 @@
 PORTNAME=	nwchem
 DISTVERSIONPREFIX=	v
-DISTVERSION=	7.0.2.20211110
+DISTVERSION=	7.0.2-20220224
 DISTVERSIONSUFFIX=	-release
 MASTER_SITES=	https://www.chemie.uni-bonn.de/pctc/mulliken-center/software/dft-d3/:dftd3 \
 		https://web.archive.org/web/20210527062154if_/https://www.chemie.uni-bonn.de/pctc/mulliken-center/software/dft-d3/:dft3 \
@@ -13,6 +13,7 @@ EXTRACT_ONLY=	${DISTNAME}.tar.gz
 
 MAINTAINER=	yuri@FreeBSD.org
 COMMENT=	High-performance computational chemistry software
+WWW=		https://nwchemgit.github.io/
 
 LICENSE=	ECL20
 LICENSE_NAME=	Educational Community License (ECL) 2.0
@@ -32,7 +33,7 @@ USE_PERL5=	build
 
 USE_GITHUB=	yes
 GH_ACCOUNT=	nwchemgit
-GH_TAGNAME=	7b21660b82ebd85ef659f6fba7e1e73433b0bd0a
+GH_TAGNAME=	7a73690b20764d26dc9fdfae9ff0c110253fbf6f
 
 MAKEFILE=	GNUmakefile
 ARCH_64BIT=	${ARCH:C/.*64.*/64/:S/${ARCH}//}
@@ -48,7 +49,7 @@ BINARY_ALIAS+=	make=${GMAKE} # only for LIBXC
 
 PLIST_FILES=	bin/nwchem etc/nwchemrc
 
-LIBXC_VERSION=	5.1.7 # from src/libext/libxc/build_libxc.sh
+LIBXC_VERSION=	5.2.0 # from src/libext/libxc/build_libxc.sh
 
 OPTIONS_DEFINE=		LIBXC PYTHON
 OPTIONS_DEFAULT=	LIBXC PYTHON MPICH # the default should be the same as for the MPI option in math/scalapack and devel/ga
@@ -67,7 +68,7 @@ OPENMPI_RUN_DEPENDS=	openmpi>0:net/openmpi
 OPENMPI_VARS=		CONFLICTS_BUILD=mpich
 
 LIBXC_DESC=		Use libxc
-LIBXC_BUILD_DEPENDS=	cmake:devel/cmake
+LIBXC_BUILD_DEPENDS=	cmake:devel/cmake-core
 LIBXC_MAKE_ENV=		USE_LIBXC=Y
 
 PYTHON_DESC=		Enable Python syntax in input files

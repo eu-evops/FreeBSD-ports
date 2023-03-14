@@ -2,11 +2,12 @@ PORTNAME=	hypatia_engine
 PORTVERSION=	0.3.1
 PORTREVISION=	4
 CATEGORIES=	games python
-MASTER_SITES=	CHEESESHOP
+MASTER_SITES=	PYPI
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
 
 MAINTAINER=	lillian.lynn.lemmer@gmail.com
 COMMENT=	Game engine for 2D top-down, tile-based action RPGs
+WWW=		http://hypatia-engine.github.io/
 
 LICENSE=	MIT
 

@@ -1,7 +1,6 @@
-# Created by: Yukihiro Nakai <nakai@FreeBSD.org>
-
 PORTNAME=	rep-gtk2
 PORTVERSION=	0.90.8.3
+PORTREVISION=	1
 PORTEPOCH=	1
 CATEGORIES=	x11-toolkits
 MASTER_SITES=	http://download.tuxfamily.org/librep/rep-gtk/
@@ -9,6 +8,7 @@ DISTNAME=	rep-gtk_${PORTVERSION}
 
 MAINTAINER=	bofh@FreeBSD.org
 COMMENT=	GTK+-2 bindings for rep Lisp interpreter
+WWW=		https://sawfish.tuxfamily.org/
 
 LICENSE=	GPLv2
 LICENSE_FILE=	${WRKSRC}/COPYING

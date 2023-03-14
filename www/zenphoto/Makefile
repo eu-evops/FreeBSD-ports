@@ -1,13 +1,12 @@
-# Created by: Philippe Audeoud <jadawin@tuxaco.net>
-
 PORTNAME=	zenphoto
-PORTVERSION=	1.5.9
+PORTVERSION=	1.6
 DISTVERSIONPREFIX=	v
 CATEGORIES=	www
 PKGNAMESUFFIX=	${PHP_PKGNAMESUFFIX}
 
 MAINTAINER=	sunpoet@FreeBSD.org
 COMMENT=	Simpler web photo gallery
+WWW=		https://www.zenphoto.org/
 
 LICENSE=	GPLv2+
 LICENSE_FILE=	${WRKSRC}/LICENSE

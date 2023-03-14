@@ -1,12 +1,11 @@
-# Created by: TAKATSU Tomonari <tota@FreeBSD.org>
-
 PORTNAME=	Rcpp
-PORTVERSION=	1.0.7
+PORTVERSION=	1.0.9
 CATEGORIES=	devel
 DISTNAME=	${PORTNAME}_${PORTVERSION}
 
 MAINTAINER=	tota@FreeBSD.org
 COMMENT=	Seamless R and C++ Integration
+WWW=		https://cran.r-project.org/web/packages/Rcpp/
 
 LICENSE=	GPLv2+
 

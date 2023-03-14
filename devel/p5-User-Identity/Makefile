@@ -1,13 +1,12 @@
-# Created by: Max Campos <mcampos@bpsw.biz>
-
 PORTNAME=	User-Identity
-PORTVERSION=	1.00
+PORTVERSION=	1.01
 CATEGORIES=	devel perl5
 MASTER_SITES=	CPAN
 PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	perl@FreeBSD.org
 COMMENT=	Manage informational objects related to a physical person
+WWW=		https://metacpan.org/release/User-Identity
 
 LICENSE=	ART10 GPLv1+
 LICENSE_COMB=	dual

@@ -1,14 +1,12 @@
-# Created by: ijliao
-
 PORTNAME=	rpy2
-PORTVERSION=	3.4.5
-PORTREVISION=	1
+PORTVERSION=	3.5.7
 CATEGORIES=	math python
-MASTER_SITES=	CHEESESHOP
+MASTER_SITES=	PYPI
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
 
 MAINTAINER=	sunpoet@FreeBSD.org
 COMMENT=	Python interface to the R Programming Language
+WWW=		https://rpy2.bitbucket.io/
 
 LICENSE=	GPLv2+
 LICENSE_FILE=	${WRKSRC}/gpl-2.0.txt
@@ -16,7 +14,7 @@ LICENSE_FILE=	${WRKSRC}/gpl-2.0.txt
 BUILD_DEPENDS=	${PYTHON_PKGNAMEPREFIX}cffi>=1.10.0:devel/py-cffi@${PY_FLAVOR}
 LIB_DEPENDS=	libR.so:math/R \
 		libicui18n.so:devel/icu \
-		libpcre.so:devel/pcre
+		libpcre2-8.so:devel/pcre2
 RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}cffi>=1.10.0:devel/py-cffi@${PY_FLAVOR} \
 		${PYTHON_PKGNAMEPREFIX}Jinja2>=0:devel/py-Jinja2@${PY_FLAVOR} \
 		${PYTHON_PKGNAMEPREFIX}pytz>=0,1,1:devel/py-pytz@${PY_FLAVOR} \
@@ -27,20 +25,22 @@ USE_PYTHON=	autoplist concurrent distutils
 
 MAKE_ENV=	RPY2_CFFI_MODE=BOTH
 
-PLIST_FILES=	${PYTHON_SITELIBDIR}/__pycache__/_rinterface_cffi_abi.cpython-${PYTHON_SUFFIX}.opt-1.pyc \
-		${PYTHON_SITELIBDIR}/__pycache__/_rinterface_cffi_abi.cpython-${PYTHON_SUFFIX}.pyc \
-		${PYTHON_SITELIBDIR}/_rinterface_cffi_abi.py
-
 OPTIONS_DEFINE=	NUMPY PANDAS
 OPTIONS_DEFAULT=NUMPY PANDAS
-NUMPY_DESC=	Numpy support
+NUMPY_DESC=	NumPy support
 PANDAS_DESC=	Pandas support
 
-NUMPY_RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}pandas>=0,1:math/py-pandas@${PY_FLAVOR}
+NUMPY_RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}numpy>=0,1:math/py-numpy@${PY_FLAVOR}
 PANDAS_RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}numpy>=0,1:math/py-numpy@${PY_FLAVOR} \
 			${PYTHON_PKGNAMEPREFIX}pandas>=0,1:math/py-pandas@${PY_FLAVOR}
+
+.include <bsd.port.pre.mk>
+
+.if ${PYTHON_REL} < 30800
+RUN_DEPENDS+=	${PYTHON_PKGNAMEPREFIX}typing-extensions>=0:devel/py-typing-extensions@${PY_FLAVOR}
+.endif
 
 post-install:
 	${FIND} ${STAGEDIR}${PYTHON_SITELIBDIR} -name '*.so' -exec ${STRIP_CMD} {} +
 
-.include <bsd.port.mk>
+.include <bsd.port.post.mk>

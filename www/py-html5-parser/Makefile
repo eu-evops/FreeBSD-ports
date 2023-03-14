@@ -1,11 +1,13 @@
 PORTNAME=	html5-parser
 PORTVERSION=	0.4.10
+PORTREVISION=	2
 CATEGORIES=	www python
-MASTER_SITES=	CHEESESHOP
+MASTER_SITES=	PYPI
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
 
 MAINTAINER=	madpilot@FreeBSD.org
 COMMENT=	Fast implementation of the HTML 5 parsing spec for Python
+WWW=		https://html5-parser.readthedocs.io/
 
 LICENSE=	APACHE20
 

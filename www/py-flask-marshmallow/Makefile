@@ -1,13 +1,12 @@
-# Created by: Mark Felder <feld@FreeBSD.org>
-
 PORTNAME=	flask-marshmallow
 PORTVERSION=	0.14.0
 CATEGORIES=	www python
-MASTER_SITES=	CHEESESHOP
+MASTER_SITES=	PYPI
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
 
 MAINTAINER=	sunpoet@FreeBSD.org
 COMMENT=	Marshmallow support for Flask
+WWW=		https://github.com/marshmallow-code/flask-marshmallow
 
 LICENSE=	MIT
 LICENSE_FILE=	${WRKSRC}/LICENSE

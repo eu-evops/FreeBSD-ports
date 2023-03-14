@@ -1,5 +1,6 @@
     COMMENT = Domain Name Service tools
 
+    SUBDIR += acme-dns
     SUBDIR += adns
     SUBDIR += adsuck
     SUBDIR += amass
@@ -7,11 +8,10 @@
     SUBDIR += axfr2acl
     SUBDIR += bind-tools
     SUBDIR += bind9-devel
-    SUBDIR += bind911
     SUBDIR += bind916
+    SUBDIR += bind918
     SUBDIR += bindgraph
     SUBDIR += blocky
-    SUBDIR += bundy
     SUBDIR += c-ares
     SUBDIR += cli53
     SUBDIR += coredns
@@ -60,6 +60,7 @@
     SUBDIR += dnsviz
     SUBDIR += dnswalk
     SUBDIR += dnswall
+    SUBDIR += dnsx
     SUBDIR += doc
     SUBDIR += dog
     SUBDIR += doggo
@@ -70,7 +71,6 @@
     SUBDIR += dsp
     SUBDIR += dynip
     SUBDIR += encrypted-dns-server
-    SUBDIR += erlang-idna
     SUBDIR += fastresolve
     SUBDIR += firedns
     SUBDIR += flamethrower
@@ -86,7 +86,6 @@
     SUBDIR += idnkit2
     SUBDIR += inadyn
     SUBDIR += ipcheck
-    SUBDIR += ironsides
     SUBDIR += kadnode
     SUBDIR += kf5-kdnssd
     SUBDIR += knock
@@ -95,6 +94,7 @@
     SUBDIR += knot3-lib
     SUBDIR += ldapdns
     SUBDIR += ldns
+    SUBDIR += letsdns
     SUBDIR += libasr
     SUBDIR += libasr-devel
     SUBDIR += libbind
@@ -105,6 +105,8 @@
     SUBDIR += libnspsl
     SUBDIR += libpsl
     SUBDIR += linux-c7-libasyncns
+    SUBDIR += lua-resty-dns
+    SUBDIR += luaunbound
     SUBDIR += mDNSResponder_nss
     SUBDIR += maradns
     SUBDIR += mdnsd
@@ -144,6 +146,7 @@
     SUBDIR += p5-Net-DNS-Codes
     SUBDIR += p5-Net-DNS-Lite
     SUBDIR += p5-Net-DNS-Match
+    SUBDIR += p5-Net-DNS-Paranoid
     SUBDIR += p5-Net-DNS-RR-SRV-Helper
     SUBDIR += p5-Net-DNS-Resolver-Mock
     SUBDIR += p5-Net-DNS-Resolver-Programmable
@@ -184,8 +187,9 @@
     SUBDIR += py-cloudflare
     SUBDIR += py-dns-crawler
     SUBDIR += py-dns-lexicon
+    SUBDIR += py-dnslib
     SUBDIR += py-dnspython
-    SUBDIR += py-dnspython2
+    SUBDIR += py-dnspython1
     SUBDIR += py-easyzone
     SUBDIR += py-idna
     SUBDIR += py-idna_ssl
@@ -244,6 +248,7 @@
     SUBDIR += whoseip
     SUBDIR += wrapsrv
     SUBDIR += yadifa
+    SUBDIR += yandex-ddns
     SUBDIR += zkt
     SUBDIR += zonenotify
 

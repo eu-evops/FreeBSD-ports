@@ -7,6 +7,7 @@ DISTNAME=	${PORTNAME}-linux-x86-${PORTVERSION}
 
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Convert latex equations to HTML, MathML, PNG
+WWW=		https://www.mediawiki.org/wiki/Texvc
 
 USES=		gmake
 USE_OCAML=	yes
@@ -19,9 +20,8 @@ OPTIONS_DEFINE=	RASTER
 OPTIONS_DEFAULT:=	${OPTIONS_DEFINE}
 
 RASTER_DESC=	rasterization support
-RASTER_USES=	ghostscript:run
+RASTER_USES=	ghostscript:run magick:6,run tex
 RASTER_USE=	TEX=latex,dvipsk
-RASTER_RUN_DEPENDS=	convert:graphics/ImageMagick6
 
 MAKE_JOBS_UNSAFE=	yes
 

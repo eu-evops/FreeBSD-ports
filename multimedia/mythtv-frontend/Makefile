@@ -1,6 +1,4 @@
-# Created by: Bernhard Froehlich <decke@bluelife.at>
-
-PORTREVISION=	1
+PORTREVISION=	4
 PKGNAMESUFFIX=	-${SLAVEPORT}
 
 MAINTAINER=	ahicks@p-o.co.uk

@@ -1,8 +1,8 @@
 /*
- * pfSense.c
+ * pfsense.c
  *
  * part of pfSense (https://www.pfsense.org)
- * Copyright (c) 2004-2022 Rubicon Communications, LLC (Netgate)
+ * Copyright (c) 2004-2023 Rubicon Communications, LLC (Netgate)
  * All rights reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -19,191 +19,59 @@
  */
 
 /*
-
-Functions copied from util.c and modem.c of mpd5 source are protected by
-this copyright.
-They are ExclusiveOpenDevice/ExclusiveCloseDevice and
-OpenSerialDevice.
-
-Copyright (c) 1995-1999 Whistle Communications, Inc. All rights reserved.
-
-Subject to the following obligations and disclaimer of warranty,
-use and redistribution of this software, in source or object code
-forms, with or without modifications are expressly permitted by
-Whistle Communications; provided, however, that:   (i) any and
-all reproductions of the source or object code must include the
-copyright notice above and the following disclaimer of warranties;
-and (ii) no rights are granted, in any manner or form, to use
-Whistle Communications, Inc. trademarks, including the mark "WHISTLE
-COMMUNICATIONS" on advertising, endorsements, or otherwise except
-as such appears in the above copyright notice or in the software.
-
-THIS SOFTWARE IS BEING PROVIDED BY WHISTLE COMMUNICATIONS "AS IS",
-AND TO THE MAXIMUM EXTENT PERMITTED BY LAW, WHISTLE COMMUNICATIONS
-MAKES NO REPRESENTATIONS OR WARRANTIES, EXPRESS OR IMPLIED,
-REGARDING THIS SOFTWARE, INCLUDING WITHOUT LIMITATION, ANY AND
-ALL IMPLIED WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR
-PURPOSE, OR NON-INFRINGEMENT.  WHISTLE COMMUNICATIONS DOES NOT
-WARRANT, GUARANTEE, OR MAKE ANY REPRESENTATIONS REGARDING THE USE
-OF, OR THE RESULTS OF THE USE OF THIS SOFTWARE IN TERMS OF ITS
-CORRECTNESS, ACCURACY, RELIABILITY OR OTHERWISE.  IN NO EVENT
-SHALL WHISTLE COMMUNICATIONS BE LIABLE FOR ANY DAMAGES RESULTING
-FROM OR ARISING OUT OF ANY USE OF THIS SOFTWARE, INCLUDING WITHOUT
-LIMITATION, ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY,
-PUNITIVE, OR CONSEQUENTIAL DAMAGES, PROCUREMENT OF SUBSTITUTE
-GOODS OR SERVICES, LOSS OF USE, DATA OR PROFITS, HOWEVER CAUSED
-AND UNDER ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT
-LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN
-ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF WHISTLE COMMUNICATIONS
-IS ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
-
-*/
-
-#include <sys/endian.h>
-#include <sys/ioctl.h>
-#include <sys/types.h>
-#include <sys/socket.h>
-#include <sys/sysctl.h>
-
-#include <arpa/inet.h>
-#include <net/ethernet.h>
-#include <net/if.h>
-#include <net/if_bridgevar.h>
-#include <net/if_dl.h>
-#include <net/if_mib.h>
-#include <net/if_types.h>
-#include <net/if_var.h>
-#include <net/if_vlan_var.h>
-#include <net/pfvar.h>
-#include <net/route.h>
-#include <netgraph/ng_message.h>
-#include <netgraph/ng_ether.h>
-#include <netinet/if_ether.h>
-#include <netinet/in.h>
-#include <netinet/in_var.h>
-#include <netinet/ip_fw.h>
-#include <netinet/tcp_fsm.h>
-#include <netinet6/in6_var.h>
-#include <net80211/ieee80211_ioctl.h>
-
-#include <vm/vm_param.h>
-
-#include <fcntl.h>
-#include <glob.h>
-#include <inttypes.h>
-#include <ifaddrs.h>
-#include <libgen.h>
-#include <libpfctl.h>
-#include <netgraph.h>
-#include <netdb.h>
-#include <poll.h>
-#include <stdio.h>
-#include <stdlib.h>
-#include <strings.h>
-#include <termios.h>
-#include <unistd.h>
-#include <kenv.h>
-
-#define IS_EXT_MODULE
+ * Functions copied from util.c and modem.c of mpd5 source are protected by
+ * this copyright.
+ * They are ExclusiveOpenDevice/ExclusiveCloseDevice and
+ * OpenSerialDevice.
+ * Copyright (c) 1995-1999 Whistle Communications, Inc. All rights reserved.
+ * Subject to the following obligations and disclaimer of warranty,
+ * use and redistribution of this software, in source or object code
+ * forms, with or without modifications are expressly permitted by
+ * Whistle Communications; provided, however, that:   (i) any and
+ * all reproductions of the source or object code must include the
+ * copyright notice above and the following disclaimer of warranties;
+ * and (ii) no rights are granted, in any manner or form, to use
+ * Whistle Communications, Inc. trademarks, including the mark "WHISTLE
+ * COMMUNICATIONS" on advertising, endorsements, or otherwise except
+ * as such appears in the above copyright notice or in the software.
+ * THIS SOFTWARE IS BEING PROVIDED BY WHISTLE COMMUNICATIONS "AS IS",
+ * AND TO THE MAXIMUM EXTENT PERMITTED BY LAW, WHISTLE COMMUNICATIONS
+ * MAKES NO REPRESENTATIONS OR WARRANTIES, EXPRESS OR IMPLIED,
+ * REGARDING THIS SOFTWARE, INCLUDING WITHOUT LIMITATION, ANY AND
+ * ALL IMPLIED WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR
+ * PURPOSE, OR NON-INFRINGEMENT.  WHISTLE COMMUNICATIONS DOES NOT
+ * WARRANT, GUARANTEE, OR MAKE ANY REPRESENTATIONS REGARDING THE USE
+ * OF, OR THE RESULTS OF THE USE OF THIS SOFTWARE IN TERMS OF ITS
+ * CORRECTNESS, ACCURACY, RELIABILITY OR OTHERWISE.  IN NO EVENT
+ * SHALL WHISTLE COMMUNICATIONS BE LIABLE FOR ANY DAMAGES RESULTING
+ * FROM OR ARISING OUT OF ANY USE OF THIS SOFTWARE, INCLUDING WITHOUT
+ * LIMITATION, ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY,
+ * PUNITIVE, OR CONSEQUENTIAL DAMAGES, PROCUREMENT OF SUBSTITUTE
+ * GOODS OR SERVICES, LOSS OF USE, DATA OR PROFITS, HOWEVER CAUSED
+ * AND UNDER ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT
+ * LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN
+ * ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF WHISTLE COMMUNICATIONS
+ * IS ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+ */
 
 #ifdef HAVE_CONFIG_H
-#include "config.h"
+# include "config.h"
 #endif
 
-#ifdef ETHERSWITCH_FUNCTIONS
-#include <net/if_media.h>
-#include "etherswitch.h"
-#endif
-
-#include "ipfw2.h"
 #include "php.h"
-#include "php_ini.h"
+#include "ext/standard/info.h"
 #include "php_pfSense.h"
+#include "pfSense_arginfo.h"
 
-int pfSense_dhcpd;
+#include "pfSense_private.h"
 
 ZEND_DECLARE_MODULE_GLOBALS(pfSense)
 
-static zend_function_entry pfSense_functions[] = {
-    PHP_FE(pfSense_get_interface_info, NULL)
-    PHP_FE(pfSense_get_interface_addresses, NULL)
-    PHP_FE(pfSense_getall_interface_addresses, NULL)
-    PHP_FE(pfSense_get_interface_stats, NULL)
-    PHP_FE(pfSense_get_pf_rules, NULL)
-    PHP_FE(pfSense_get_pf_states, NULL)
-    PHP_FE(pfSense_get_pf_stats, NULL)
-    PHP_FE(pfSense_get_os_hw_data, NULL)
-    PHP_FE(pfSense_kenv_dump, NULL)
-    PHP_FE(pfSense_get_os_kern_data, NULL)
-    PHP_FE(pfSense_vlan_create, NULL)
-    PHP_FE(pfSense_interface_rename, NULL)
-    PHP_FE(pfSense_interface_mtu, NULL)
-    PHP_FE(pfSense_interface_getmtu, NULL)
-    PHP_FE(pfSense_bridge_add_member, NULL)
-    PHP_FE(pfSense_bridge_del_member, NULL)
-    PHP_FE(pfSense_bridge_member_flags, NULL)
-    PHP_FE(pfSense_interface_listget, NULL)
-    PHP_FE(pfSense_interface_create, NULL)
-    PHP_FE(pfSense_interface_create2, NULL)
-    PHP_FE(pfSense_interface_destroy, NULL)
-    PHP_FE(pfSense_interface_flags, NULL)
-    PHP_FE(pfSense_interface_capabilities, NULL)
-    PHP_FE(pfSense_interface_setaddress, NULL)
-    PHP_FE(pfSense_interface_deladdress, NULL)
-    PHP_FE(pfSense_ngctl_name, NULL)
-    PHP_FE(pfSense_ngctl_attach, NULL)
-    PHP_FE(pfSense_ngctl_detach, NULL)
-    PHP_FE(pfSense_get_modem_devices, NULL)
-    PHP_FE(pfSense_sync, NULL)
-    PHP_FE(pfSense_fsync, NULL)
-    PHP_FE(pfSense_kill_states, NULL)
-    PHP_FE(pfSense_kill_srcstates, NULL)
-    PHP_FE(pfSense_ip_to_mac, NULL)
-#ifdef DHCP_INTEGRATION
-    PHP_FE(pfSense_open_dhcpd, NULL)
-    PHP_FE(pfSense_close_dhcpd, NULL)
-    PHP_FE(pfSense_register_lease, NULL)
-    PHP_FE(pfSense_delete_lease, NULL)
-#endif
-#ifdef IPFW_FUNCTIONS
-    PHP_FE(pfSense_ipfw_table, NULL)
-    PHP_FE(pfSense_ipfw_table_info, NULL)
-    PHP_FE(pfSense_ipfw_table_list, NULL)
-    PHP_FE(pfSense_ipfw_table_lookup, NULL)
-    PHP_FE(pfSense_ipfw_table_zerocnt, NULL)
-    PHP_FE(pfSense_ipfw_tables_list, NULL)
-    PHP_FE(pfSense_ipfw_pipe, NULL)
-#endif
-#ifdef ETHERSWITCH_FUNCTIONS
-    PHP_FE(pfSense_etherswitch_getinfo, NULL)
-    PHP_FE(pfSense_etherswitch_getport, NULL)
-    PHP_FE(pfSense_etherswitch_setport, NULL)
-    PHP_FE(pfSense_etherswitch_setport_state, NULL)
-    PHP_FE(pfSense_etherswitch_getlaggroup, NULL)
-    PHP_FE(pfSense_etherswitch_getvlangroup, NULL)
-    PHP_FE(pfSense_etherswitch_setlaggroup, NULL)
-    PHP_FE(pfSense_etherswitch_setvlangroup, NULL)
-    PHP_FE(pfSense_etherswitch_setmode, NULL)
-#endif
-    PHP_FE(pfSense_ipsec_list_sa, NULL)
-    {NULL, NULL, NULL}
-};
-
-zend_module_entry pfSense_module_entry = {
-    STANDARD_MODULE_HEADER,
-    PHP_PFSENSE_WORLD_EXTNAME,
-    pfSense_functions,
-    PHP_MINIT(pfSense_socket),
-    PHP_MSHUTDOWN(pfSense_socket_close),
-    NULL,
-    NULL,
-    NULL,
-    PHP_PFSENSE_WORLD_VERSION,
-    STANDARD_MODULE_PROPERTIES
-};
-
-#ifdef COMPILE_DL_PFSENSE
-ZEND_GET_MODULE(pfSense)
+/* For compatibility with older PHP versions */
+#ifndef ZEND_PARSE_PARAMETERS_NONE
+#define ZEND_PARSE_PARAMETERS_NONE() \
+	ZEND_PARSE_PARAMETERS_START(0, 0) \
+	ZEND_PARSE_PARAMETERS_END()
 #endif
 
 #ifdef DHCP_INTEGRATION
@@ -390,122 +258,6 @@ pf_print_host(struct pf_addr *addr, u_int16_t port, sa_family_t af, char *buf,
 	}
 }
 
-PHP_MINIT_FUNCTION(pfSense_socket)
-{
-	int csock;
-
-	PFSENSE_G(s) = socket(AF_LOCAL, SOCK_DGRAM, 0);
-	if (PFSENSE_G(s) < 0)
-		return FAILURE;
-
-	PFSENSE_G(inets) = socket(AF_INET, SOCK_DGRAM, 0);
-	if (PFSENSE_G(inets) < 0) {
-		close(PFSENSE_G(s));
-		return FAILURE;
-	}
-	PFSENSE_G(inets6) = socket(AF_INET6, SOCK_DGRAM, 0);
-	if (PFSENSE_G(inets6) < 0) {
-		close(PFSENSE_G(s));
-		close(PFSENSE_G(inets));
-		return FAILURE;
-	}
-
-	if (geteuid() == 0 || getuid() == 0) {
-#ifdef IPFW_FUNCTIONS
-		PFSENSE_G(ipfw) = socket(AF_INET, SOCK_RAW, IPPROTO_RAW);
-		if (PFSENSE_G(ipfw) < 0) {
-			close(PFSENSE_G(s));
-			close(PFSENSE_G(inets));
-			close(PFSENSE_G(inets6));
-			return FAILURE;
-		} else
-			fcntl(PFSENSE_G(ipfw), F_SETFD, fcntl(PFSENSE_G(ipfw), F_GETFD, 0) | FD_CLOEXEC);
-
-#endif
-		/* Create a new socket node */
-		if (NgMkSockNode(NULL, &csock, NULL) < 0)
-			csock = -1;
-		else
-			fcntl(csock, F_SETFD, fcntl(csock, F_GETFD, 0) | FD_CLOEXEC);
-
-		PFSENSE_G(csock) = csock;
-
-#ifdef DHCP_INTEGRATION
-		pfSense_dhcpd = zend_register_list_destructors_ex(php_pfSense_destroy_dhcpd, NULL, PHP_PFSENSE_RES_NAME, module_number);
-		dhcpctl_initialize();
-		omapi_init();
-#endif
-	} else
-		PFSENSE_G(csock) = -1;
-
-	/* Don't leak these sockets to child processes */
-	fcntl(PFSENSE_G(s), F_SETFD, fcntl(PFSENSE_G(s), F_GETFD, 0) | FD_CLOEXEC);
-	fcntl(PFSENSE_G(inets), F_SETFD, fcntl(PFSENSE_G(inets), F_GETFD, 0) | FD_CLOEXEC);
-	fcntl(PFSENSE_G(inets6), F_SETFD, fcntl(PFSENSE_G(inets6), F_GETFD, 0) | FD_CLOEXEC);
-
-	REGISTER_LONG_CONSTANT("IFF_UP", IFF_UP, CONST_PERSISTENT | CONST_CS);
-	REGISTER_LONG_CONSTANT("IFF_LINK0", IFF_LINK0, CONST_PERSISTENT | CONST_CS);
-	REGISTER_LONG_CONSTANT("IFF_LINK1", IFF_LINK1, CONST_PERSISTENT | CONST_CS);
-	REGISTER_LONG_CONSTANT("IFF_LINK2", IFF_LINK2, CONST_PERSISTENT | CONST_CS);
-	REGISTER_LONG_CONSTANT("IFF_NOARP", IFF_NOARP, CONST_PERSISTENT | CONST_CS);
-	REGISTER_LONG_CONSTANT("IFF_STATICARP", IFF_STATICARP, CONST_PERSISTENT | CONST_CS);
-	REGISTER_LONG_CONSTANT("IFCAP_RXCSUM", IFCAP_RXCSUM, CONST_PERSISTENT | CONST_CS);
-	REGISTER_LONG_CONSTANT("IFCAP_TXCSUM", IFCAP_TXCSUM, CONST_PERSISTENT | CONST_CS);
-	REGISTER_LONG_CONSTANT("IFCAP_POLLING", IFCAP_POLLING, CONST_PERSISTENT | CONST_CS);
-	REGISTER_LONG_CONSTANT("IFCAP_TSO", IFCAP_TSO, CONST_PERSISTENT | CONST_CS);
-	REGISTER_LONG_CONSTANT("IFCAP_LRO", IFCAP_LRO, CONST_PERSISTENT | CONST_CS);
-	REGISTER_LONG_CONSTANT("IFCAP_WOL", IFCAP_WOL, CONST_PERSISTENT | CONST_CS);
-	REGISTER_LONG_CONSTANT("IFCAP_WOL_UCAST", IFCAP_WOL_UCAST, CONST_PERSISTENT | CONST_CS);
-	REGISTER_LONG_CONSTANT("IFCAP_WOL_MCAST", IFCAP_WOL_MCAST, CONST_PERSISTENT | CONST_CS);
-	REGISTER_LONG_CONSTANT("IFCAP_WOL_MAGIC", IFCAP_WOL_MAGIC, CONST_PERSISTENT | CONST_CS);
-
-	REGISTER_LONG_CONSTANT("IFCAP_VLAN_HWTAGGING", IFCAP_VLAN_HWTAGGING, CONST_PERSISTENT | CONST_CS);
-	REGISTER_LONG_CONSTANT("IFCAP_VLAN_MTU", IFCAP_VLAN_MTU, CONST_PERSISTENT | CONST_CS);
-	REGISTER_LONG_CONSTANT("IFCAP_VLAN_HWFILTER", IFCAP_VLAN_HWFILTER, CONST_PERSISTENT | CONST_CS);
-#ifdef IFCAP_VLAN_HWCSUM
-	REGISTER_LONG_CONSTANT("IFCAP_VLAN_HWCSUM", IFCAP_VLAN_HWCSUM, CONST_PERSISTENT | CONST_CS);
-#endif
-#ifdef IFCAP_VLAN_HWTSO
-	REGISTER_LONG_CONSTANT("IFCAP_VLAN_HWTSO", IFCAP_VLAN_HWTSO, CONST_PERSISTENT | CONST_CS);
-#endif
-	REGISTER_LONG_CONSTANT("IFCAP_RXCSUM_IPV6", IFCAP_RXCSUM_IPV6, CONST_PERSISTENT | CONST_CS);
-	REGISTER_LONG_CONSTANT("IFCAP_TXCSUM_IPV6", IFCAP_TXCSUM_IPV6, CONST_PERSISTENT | CONST_CS);
-
-	REGISTER_LONG_CONSTANT("IFBIF_LEARNING", IFBIF_LEARNING, CONST_PERSISTENT | CONST_CS);
-	REGISTER_LONG_CONSTANT("IFBIF_DISCOVER", IFBIF_DISCOVER, CONST_PERSISTENT | CONST_CS);
-	REGISTER_LONG_CONSTANT("IFBIF_STP", IFBIF_STP, CONST_PERSISTENT | CONST_CS);
-	REGISTER_LONG_CONSTANT("IFBIF_SPAN", IFBIF_SPAN, CONST_PERSISTENT | CONST_CS);
-	REGISTER_LONG_CONSTANT("IFBIF_STICKY", IFBIF_STICKY, CONST_PERSISTENT | CONST_CS);
-	REGISTER_LONG_CONSTANT("IFBIF_BSTP_EDGE", IFBIF_BSTP_EDGE, CONST_PERSISTENT | CONST_CS);
-	REGISTER_LONG_CONSTANT("IFBIF_BSTP_AUTOEDGE", IFBIF_BSTP_AUTOEDGE, CONST_PERSISTENT | CONST_CS);
-	REGISTER_LONG_CONSTANT("IFBIF_BSTP_PTP", IFBIF_BSTP_PTP, CONST_PERSISTENT | CONST_CS);
-	REGISTER_LONG_CONSTANT("IFBIF_BSTP_AUTOPTP", IFBIF_BSTP_AUTOPTP, CONST_PERSISTENT | CONST_CS);
-	REGISTER_LONG_CONSTANT("IFBIF_BSTP_ADMEDGE", IFBIF_BSTP_ADMEDGE, CONST_PERSISTENT | CONST_CS);
-	REGISTER_LONG_CONSTANT("IFBIF_BSTP_ADMCOST", IFBIF_BSTP_ADMCOST, CONST_PERSISTENT | CONST_CS);
-	REGISTER_LONG_CONSTANT("IFBIF_PRIVATE", IFBIF_PRIVATE, CONST_PERSISTENT | CONST_CS);
-
-#ifdef IPFW_FUNCTIONS
-	REGISTER_LONG_CONSTANT("IP_FW_TABLE_XADD", IP_FW_TABLE_XADD, CONST_PERSISTENT | CONST_CS);
-	REGISTER_LONG_CONSTANT("IP_FW_TABLE_XDEL", IP_FW_TABLE_XDEL, CONST_PERSISTENT | CONST_CS);
-#endif
-
-	return SUCCESS;
-}
-
-PHP_MSHUTDOWN_FUNCTION(pfSense_socket_close)
-{
-	if (PFSENSE_G(csock) != -1)
-		close(PFSENSE_G(csock));
-	if (PFSENSE_G(inets) != -1)
-		close(PFSENSE_G(inets));
-	if (PFSENSE_G(inets6) != -1)
-		close(PFSENSE_G(inets6));
-	if (PFSENSE_G(s) != -1)
-		close(PFSENSE_G(s));
-
-	return SUCCESS;
-}
-
 static int
 pfctl_addrprefix(char *addr, struct pf_addr *mask)
 {
@@ -578,9 +330,11 @@ PHP_FUNCTION(pfSense_kill_srcstates)
 	char *ip1 = NULL, *ip2 = NULL;
 	size_t ip1_len = 0, ip2_len = 0;
 
-	if (zend_parse_parameters(ZEND_NUM_ARGS() TSRMLS_CC, "s|s", &ip1, &ip1_len, &ip2, &ip2_len) == FAILURE) {
-		RETURN_NULL();
-	}
+	ZEND_PARSE_PARAMETERS_START(1, 2)
+		Z_PARAM_STRING(ip1, ip1_len)
+		Z_PARAM_OPTIONAL
+		Z_PARAM_STRING(ip2, ip2_len)
+	ZEND_PARSE_PARAMETERS_END();
 
 	if ((dev = open("/dev/pf", O_RDWR)) < 0)
 		RETURN_NULL();
@@ -695,9 +449,13 @@ PHP_FUNCTION(pfSense_kill_states)
 	char *ip1 = NULL, *ip2 = NULL, *proto = NULL, *iface = NULL;
 	size_t ip1_len = 0, ip2_len = 0, proto_len = 0, iface_len = 0;
 
-	if (zend_parse_parameters(ZEND_NUM_ARGS() TSRMLS_CC, "s|sss", &ip1, &ip1_len, &ip2, &ip2_len, &iface, &iface_len, &proto, &proto_len) == FAILURE) {
-		RETURN_NULL();
-	}
+	ZEND_PARSE_PARAMETERS_START(1, 4)
+		Z_PARAM_STRING(ip1, ip1_len)
+		Z_PARAM_OPTIONAL
+		Z_PARAM_STRING(ip2, ip2_len)
+		Z_PARAM_STRING(iface, iface_len)
+		Z_PARAM_STRING(proto, proto_len)
+	ZEND_PARSE_PARAMETERS_END();
 
 	if ((dev = open("/dev/pf", O_RDWR)) < 0)
 		RETURN_NULL();
@@ -817,811 +575,6 @@ PHP_FUNCTION(pfSense_kill_states)
 	RETURN_TRUE;
 }
 
-#ifdef IPFW_FUNCTIONS
-PHP_FUNCTION(pfSense_ipfw_pipe)
-{
-	int ac, do_pipe = 1;
-	size_t param_len = 0;
-	enum { bufsize = 2048 };
-	char **ap, *av[bufsize], *param = NULL;
-
-	if (zend_parse_parameters(ZEND_NUM_ARGS() TSRMLS_CC, "s", &param, &param_len) == FAILURE) {
-		RETURN_FALSE;
-	}
-
-	memset(av, 0, sizeof(av));
-	ac = 0;
-	for (ap = av; (*ap = strsep(&param, " \t")) != NULL;) {
-		if (**ap != '\0') {
-			if (++ap >= &av[bufsize])
-				break;
-		}
-		ac++;
-	}
-	if (ac > 0)
-		ac = ac - 1;
-
-	if (!strncmp(*av, "pipe", strlen(*av)))
-		do_pipe = 1;
-	else if (!strncmp(*av, "queue", strlen(*av)))
-		do_pipe = 2;
-	else if (!strncmp(*av, "flowset", strlen(*av)))
-		do_pipe = 2;
-	else if (!strncmp(*av, "sched", strlen(*av)))
-		do_pipe = 3;
-	else
-		RETURN_FALSE;
-
-	ap = av;
-	ac--;
-	ap++;
-
-	if (!strncmp(*ap, "delete", strlen(*ap))) {
-		ipfw_delete_pipe(do_pipe, strtol(ap[1], NULL, 10));
-	} else if (!strncmp(ap[1], "config", strlen(ap[1]))) {
-		/*
-		 * For pipes, queues and nats we normally say 'nat|pipe NN config'
-		 * but the code is easier to parse as 'nat|pipe config NN'
-		 * so we swap the two arguments.
-		 */
-		if (ac > 1 && isdigit(*ap[0])) {
-			char *p = ap[0];
-
-			ap[0] = ap[1];
-			ap[1] = p;
-		}
-
-		if (ipfw_config_pipe(ac, ap, do_pipe) < 0) {
-			RETURN_FALSE;
-		}
-	} else
-		RETURN_FALSE;
-
-	RETURN_TRUE;
-}
-
-static int
-table_get_info(ipfw_obj_header *oh, ipfw_xtable_info *i)
-{
-	char tbuf[sizeof(ipfw_obj_header) + sizeof(ipfw_xtable_info)];
-	int error;
-	socklen_t sz;
-
-	sz = sizeof(tbuf);
-	memset(tbuf, 0, sizeof(tbuf));
-	memcpy(tbuf, oh, sizeof(*oh));
-	oh = (ipfw_obj_header *)tbuf;
-	oh->opheader.opcode = IP_FW_TABLE_XINFO;
-	oh->opheader.version = 0;
-
-	error = getsockopt(PFSENSE_G(ipfw), IPPROTO_IP, IP_FW3, &oh->opheader,
-	    &sz);
-	if (error != 0)
-		return (error);
-	if (sz < sizeof(tbuf))
-		return (EINVAL);
-
-	*i = *(ipfw_xtable_info *)(oh + 1);
-
-	return (0);
-}
-
-static int
-get_mac_addr_mask(const char *p, uint8_t *addr, uint8_t *mask)
-{
-	int i, ret;
-	size_t l;
-	char *ap, *ptr, *optr;
-	struct ether_addr *mac;
-	const char *macset = "0123456789abcdefABCDEF:";
-
-	if (strcmp(p, "any") == 0) {
-		for (i = 0; i < ETHER_ADDR_LEN; i++)
-			addr[i] = mask[i] = 0;
-		return (0);
-	}
-
-	ret = -1;
-	optr = ptr = strdup(p);
-	if ((ap = strsep(&ptr, "&/")) != NULL && *ap != 0) {
-		l = strlen(ap);
-		if (strspn(ap, macset) != l || (mac = ether_aton(ap)) == NULL)
-			goto out;
-		bcopy(mac, addr, ETHER_ADDR_LEN);
-	} else
-		goto out;
-
-	if (ptr != NULL) { /* we have mask? */
-		if (p[ptr - optr - 1] == '/') { /* mask len */
-			long ml = strtol(ptr, &ap, 10);
-			if (*ap != 0 || ml > ETHER_ADDR_LEN * 8 || ml < 0)
-				return (-1);
-			for (i = 0; ml > 0 && i < ETHER_ADDR_LEN; ml -= 8, i++)
-				mask[i] = (ml >= 8) ? 0xff: (~0) << (8 - ml);
-		} else { /* mask */
-			l = strlen(ptr);
-			if (strspn(ptr, macset) != l ||
-			    (mac = ether_aton(ptr)) == NULL)
-				goto out;
-			bcopy(mac, mask, ETHER_ADDR_LEN);
-		}
-	} else { /* default mask: ff:ff:ff:ff:ff:ff */
-		for (i = 0; i < ETHER_ADDR_LEN; i++)
-			mask[i] = 0xff;
-	}
-	for (i = 0; i < ETHER_ADDR_LEN; i++)
-		addr[i] &= mask[i];
-
-	ret = 0;
-out:
-	free(optr);
-
-	return (ret);
-}
-
-static int
-tentry_fill_key(char *arg, uint8_t type, ipfw_obj_tentry *tent)
-{
-	char *mac, *p;
-	int mask;
-	uint32_t key;
-
-	switch (type) {
-	case IPFW_TABLE_ADDR:
-		/* Remove the ',' if exists */
-		if ((p = strchr(arg, ',')) != NULL) {
-			*p = '\0';
-			mac = p + 1;
-			if (ether_aton_r(mac,
-			    (struct ether_addr *)&tent->mac) == NULL)
-				return (-1);
-		}
-
-		/* Remove / if exists */
-		if ((p = strchr(arg, '/')) != NULL) {
-			*p = '\0';
-			mask = atoi(p + 1);
-		}
-
-		if (inet_pton(AF_INET, arg, &tent->k.addr) == 1) {
-			if (p != NULL && mask > 32)
-				return (-1);
-
-			tent->subtype = AF_INET;
-			tent->masklen = p ? mask : 32;
-		} else if (inet_pton(AF_INET6, arg, &tent->k.addr6) == 1) {
-			if (IN6_IS_ADDR_V4COMPAT(&tent->k.addr6))
-				return (-1);
-			if (p != NULL && mask > 128)
-				return (-1);
-
-			tent->subtype = AF_INET6;
-			tent->masklen = p ? mask : 128;
-		} else {
-			/* Assume FQDN - not supported. */
-			return (-1);
-		}
-		break;
-
-	case IPFW_TABLE_MAC2: {
-		char *src, *dst;
-		struct mac_entry *mac;
-
-		dst = arg;
-		if ((p = strchr(arg, ',')) == NULL)
-			return (-1);
-		*p = '\0';
-		src = p + 1;
-
-		mac = (struct mac_entry *)&tent->k.mac;
-		if (get_mac_addr_mask(dst, mac->addr, mac->mask) == -1)
-			return (-1);
-		if (get_mac_addr_mask(src, &(mac->addr[ETHER_ADDR_LEN]),
-		    &(mac->mask[ETHER_ADDR_LEN])) == -1)
-			return (-1);
-
-		tent->subtype = AF_LINK;
-		tent->masklen = ETHER_ADDR_LEN * 8;
-		}
-		break;
-
-	case IPFW_TABLE_INTERFACE:
-		/* Assume interface name. Copy significant data only */
-		mask = MIN(strlen(arg), IF_NAMESIZE - 1);
-		memcpy(tent->k.iface, arg, mask);
-		/* Set mask to exact match */
-		tent->masklen = 8 * IF_NAMESIZE;
-		break;
-
-	case IPFW_TABLE_NUMBER:
-		/* Port or any other key */
-		key = strtol(arg, &p, 10);
-		if (*p != '\0') {
-			php_printf("Invalid number: %s", arg);
-			return (-1);
-		}
-
-		tent->k.key = key;
-		tent->masklen = 32;
-		break;
-
-	default:
-		return (-1);
-	}
-
-	return (0);
-}
-
-PHP_FUNCTION(pfSense_ipfw_table)
-{
-	char *arg, *tname;
-	char xbuf[sizeof(ipfw_obj_header) + sizeof(ipfw_obj_ctlv) +
-	    sizeof(ipfw_obj_tentry)];
-	int error;
-	ipfw_obj_ctlv *ctlv;
-	ipfw_obj_header *oh;
-	ipfw_obj_ntlv *ntlv;
-	ipfw_obj_tentry *tent;
-	ipfw_table_value *v;
-	ipfw_xtable_info xi;
-	zend_long action, pipe;
-	size_t arglen, tnamelen;
-	socklen_t size;
-
-	pipe = 0;
-	action = IP_FW_TABLE_XADD;
-	if (zend_parse_parameters(ZEND_NUM_ARGS() TSRMLS_CC, "sls|l",
-	    &tname, &tnamelen, &action, &arg, &arglen, &pipe) == FAILURE) {
-		RETURN_FALSE;
-	}
-
-	if (tnamelen == 0 || arglen == 0)
-		RETURN_FALSE;
-	if (action != IP_FW_TABLE_XDEL && action != IP_FW_TABLE_XADD)
-		RETURN_FALSE;
-
-	memset(xbuf, 0, sizeof(xbuf));
-	oh = (ipfw_obj_header *)xbuf;
-	oh->opheader.opcode = action;
-	oh->opheader.version = 1;
-
-	ntlv = &oh->ntlv;
-	ntlv->head.type = IPFW_TLV_TBL_NAME;
-	ntlv->head.length = sizeof(ipfw_obj_ntlv);
-	ntlv->idx = 1;
-	ntlv->set = 0;
-	strlcpy(ntlv->name, tname, sizeof(ntlv->name));
-	oh->idx = 1;
-
-	if (table_get_info(oh, &xi) != 0)
-		RETURN_FALSE;
-
-	size = sizeof(ipfw_obj_ctlv) + sizeof(ipfw_obj_tentry);
-	ctlv = (ipfw_obj_ctlv *)(oh + 1);
-	ctlv->count = 1;
-	ctlv->head.length = size;
-
-	tent = (ipfw_obj_tentry *)(ctlv + 1);
-	tent->head.length = sizeof(ipfw_obj_tentry);
-	tent->idx = oh->idx;
-
-	if (tentry_fill_key(arg, xi.type, tent) == -1)
-		RETURN_FALSE;
-	ntlv->type = xi.type;
-
-	if (pipe != 0) {
-		v = &tent->v.value;
-		v->pipe = pipe;
-	}
-
-	size += sizeof(ipfw_obj_header);
-	error = setsockopt(PFSENSE_G(ipfw), IPPROTO_IP, IP_FW3, &oh->opheader,
-	    size);
-	if (error < 0 && error != EEXIST) {
-		php_printf("Failed setsockopt");
-		RETURN_FALSE;
-	}
-
-	RETURN_TRUE;
-}
-
-static void
-table_tinfo(zval *rarray, ipfw_xtable_info *info)
-{
-	char *type;
-
-	add_assoc_string(rarray, "name", info->tablename);
-	add_assoc_long(rarray, "count", info->count);
-	add_assoc_long(rarray, "size", info->size);
-	add_assoc_long(rarray, "set", info->set);
-	if (info->limit > 0)
-		add_assoc_long(rarray, "limit", info->limit);
-	if (strlen(info->algoname) > 0)
-		add_assoc_string(rarray, "algoname",
-		    info->algoname);
-	switch (info->type) {
-	case IPFW_TABLE_ADDR:
-		type = "addr";
-		break;
-	case IPFW_TABLE_INTERFACE:
-		type = "interface";
-		break;
-	case IPFW_TABLE_NUMBER:
-		type = "number";
-		break;
-	case IPFW_TABLE_FLOW:
-		type = "flow";
-		break;
-	case IPFW_TABLE_MAC2:
-		type = "mac";
-		break;
-	default:
-		type = "unknown";
-	}
-	add_assoc_string(rarray, "type", type);
-}
-
-PHP_FUNCTION(pfSense_ipfw_table_info)
-{
-	char xbuf[sizeof(ipfw_obj_header)];
-	char *tname;
-	ipfw_obj_header *oh;
-	ipfw_obj_ntlv *ntlv;
-	ipfw_xtable_info xi;
-	size_t tnamelen;
-
-	if (zend_parse_parameters(ZEND_NUM_ARGS() TSRMLS_CC, "s",
-	    &tname, &tnamelen) == FAILURE) {
-		RETURN_NULL();
-	}
-
-	if (tnamelen == 0)
-		RETURN_NULL();
-
-	memset(xbuf, 0, sizeof(xbuf));
-	oh = (ipfw_obj_header *)xbuf;
-
-	ntlv = &oh->ntlv;
-	ntlv->head.type = IPFW_TLV_TBL_NAME;
-	ntlv->head.length = sizeof(ipfw_obj_ntlv);
-	ntlv->idx = 1;
-	ntlv->set = 0;
-	strlcpy(ntlv->name, tname, sizeof(ntlv->name));
-	oh->idx = 1;
-
-	if (table_get_info(oh, &xi) != 0)
-		RETURN_NULL();
-
-	array_init(return_value);
-	table_tinfo(return_value, &xi);
-}
-
-/*
- * Returns the number of bits set (from left) in a contiguous bitmask,
- * or -1 if the mask is not contiguous.
- * XXX this needs a proper fix.
- * This effectively works on masks in big-endian (network) format.
- * when compiled on little endian architectures.
- *
- * First bit is bit 7 of the first byte -- note, for MAC addresses,
- * the first bit on the wire is bit 0 of the first byte.
- * len is the max length in bits.
- */
-int
-contigmask(uint8_t *p, int len)
-{
-	int i, n;
-
-	for (i=0; i<len ; i++)
-		if ( (p[i/8] & (1 << (7 - (i%8)))) == 0) /* first bit unset */
-			break;
-	for (n=i+1; n < len; n++)
-		if ( (p[n/8] & (1 << (7 - (n%8)))) != 0)
-			return -1; /* mask not contiguous */
-	return i;
-}
-
-static void
-print_mac(zval *rarray, char *label, char *labelm, uint8_t *addr, uint8_t *mask)
-{
-	char buf[64];
-	int l;
-
-	l = contigmask(mask, 48);
-	if (l == 0)
-		add_assoc_string(rarray, label, "any");
-	else {
-		snprintf(buf, sizeof(buf), "%02x:%02x:%02x:%02x:%02x:%02x",
-		    addr[0], addr[1], addr[2], addr[3], addr[4], addr[5]);
-		add_assoc_string(rarray, label, buf);
-		if (l == -1) {
-			snprintf(buf, sizeof(buf),
-			    "&%02x:%02x:%02x:%02x:%02x:%02x",
-			    mask[0], mask[1], mask[2],
-			    mask[3], mask[4], mask[5]);
-			add_assoc_string(rarray, labelm, buf);
-		} else if (l < 48)
-			add_assoc_long(rarray, labelm, l);
-	}
-}
-
-static void
-table_show_value(zval *rarray, ipfw_table_value *v, uint32_t vmask)
-{
-	char abuf[INET6_ADDRSTRLEN + IF_NAMESIZE + 2];
-	struct sockaddr_in6 sa6;
-	uint32_t flag, i;
-	struct in_addr a4;
-
-	/*
-	 * Some shorthands for printing values:
-	 * legacy assumes all values are equal, so keep the first one.
-	 */
-	if (vmask == IPFW_VTYPE_LEGACY) {
-		add_assoc_long(rarray, "value", v->tag);
-		return;
-	}
-
-	for (i = 1; i < (1 << 31); i *= 2) {
-		if ((flag = (vmask & i)) == 0)
-			continue;
-		switch (flag) {
-		case IPFW_VTYPE_TAG:
-			add_assoc_long(rarray, "tag", v->tag);
-			break;
-		case IPFW_VTYPE_PIPE:
-			add_assoc_long(rarray, "pipe", v->pipe);
-			break;
-		case IPFW_VTYPE_DIVERT:
-			add_assoc_long(rarray, "divert", v->divert);
-			break;
-		case IPFW_VTYPE_SKIPTO:
-			add_assoc_long(rarray, "skipto", v->skipto);
-			break;
-		case IPFW_VTYPE_NETGRAPH:
-			add_assoc_long(rarray, "netgraph", v->netgraph);
-			break;
-		case IPFW_VTYPE_FIB:
-			add_assoc_long(rarray, "fib", v->fib);
-			break;
-		case IPFW_VTYPE_NAT:
-			add_assoc_long(rarray, "nat", v->nat);
-			break;
-		case IPFW_VTYPE_LIMIT:
-			add_assoc_long(rarray, "limit", v->limit);
-			break;
-		case IPFW_VTYPE_NH4:
-			a4.s_addr = htonl(v->nh4);
-			inet_ntop(AF_INET, &a4, abuf, sizeof(abuf));
-			add_assoc_string(rarray, "nh4", abuf);
-			break;
-		case IPFW_VTYPE_DSCP:
-			add_assoc_long(rarray, "dscp", v->dscp);
-			break;
-		case IPFW_VTYPE_NH6:
-			sa6.sin6_family = AF_INET6;
-			sa6.sin6_len = sizeof(sa6);
-			sa6.sin6_addr = v->nh6;
-			sa6.sin6_port = 0;
-			sa6.sin6_scope_id = v->zoneid;
-			if (getnameinfo((const struct sockaddr *)&sa6,
-			    sa6.sin6_len, abuf, sizeof(abuf), NULL, 0,
-			    NI_NUMERICHOST) == 0)
-				add_assoc_string(rarray, "nh6", abuf);
-			break;
-		}
-	}
-}
-
-static void
-table_show_entry(zval *rarray, ipfw_xtable_info *i, ipfw_obj_tentry *tent)
-{
-	char tbuf[128];
-
-	switch (i->type) {
-	case IPFW_TABLE_ADDR:
-		/* IPv4 or IPv6 prefixes */
-		inet_ntop(tent->subtype, &tent->k, tbuf, sizeof(tbuf));
-		add_assoc_string(rarray, "type", "addr");
-		add_assoc_string(rarray, "ip", tbuf);
-		add_assoc_long(rarray, "mask", tent->masklen);
-		if (tent->mac != 0) {
-			ether_ntoa_r((struct ether_addr *)&tent->mac, tbuf);
-			add_assoc_string(rarray, "mac", tbuf);
-		}
-		break;
-	case IPFW_TABLE_MAC2:
-		/* Ethernet MAC address */
-		add_assoc_string(rarray, "type", "mac2");
-		print_mac(rarray, "dst", "dstmask", tent->k.mac.addr,
-		    tent->k.mac.mask);
-		print_mac(rarray, "src", "srcmask", tent->k.mac.addr + 6,
-		    tent->k.mac.mask + 6);
-		break;
-	case IPFW_TABLE_INTERFACE:
-		/* Interface names */
-		add_assoc_string(rarray, "type", "interface");
-		add_assoc_string(rarray, "iface", tent->k.iface);
-		break;
-	case IPFW_TABLE_NUMBER:
-		/* numbers */
-		add_assoc_string(rarray, "type", "number");
-		add_assoc_long(rarray, "number", tent->k.key);
-		break;
-	default:
-		add_assoc_string(rarray, "type", "unsupported");
-	}
-
-	table_show_value(rarray, &tent->v.value, i->vmask);
-	add_assoc_double(rarray, "bytes", (double)tent->bcnt);
-	add_assoc_double(rarray, "packets", (double)tent->pcnt);
-	add_assoc_double(rarray, "timestamp", (double)tent->timestamp);
-}
-
-static void
-table_show_list(zval *rarray, ipfw_obj_header *oh)
-{
-	ipfw_obj_tentry *tent;
-	ipfw_xtable_info *i;
-	uint32_t count;
-	zval entarray;
-
-	i = (ipfw_xtable_info *)(oh + 1);
-	tent = (ipfw_obj_tentry *)(i + 1);
-
-	count = i->count;
-	while (count > 0) {
-		array_init(&entarray);
-		table_show_entry(&entarray, i, tent);
-		add_next_index_zval(rarray, &entarray);
-		tent = (ipfw_obj_tentry *)((caddr_t)tent + tent->head.length);
-		count--;
-	}
-}
-
-PHP_FUNCTION(pfSense_ipfw_table_list)
-{
-	char xbuf[sizeof(ipfw_obj_header)];
-	char *tname;
-	int c, error;
-	ipfw_obj_header *oh;
-	ipfw_obj_ntlv *ntlv;
-	ipfw_xtable_info xi;
-	size_t tnamelen;
-	socklen_t sz;
-
-	if (zend_parse_parameters(ZEND_NUM_ARGS() TSRMLS_CC, "s",
-	    &tname, &tnamelen) == FAILURE) {
-		RETURN_NULL();
-	}
-
-	if (tnamelen == 0)
-		RETURN_NULL();
-
-	memset(xbuf, 0, sizeof(*oh));
-	oh = (ipfw_obj_header *)xbuf;
-
-	ntlv = &oh->ntlv;
-	ntlv->head.type = IPFW_TLV_TBL_NAME;
-	ntlv->head.length = sizeof(ipfw_obj_ntlv);
-	ntlv->idx = 1;
-	ntlv->set = 0;
-	strlcpy(ntlv->name, tname, sizeof(ntlv->name));
-	oh->idx = 1;
-
-	if (table_get_info(oh, &xi) != 0)
-		RETURN_NULL();
-
-	sz = 0;
-	oh = NULL;
-	for (c = 0; c < 8; c++) {
-		if (sz < xi.size)
-			sz = xi.size + 44;
-		if (oh != NULL)
-			free(oh);
-		if ((oh = calloc(1, sz)) == NULL)
-			continue;
-		memcpy(oh, xbuf, sizeof(*oh));
-		oh->opheader.opcode = IP_FW_TABLE_XLIST;
-		oh->opheader.version = 1; /* Current version */
-
-		error = getsockopt(PFSENSE_G(ipfw), IPPROTO_IP, IP_FW3,
-		    &oh->opheader, &sz);
-		if (error != 0) {
-			if (errno == ENOMEM)
-				continue;
-			free(oh);
-			RETURN_NULL();
-		}
-
-		break;
-	}
-
-	if (error == 0) {
-		array_init(return_value);
-		table_show_list(return_value, oh);
-	}
-	free(oh);
-}
-
-PHP_FUNCTION(pfSense_ipfw_table_lookup)
-{
-	char xbuf[sizeof(ipfw_obj_header) + sizeof(ipfw_obj_tentry)];
-	char *arg, *tname;
-	ipfw_obj_header *oh;
-	ipfw_obj_ntlv *ntlv;
-	ipfw_obj_tentry *tent;
-	ipfw_xtable_info xi;
-	size_t arglen, tnamelen;
-	socklen_t sz;
-
-	if (zend_parse_parameters(ZEND_NUM_ARGS() TSRMLS_CC, "ss",
-	    &tname, &tnamelen, &arg, &arglen) == FAILURE) {
-		RETURN_NULL();
-	}
-
-	if (tnamelen == 0 || arglen == 0)
-		RETURN_NULL();
-
-	memset(xbuf, 0, sizeof(*oh));
-	oh = (ipfw_obj_header *)xbuf;
-	oh->opheader.opcode = IP_FW_TABLE_XFIND;
-
-	ntlv = &oh->ntlv;
-	ntlv->head.type = IPFW_TLV_TBL_NAME;
-	ntlv->head.length = sizeof(ipfw_obj_ntlv);
-	ntlv->idx = 1;
-	ntlv->set = 0;
-	strlcpy(ntlv->name, tname, sizeof(ntlv->name));
-	oh->idx = 1;
-
-	if (table_get_info(oh, &xi) != 0)
-		RETURN_NULL();
-
-	tent = (ipfw_obj_tentry *)(oh + 1);
-	memset(tent, 0, sizeof(*tent));
-	tent->head.length = sizeof(*tent);
-	tent->idx = 1;
-
-	if (tentry_fill_key(arg, xi.type, tent) == -1)
-		RETURN_NULL();
-	ntlv->type = xi.type;
-
-	sz = sizeof(xbuf);
-	if (getsockopt(PFSENSE_G(ipfw), IPPROTO_IP, IP_FW3,
-	    &oh->opheader, &sz) != 0)
-		RETURN_NULL();
-
-	if (sz < sizeof(xbuf))
-		RETURN_NULL();
-
-	array_init(return_value);
-	table_show_entry(return_value, &xi, tent);
-}
-
-PHP_FUNCTION(pfSense_ipfw_table_zerocnt)
-{
-	char xbuf[sizeof(ipfw_obj_header) + sizeof(ipfw_obj_tentry)];
-	char *arg, *tname;
-	ipfw_obj_header *oh;
-	ipfw_obj_ntlv *ntlv;
-	ipfw_obj_tentry *tent;
-	ipfw_xtable_info xi;
-	size_t arglen, tnamelen;
-
-	if (zend_parse_parameters(ZEND_NUM_ARGS() TSRMLS_CC,
-	    "ss", &tname, &tnamelen, &arg, &arglen) == FAILURE)
-		RETURN_FALSE;
-	if (tnamelen == 0 || arglen == 0)
-		RETURN_FALSE;
-
-	memset(xbuf, 0, sizeof(*oh));
-	oh = (ipfw_obj_header *)xbuf;
-	oh->opheader.opcode = IP_FW_TABLE_XZEROCNT;
-
-	ntlv = &oh->ntlv;
-	ntlv->head.type = IPFW_TLV_TBL_NAME;
-	ntlv->head.length = sizeof(ipfw_obj_ntlv);
-	ntlv->idx = 1;
-	ntlv->set = 0;
-	strlcpy(ntlv->name, tname, sizeof(ntlv->name));
-	oh->idx = 1;
-
-	if (table_get_info(oh, &xi) != 0)
-		RETURN_FALSE;
-
-	tent = (ipfw_obj_tentry *)(oh + 1);
-	memset(tent, 0, sizeof(*tent));
-	tent->head.length = sizeof(*tent);
-	tent->idx = 1;
-
-	if (tentry_fill_key(arg, xi.type, tent) == -1)
-		RETURN_FALSE;
-	ntlv->type = xi.type;
-
-	if (setsockopt(PFSENSE_G(ipfw), IPPROTO_IP, IP_FW3,
-	    &oh->opheader, sizeof(xbuf)) != 0)
-		RETURN_FALSE;
-
-	RETURN_TRUE;
-}
-
-/*
- * Compare table names.
- * Honor number comparison.
- */
-static int
-stringnum_cmp(const char *a, const char *b)
-{
-	int la, lb;
-
-	la = strlen(a);
-	lb = strlen(b);
-
-	if (la > lb)
-		return (1);
-	else if (la < lb)
-		return (-01);
-
-	return (strcmp(a, b));
-}
-
-static int
-tablename_cmp(const void *a, const void *b)
-{
-	ipfw_xtable_info *ia, *ib;
-
-	ia = (ipfw_xtable_info *)a;
-	ib = (ipfw_xtable_info *)b;
-
-	return (stringnum_cmp(ia->tablename, ib->tablename));
-}
-
-PHP_FUNCTION(pfSense_ipfw_tables_list)
-{
-	int i, error;
-	ipfw_obj_lheader *olh;
-	ipfw_xtable_info *info;
-	socklen_t sz;
-	zval tinfo;
-
-	/* Start with reasonable default */
-	sz = sizeof(*olh) + 16 * sizeof(ipfw_xtable_info);
-
-	for (;;) {
-		if ((olh = calloc(1, sz)) == NULL)
-			RETURN_NULL();
-
-		olh->size = sz;
-		olh->opheader.opcode = IP_FW_TABLES_XLIST;
-		error = getsockopt(PFSENSE_G(ipfw), IPPROTO_IP, IP_FW3,
-		    &olh->opheader, &sz);
-		if (error != 0) {
-			sz = olh->size;
-			free(olh);
-			if (errno != ENOMEM)
-				RETURN_NULL();
-			continue;
-		}
-
-		qsort(olh + 1, olh->count, olh->objsize, tablename_cmp);
-
-		array_init(return_value);
-		info = (ipfw_xtable_info *)(olh + 1);
-		for (i = 0; i < olh->count; i++) {
-			array_init(&tinfo);
-			table_tinfo(&tinfo, info);
-
-			add_next_index_zval(return_value, &tinfo);
-			info = (ipfw_xtable_info *)((caddr_t)(info) + olh->objsize);
-		}
-
-		free(olh);
-		break;
-	}
-}
-#endif
-
 #ifdef ETHERSWITCH_FUNCTIONS
 static int
 etherswitch_dev_is_valid(char *dev)
@@ -1649,8 +602,10 @@ PHP_FUNCTION(pfSense_etherswitch_getinfo)
 	size_t devlen;
 	zval caps, pmask, swcaps;
 
-	if (zend_parse_parameters(ZEND_NUM_ARGS() TSRMLS_CC, "s", &dev, &devlen) == FAILURE)
-		RETURN_NULL();
+	ZEND_PARSE_PARAMETERS_START(1, 1)
+		Z_PARAM_STRING(dev, devlen)
+	ZEND_PARSE_PARAMETERS_END();
+
 	if (devlen == 0)
 		dev = "/dev/etherswitch0";
 	if (etherswitch_dev_is_valid(dev) < 0)
@@ -1740,9 +695,11 @@ PHP_FUNCTION(pfSense_etherswitch_getport)
 	zend_long port;
 	zval flags, media, state;
 
-	if (zend_parse_parameters(ZEND_NUM_ARGS() TSRMLS_CC, "sl", &dev,
-	    &devlen, &port) == FAILURE)
-		RETURN_NULL();
+	ZEND_PARSE_PARAMETERS_START(2, 2)
+		Z_PARAM_STRING(dev, devlen)
+		Z_PARAM_LONG(port)
+	ZEND_PARSE_PARAMETERS_END();
+
 	if (devlen == 0)
 		dev = "/dev/etherswitch0";
 	if (etherswitch_dev_is_valid(dev) < 0)
@@ -1823,9 +780,12 @@ PHP_FUNCTION(pfSense_etherswitch_setport)
 	zend_long port, pvid;
 	size_t devlen;
 
-	if (zend_parse_parameters(ZEND_NUM_ARGS() TSRMLS_CC, "sll", &dev,
-	    &devlen, &port, &pvid) == FAILURE)
-		RETURN_FALSE;
+	ZEND_PARSE_PARAMETERS_START(3, 3)
+		Z_PARAM_STRING(dev, devlen)
+		Z_PARAM_LONG(port)
+		Z_PARAM_LONG(pvid)
+	ZEND_PARSE_PARAMETERS_END();
+
 	if (devlen == 0)
 		dev = "/dev/etherswitch0";
 	if (etherswitch_dev_is_valid(dev) < 0)
@@ -1859,12 +819,15 @@ PHP_FUNCTION(pfSense_etherswitch_setport_state)
 	char *dev, *state;
 	etherswitch_port_t p;
 	int fd;
-	size_t devlen;
-	zend_long port, statelen;
+	size_t devlen, statelen;
+	zend_long port;
 
-	if (zend_parse_parameters(ZEND_NUM_ARGS() TSRMLS_CC, "sls", &dev,
-	    &devlen, &port, &state, &statelen) == FAILURE)
-		RETURN_FALSE;
+	ZEND_PARSE_PARAMETERS_START(3, 3)
+		Z_PARAM_STRING(dev, devlen)
+		Z_PARAM_LONG(port)
+		Z_PARAM_STRING(state, statelen)
+	ZEND_PARSE_PARAMETERS_END();
+
 	if (statelen == 0)
 		RETURN_FALSE;
 	if (devlen == 0)
@@ -1908,9 +871,11 @@ PHP_FUNCTION(pfSense_etherswitch_getlaggroup)
 	zend_long laggroup;
 	zval members;
 
-	if (zend_parse_parameters(ZEND_NUM_ARGS() TSRMLS_CC, "sl", &dev,
-	    &devlen, &laggroup) == FAILURE)
-		RETURN_NULL();
+	ZEND_PARSE_PARAMETERS_START(2, 2)
+		Z_PARAM_STRING(dev, devlen)
+		Z_PARAM_LONG(laggroup)
+	ZEND_PARSE_PARAMETERS_END();
+
 	if (devlen == 0)
 		dev = "/dev/etherswitch0";
 	if (etherswitch_dev_is_valid(dev) < 0)
@@ -1966,9 +931,11 @@ PHP_FUNCTION(pfSense_etherswitch_getvlangroup)
 	size_t devlen;
 	zval members;
 
-	if (zend_parse_parameters(ZEND_NUM_ARGS() TSRMLS_CC, "sl", &dev,
-	    &devlen, &vlangroup) == FAILURE)
-		RETURN_NULL();
+	ZEND_PARSE_PARAMETERS_START(2, 2)
+		Z_PARAM_STRING(dev, devlen)
+		Z_PARAM_LONG(vlangroup)
+	ZEND_PARSE_PARAMETERS_END();
+
 	if (devlen == 0)
 		dev = "/dev/etherswitch0";
 	if (etherswitch_dev_is_valid(dev) < 0)
@@ -2022,17 +989,20 @@ PHP_FUNCTION(pfSense_etherswitch_setlaggroup)
 	etherswitch_laggroup_t lag;
 	int fd, members, port, tagged, untagged;
 	size_t devlen;
-	zval *zvar;
+	zval *zvar = NULL;
 	zend_long laggroup;
 	HashTable *hash1, *hash2;
 	zval *val, *val2;
 	zend_long lkey, lkey2;
 	zend_string *skey, *skey2;
 
-	zvar = NULL;
-	if (zend_parse_parameters(ZEND_NUM_ARGS() TSRMLS_CC, "sl|z", &dev,
-	    &devlen, &laggroup, &zvar) == FAILURE)
-		RETURN_LONG(-1);
+	ZEND_PARSE_PARAMETERS_START(2, 3)
+		Z_PARAM_STRING(dev, devlen)
+		Z_PARAM_LONG(laggroup)
+		Z_PARAM_OPTIONAL
+		Z_PARAM_ZVAL(zvar)
+	ZEND_PARSE_PARAMETERS_END();
+
 	if (laggroup < 0)
 		RETURN_LONG(-1);
 	if (devlen == 0)
@@ -2108,16 +1078,20 @@ PHP_FUNCTION(pfSense_etherswitch_setvlangroup)
 	int fd, i, members, port, tagged, untagged;
 	size_t devlen;
 	zend_long vlan, vlangroup;
-	zval *zvar;
+	zval *zvar = NULL;
 	HashTable *hash1, *hash2;
 	zval *val, *val2;
 	zend_long lkey, lkey2;
 	zend_string *skey, *skey2;
 
-	zvar = NULL;
-	if (zend_parse_parameters(ZEND_NUM_ARGS() TSRMLS_CC, "sll|z", &dev,
-	    &devlen, &vlangroup, &vlan, &zvar) == FAILURE)
-		RETURN_LONG(-1);
+	ZEND_PARSE_PARAMETERS_START(3, 4)
+		Z_PARAM_STRING(dev, devlen)
+		Z_PARAM_LONG(vlangroup)
+		Z_PARAM_LONG(vlan)
+		Z_PARAM_OPTIONAL
+		Z_PARAM_ZVAL(zvar)
+	ZEND_PARSE_PARAMETERS_END();
+
 	if ((vlan & ~ETHERSWITCH_VID_MASK) != 0)
 		RETURN_LONG(-1);
 	/* vlangroup == -1 is only valid with a vlanid. */
@@ -2226,9 +1200,11 @@ PHP_FUNCTION(pfSense_etherswitch_setmode)
 	int fd;
 	size_t devlen, modelen;
 
-	if (zend_parse_parameters(ZEND_NUM_ARGS() TSRMLS_CC, "ss", &dev,
-	    &devlen, &mode, &modelen) == FAILURE)
-		RETURN_LONG(-1);
+	ZEND_PARSE_PARAMETERS_START(2, 2)
+		Z_PARAM_STRING(dev, devlen)
+		Z_PARAM_STRING(mode, modelen)
+	ZEND_PARSE_PARAMETERS_END();
+
 	if (modelen == 0)
 		RETURN_LONG(-1);
 	if (devlen == 0)
@@ -2268,186 +1244,6 @@ PHP_FUNCTION(pfSense_etherswitch_setmode)
 }
 #endif
 
-#ifdef DHCP_INTEGRATION
-PHP_FUNCTION(pfSense_open_dhcpd)
-{
-	omapi_data *data;
-	char *key, *addr, *name;
-	size_t key_len, addr_len, name_len;
-	zend_long port;
-	dhcpctl_status status;
-	dhcpctl_handle auth = dhcpctl_null_handle, conn = dhcpctl_null_handle;
-
-	if (zend_parse_parameters(ZEND_NUM_ARGS() TSRMLS_CC, "sssl", &name, &name_len, &key, &key_len, &addr, &addr_len, &port) == FAILURE) {
-		RETURN_FALSE;
-	}
-
-	status = dhcpctl_new_authenticator(&auth, name, "hmac-md5", key, key_len);
-	if (status != ISC_R_SUCCESS) {
-		//php_printf("Failed to get aythenticator: %s - %s\n", isc_result_totext(status), key);
-		RETURN_NULL();
-	}
-
-	status = dhcpctl_connect(&conn, addr, (int)port, auth);
-	if (status != ISC_R_SUCCESS) {
-		//php_printf("Error occured during connecting: %s\n", isc_result_totext(status));
-		RETURN_NULL();
-	}
-
-	data = emalloc(sizeof(*data));
-	data->handle = conn;
-
-	ZEND_REGISTER_RESOURCE(return_value, data, pfSense_dhcpd);
-}
-
-PHP_FUNCTION(pfSense_register_lease)
-{
-	dhcpctl_status status = ISC_R_SUCCESS;
-	dhcpctl_status status2 = ISC_R_SUCCESS;
-	dhcpctl_handle hp = NULL;
-	struct ether_addr *ds;
-	struct in_addr nds;
-	char *mac, *ip, *name;
-	size_t mac_len, ip_len, name_len;
-	zval *res;
-	omapi_data *conn;
-
-	if (zend_parse_parameters(ZEND_NUM_ARGS() TSRMLS_CC, "zsss", &res, &name, &name_len, &mac, &mac_len, &ip, &ip_len) == FAILURE) {
-		RETURN_FALSE;
-	}
-
-	ZEND_FETCH_RESOURCE(conn, omapi_data *, &res, -1, PHP_PFSENSE_RES_NAME, pfSense_dhcpd);
-	ZEND_VERIFY_RESOURCE(conn);
-
-	if ((status = dhcpctl_new_object(&hp, conn->handle, "host")) != ISC_R_SUCCESS) {
-		//php_printf("1Error occured during connecting: %s\n", isc_result_totext(status));
-		RETURN_FALSE;
-	}
-
-	inet_aton(ip, &nds);
-	if ((status = dhcpctl_set_data_value(hp, (char *)&nds, sizeof(struct in_addr), "ip-address")) != ISC_R_SUCCESS) {
-		//php_printf("3Error occured during connecting: %s\n", isc_result_totext(status));
-		omapi_object_dereference(&hp,__FILE__,__LINE__);
-		RETURN_FALSE;
-	}
-
-	if ((status = dhcpctl_set_string_value(hp, name, "name")) != ISC_R_SUCCESS) {
-		//php_printf("4Error occured during connecting: %s\n", isc_result_totext(status));
-		omapi_object_dereference(&hp,__FILE__,__LINE__);
-		RETURN_FALSE;
-	}
-
-	if (!(ds = ether_aton(mac)))
-		RETURN_FALSE;
-	if ((status = dhcpctl_set_data_value(hp, (u_char *)ds, sizeof(struct ether_addr), "hardware-address")) != ISC_R_SUCCESS) {
-		//php_printf("2Error occured during connecting: %s\n", isc_result_totext(status));
-		omapi_object_dereference(&hp,__FILE__,__LINE__);
-		RETURN_FALSE;
-	}
-
-	if ((status= dhcpctl_set_int_value(hp, 1,"hardware-type")) != ISC_R_SUCCESS)  {
-		//php_printf("2Error occured during connecting: %s\n", isc_result_totext(status));
-		omapi_object_dereference(&hp,__FILE__,__LINE__);
-		RETURN_FALSE;
-	}
-
-	//php_printf("Coonection handle %d\n", conn->handle);
-	if ((status = dhcpctl_open_object(hp, conn->handle, DHCPCTL_CREATE|DHCPCTL_EXCL)) != ISC_R_SUCCESS) {
-		//php_printf("5Error occured during connecting: %s\n", isc_result_totext(status));
-		omapi_object_dereference(&hp,__FILE__,__LINE__);
-		RETURN_FALSE;
-	}
-	if ((status = dhcpctl_wait_for_completion(hp, &status2)) != ISC_R_SUCCESS) {
-		//php_printf("6Error occured during connecting: %s-  %s\n", isc_result_totext(status), isc_result_totext(status2));
-		omapi_object_dereference(&hp,__FILE__,__LINE__);
-		RETURN_FALSE;
-	}
-	if (status2 != ISC_R_SUCCESS) {
-		//php_printf("7Error occured during connecting: %s\n", isc_result_totext(status2));
-		omapi_object_dereference(&hp,__FILE__,__LINE__);
-		RETURN_FALSE;
-	}
-
-	omapi_object_dereference(&hp,__FILE__,__LINE__);
-
-	RETURN_TRUE;
-}
-
-PHP_FUNCTION(pfSense_delete_lease)
-{
-	dhcpctl_status status;
-	dhcpctl_status status2;
-	dhcpctl_handle hp = NULL;
-	dhcpctl_data_string ds = NULL;
-	omapi_data_string_t *nds;
-	char *mac;
-	size_t mac_len;
-	zval *res;
-	omapi_data *conn;
-
-	if (zend_parse_parameters(ZEND_NUM_ARGS() TSRMLS_CC, "s", &mac, &mac_len) == FAILURE) {
-		RETURN_FALSE;
-	}
-
-	ZEND_FETCH_RESOURCE(conn, omapi_data *, &res, -1, PHP_PFSENSE_RES_NAME, pfSense_dhcpd);
-	ZEND_VERIFY_RESOURCE(conn);
-
-	if ((status = dhcpctl_new_object(&hp, conn->handle, "host")))
-		RETURN_FALSE;
-
-	if (mac) {
-		omapi_data_string_new(&ds, sizeof(struct ether_addr), __FILE__, __LINE__);
-		memcpy(ds->value,ether_aton(mac),sizeof(struct ether_addr));
-		if ((status = dhcpctl_set_value(hp, ds, "hardware-address"))) {
-			omapi_object_dereference(&hp,__FILE__,__LINE__);
-			RETURN_FALSE;
-		}
-	} else
-		RETURN_FALSE;
-
-	if ((status = dhcpctl_open_object(hp, conn->handle, 0))) {
-		omapi_object_dereference(&hp,__FILE__,__LINE__);
-		RETURN_FALSE;
-	}
-	if ((status = dhcpctl_wait_for_completion(hp, &status2))) {
-		omapi_object_dereference(&hp,__FILE__,__LINE__);
-		RETURN_FALSE;
-	}
-	if (status2) {
-		omapi_object_dereference(&hp,__FILE__,__LINE__);
-		RETURN_FALSE;
-	}
-	if ((status = dhcpctl_object_remove(conn->handle, hp))) {
-		omapi_object_dereference(&hp,__FILE__,__LINE__);
-		RETURN_FALSE;
-	}
-	if ((status = dhcpctl_wait_for_completion(hp, &status2))) {
-		omapi_object_dereference(&hp,__FILE__,__LINE__);
-		RETURN_FALSE;
-	}
-	if (status2) {
-		omapi_object_dereference(&hp,__FILE__,__LINE__);
-		RETURN_FALSE;
-	}
-	omapi_object_dereference(&hp,__FILE__,__LINE__);
-
-	RETURN_TRUE;
-}
-
-PHP_FUNCTION(pfSense_close_dhcpd)
-{
-	zval *data;
-
-	if (zend_parse_parameters(ZEND_NUM_ARGS() TSRMLS_CC, "r", &data) == FAILURE) {
-		RETURN_FALSE;
-	}
-
-	zend_list_delete(Z_LVAL_P(data));
-
-	RETURN_TRUE;
-}
-#endif
-
 PHP_FUNCTION(pfSense_ip_to_mac)
 {
 	char *ip = NULL, *rifname = NULL;
@@ -2463,8 +1259,11 @@ PHP_FUNCTION(pfSense_ip_to_mac)
 	int st, found_entry = 0;
 	char outputbuf[128];
 
-	if (zend_parse_parameters(ZEND_NUM_ARGS() TSRMLS_CC, "s|s", &ip, &ip_len, &rifname, &ifname_len) == FAILURE)
-		RETURN_NULL();
+	ZEND_PARSE_PARAMETERS_START(1, 2)
+		Z_PARAM_STRING(ip, ip_len)
+		Z_PARAM_OPTIONAL
+		Z_PARAM_STRING(rifname, ifname_len)
+	ZEND_PARSE_PARAMETERS_END();
 
 	bzero(&addr, sizeof(addr));
 	if (!inet_pton(AF_INET, ip, &addr.sin_addr.s_addr))
@@ -2538,9 +1337,9 @@ PHP_FUNCTION(pfSense_getall_interface_addresses)
 	char *ifname;
 	size_t ifname_len;
 
-	if (zend_parse_parameters(ZEND_NUM_ARGS() TSRMLS_CC, "s", &ifname,
-	    &ifname_len) == FAILURE)
-		RETURN_NULL();
+	ZEND_PARSE_PARAMETERS_START(1, 1)
+		Z_PARAM_STRING(ifname, ifname_len)
+	ZEND_PARSE_PARAMETERS_END();
 
 	if (getifaddrs(&ifdata) == -1)
 		RETURN_NULL();
@@ -2595,29 +1394,458 @@ PHP_FUNCTION(pfSense_getall_interface_addresses)
 	freeifaddrs(ifdata);
 }
 
-PHP_FUNCTION(pfSense_get_interface_addresses)
+/*
+ * Modified from sbin/ifconfig/ifconfig.c - mergesort
+ */
+static struct ifaddrs *
+sortifaddrs(struct ifaddrs *list,
+    int (*compare)(struct ifaddrs *, struct ifaddrs *))
 {
-	struct ifaddrs *ifdata, *mb;
-	struct if_data *md;
-	struct sockaddr_in *tmp;
-	struct sockaddr_in6 *tmp6;
+	struct ifaddrs *right, *temp, *last, *result, *next, *tail;
+	
+	right = list;
+	temp = list;
+	last = list;
+	result = NULL;
+	next = NULL;
+	tail = NULL;
+
+	if (!list || !list->ifa_next)
+		return (list);
+
+	if (list->ifa_next && !list->ifa_next->ifa_next) {
+		if (compare(list, list->ifa_next) > 0) {
+			result = list->ifa_next;
+			list->ifa_next = NULL;
+			result->ifa_next = list;
+			return(result);
+		}
+		return(list);
+	}
+
+	while (temp && temp->ifa_next) {
+		last = right;
+		right = right->ifa_next;
+		temp = temp->ifa_next->ifa_next;
+	}
+
+	last->ifa_next = NULL;
+
+	list = sortifaddrs(list, compare);
+	right = sortifaddrs(right, compare);
+
+	while (list || right) {
+		if (!right) {
+			next = list;
+			list = list->ifa_next;
+		} else if (!list) {
+			next = right;
+			right = right->ifa_next;
+		} else if (compare(list, right) < 1) {
+			next = list;
+			list = list->ifa_next;
+		} else {
+			next = right;
+			right = right->ifa_next;
+		}
+
+		if (!result)
+			result = next;
+		else
+			tail->ifa_next = next;
+
+		tail = next;
+	}
+
+	return (result);
+}
+
+static int
+cmpifaddrs(struct ifaddrs *a, struct ifaddrs *b)
+{
+	if (!b) {
+		return(-1);
+	} else if (!a) {
+		return(1);
+	} else {
+		return (strcmp(a->ifa_name, b->ifa_name));
+	}
+}
+
+/**
+ * Fill zval array val with interface attributes in struct ifaddrs *mb
+ */
+static void
+fill_interface_params(zval *val, struct ifaddrs *mb)
+{
+	zval caps;
+	zval encaps;
+	char outputbuf[128];
 	struct sockaddr_dl *tmpdl;
-	struct in6_ifreq ifr6;
 	struct ifreq ifr;
+	struct if_data *md;
+	
+	if (mb->ifa_flags & IFF_UP)
+		add_assoc_string(val, "status", "up");
+	else
+		add_assoc_string(val, "status", "down");
+	if (mb->ifa_flags & IFF_LINK0)
+		add_assoc_long(val, "link0", 1);
+	if (mb->ifa_flags & IFF_LINK1)
+		add_assoc_long(val, "link1", 1);
+	if (mb->ifa_flags & IFF_LINK2)
+		add_assoc_long(val, "link2", 1);
+	if (mb->ifa_flags & IFF_MULTICAST)
+		add_assoc_long(val, "multicast", 1);
+	if (mb->ifa_flags & IFF_LOOPBACK)
+		add_assoc_long(val, "loopback", 1);
+	if (mb->ifa_flags & IFF_POINTOPOINT)
+		add_assoc_long(val, "pointtopoint", 1);
+	if (mb->ifa_flags & IFF_PROMISC)
+		add_assoc_long(val, "promisc", 1);
+	if (mb->ifa_flags & IFF_PPROMISC)
+		add_assoc_long(val, "permanentpromisc", 1);
+	if (mb->ifa_flags & IFF_OACTIVE)
+		add_assoc_long(val, "oactive", 1);
+	if (mb->ifa_flags & IFF_ALLMULTI)
+		add_assoc_long(val, "allmulti", 1);
+	if (mb->ifa_flags & IFF_SIMPLEX)
+		add_assoc_long(val, "simplex", 1);
+	memset(&ifr, 0, sizeof(ifr));
+	strncpy(ifr.ifr_name, mb->ifa_name, sizeof(ifr.ifr_name));
+	if (mb->ifa_data != NULL) {
+		md = mb->ifa_data;
+		if (md->ifi_link_state == LINK_STATE_UP)
+			add_assoc_long(val, "linkstateup", 1);
+		switch (md->ifi_type) {
+		case IFT_IEEE80211:
+			add_assoc_string(val, "iftype",
+			    "wireless");
+			break;
+		case IFT_ETHER:
+		case IFT_FASTETHER:
+		case IFT_FASTETHERFX:
+		case IFT_GIGABITETHERNET:
+			if (ioctl(PFSENSE_G(s), SIOCG80211STATS,
+			    (caddr_t)&ifr) == 0) {
+				add_assoc_string(val, "iftype",
+				    "wireless");
+				/* Reset ifr after use. */
+				memset(&ifr, 0, sizeof(ifr));
+				strncpy(ifr.ifr_name, mb->ifa_name,
+				    sizeof(ifr.ifr_name));
+			} else {
+				add_assoc_string(val, "iftype",
+				    "ether");
+			}
+			break;
+		case IFT_L2VLAN:
+			add_assoc_string(val, "iftype",
+			    "vlan");
+			break;
+		case IFT_BRIDGE:
+			add_assoc_string(val, "iftype",
+			    "bridge");
+			break;
+		case IFT_TUNNEL:
+		case IFT_GIF:
+#if (__FreeBSD_version < 1100000)
+		case IFT_FAITH:
+#endif
+		case IFT_ENC:
+		case IFT_PFLOG:
+		case IFT_PFSYNC:
+			add_assoc_string(val, "iftype",
+			    "virtual");
+			break;
+		default:
+			add_assoc_string(val, "iftype",
+			    "other");
+		}
+	}
+
+	/* Interface-wide parameters */
+	array_init(&caps);
+	array_init(&encaps);
+	if (ioctl(PFSENSE_G(s), SIOCGIFMTU, (caddr_t)&ifr) == 0)
+		add_assoc_long(val, "mtu", ifr.ifr_mtu);
+	if (ioctl(PFSENSE_G(s), SIOCGIFCAP, (caddr_t)&ifr) == 0) {
+		add_assoc_long(&caps, "flags", ifr.ifr_reqcap);
+		if (ifr.ifr_reqcap & IFCAP_POLLING)
+			add_assoc_long(&caps, "polling", 1);
+		if (ifr.ifr_reqcap & IFCAP_RXCSUM)
+			add_assoc_long(&caps, "rxcsum", 1);
+		if (ifr.ifr_reqcap & IFCAP_TXCSUM)
+			add_assoc_long(&caps, "txcsum", 1);
+		if (ifr.ifr_reqcap & IFCAP_RXCSUM_IPV6)
+			add_assoc_long(&caps, "rxcsum6", 1);
+		if (ifr.ifr_reqcap & IFCAP_TXCSUM_IPV6)
+			add_assoc_long(&caps, "txcsum6", 1);
+		if (ifr.ifr_reqcap & IFCAP_VLAN_MTU)
+			add_assoc_long(&caps, "vlanmtu", 1);
+		if (ifr.ifr_reqcap & IFCAP_JUMBO_MTU)
+			add_assoc_long(&caps, "jumbomtu", 1);
+		if (ifr.ifr_reqcap & IFCAP_VLAN_HWTAGGING)
+			add_assoc_long(&caps, "vlanhwtag", 1);
+		if (ifr.ifr_reqcap & IFCAP_VLAN_HWCSUM)
+			add_assoc_long(&caps, "vlanhwcsum", 1);
+		if (ifr.ifr_reqcap & IFCAP_TSO4)
+			add_assoc_long(&caps, "tso4", 1);
+		if (ifr.ifr_reqcap & IFCAP_TSO6)
+			add_assoc_long(&caps, "tso6", 1);
+		if (ifr.ifr_reqcap & IFCAP_LRO)
+			add_assoc_long(&caps, "lro", 1);
+		if (ifr.ifr_reqcap & IFCAP_WOL_UCAST)
+			add_assoc_long(&caps, "wolucast", 1);
+		if (ifr.ifr_reqcap & IFCAP_WOL_MCAST)
+			add_assoc_long(&caps, "wolmcast", 1);
+		if (ifr.ifr_reqcap & IFCAP_WOL_MAGIC)
+			add_assoc_long(&caps, "wolmagic", 1);
+		if (ifr.ifr_reqcap & IFCAP_TOE4)
+			add_assoc_long(&caps, "toe4", 1);
+		if (ifr.ifr_reqcap & IFCAP_TOE6)
+			add_assoc_long(&caps, "toe6", 1);
+		if (ifr.ifr_reqcap & IFCAP_VLAN_HWFILTER)
+			add_assoc_long(&caps, "vlanhwfilter", 1);
+
+		add_assoc_long(&encaps, "flags", ifr.ifr_curcap);
+		if (ifr.ifr_curcap & IFCAP_POLLING)
+			add_assoc_long(&encaps, "polling", 1);
+		if (ifr.ifr_curcap & IFCAP_RXCSUM)
+			add_assoc_long(&encaps, "rxcsum", 1);
+		if (ifr.ifr_curcap & IFCAP_TXCSUM)
+			add_assoc_long(&encaps, "txcsum", 1);
+		if (ifr.ifr_curcap & IFCAP_RXCSUM_IPV6)
+			add_assoc_long(&encaps, "rxcsum6", 1);
+		if (ifr.ifr_curcap & IFCAP_TXCSUM_IPV6)
+			add_assoc_long(&encaps, "txcsum6", 1);
+		if (ifr.ifr_curcap & IFCAP_VLAN_MTU)
+			add_assoc_long(&encaps, "vlanmtu", 1);
+		if (ifr.ifr_curcap & IFCAP_JUMBO_MTU)
+			add_assoc_long(&encaps, "jumbomtu", 1);
+		if (ifr.ifr_curcap & IFCAP_VLAN_HWTAGGING)
+			add_assoc_long(&encaps, "vlanhwtag", 1);
+		if (ifr.ifr_curcap & IFCAP_VLAN_HWCSUM)
+			add_assoc_long(&encaps, "vlanhwcsum", 1);
+		if (ifr.ifr_curcap & IFCAP_TSO4)
+			add_assoc_long(&encaps, "tso4", 1);
+		if (ifr.ifr_curcap & IFCAP_TSO6)
+			add_assoc_long(&encaps, "tso6", 1);
+		if (ifr.ifr_curcap & IFCAP_LRO)
+			add_assoc_long(&encaps, "lro", 1);
+		if (ifr.ifr_curcap & IFCAP_WOL_UCAST)
+			add_assoc_long(&encaps, "wolucast", 1);
+		if (ifr.ifr_curcap & IFCAP_WOL_MCAST)
+			add_assoc_long(&encaps, "wolmcast", 1);
+		if (ifr.ifr_curcap & IFCAP_WOL_MAGIC)
+			add_assoc_long(&encaps, "wolmagic", 1);
+		if (ifr.ifr_curcap & IFCAP_TOE4)
+			add_assoc_long(&encaps, "toe4", 1);
+		if (ifr.ifr_curcap & IFCAP_TOE6)
+			add_assoc_long(&encaps, "toe6", 1);
+		if (ifr.ifr_curcap & IFCAP_VLAN_HWFILTER)
+			add_assoc_long(&encaps, "vlanhwfilter", 1);
+	}
+
+	add_assoc_zval(val, "caps", &caps);
+	add_assoc_zval(val, "encaps", &encaps);
+
+	tmpdl = (struct sockaddr_dl *)mb->ifa_addr;
+	if (tmpdl->sdl_alen == ETHER_ADDR_LEN) {
+		bzero(outputbuf, sizeof outputbuf);
+		ether_ntoa_r((struct ether_addr *)LLADDR(tmpdl), outputbuf);
+		add_assoc_string(val, "macaddr", outputbuf);
+	}
+	if (tmpdl->sdl_type == IFT_ETHER) {
+		memcpy(&ifr.ifr_addr, mb->ifa_addr,
+		    sizeof(mb->ifa_addr->sa_len));
+		ifr.ifr_addr.sa_family = AF_LOCAL;
+	}
+	if (ioctl(PFSENSE_G(s), SIOCGHWADDR, &ifr) == 0) {
+		bzero(outputbuf, sizeof outputbuf);
+		ether_ntoa_r((const struct ether_addr *)&ifr.ifr_addr.sa_data,
+		    outputbuf);
+		add_assoc_string(val, "hwaddr", outputbuf);
+	}
+}
+
+/**
+ * Alternate hybrid of pfSense_getall_interface_addresses and
+ * pfSense_get_interface_addresses. Return iface information and array of v4 and
+ * v6 address
+ */
+PHP_FUNCTION(pfSense_get_ifaddrs)
+{
+	struct ifaddrs *ifdata, *sifdata, *mb;
+	struct in6_ifreq ifr6;
+	int llflag;
 	char outputbuf[128];
 	char *ifname;
 	size_t ifname_len;
-	int llflag, addresscnt, addresscnt6;
-	zval caps;
-	zval encaps;
-
-	if (zend_parse_parameters(ZEND_NUM_ARGS() TSRMLS_CC, "s", &ifname,
-	    &ifname_len) == FAILURE)
-		RETURN_NULL();
+	zval addrs4, addrs6;
+	
+	ZEND_PARSE_PARAMETERS_START(1, 1)
+		Z_PARAM_STRING(ifname, ifname_len)
+	ZEND_PARSE_PARAMETERS_END();
 
 	if (getifaddrs(&ifdata) == -1)
 		RETURN_NULL();
 
+	sifdata = sortifaddrs(ifdata, cmpifaddrs);
+
+	for (mb = sifdata; mb != NULL; mb = mb->ifa_next) {
+
+		if (ifname_len != strlen(mb->ifa_name))
+			continue;
+		if (strncmp(ifname, mb->ifa_name, ifname_len) == 0)
+			break;
+	}
+
+	/* We didn't find our iface */
+	if (mb == NULL)
+		goto out;
+	
+	array_init(return_value);
+	array_init(&addrs4);
+	array_init(&addrs6);
+
+	fill_interface_params(return_value, mb);
+	
+	/* loop until iface name changes or we exhaust the list */
+	for (; mb != NULL; mb = mb->ifa_next) {
+		zval addr;
+		struct sockaddr_in *tmp = NULL;
+		struct sockaddr_in6 *tmp6 = NULL;
+
+		if (strcmp(ifname, mb->ifa_name) !=0)
+			break;
+		switch (mb->ifa_addr->sa_family) {
+		case AF_INET:
+			bzero(&addr, sizeof(addr));
+			array_init(&addr);
+			bzero(outputbuf, sizeof outputbuf);
+			tmp = (struct sockaddr_in *)mb->ifa_addr;
+			inet_ntop(AF_INET, (void *)&tmp->sin_addr, outputbuf,
+			    sizeof(outputbuf));
+			add_assoc_string(&addr, "addr", outputbuf);
+			tmp = (struct sockaddr_in *)mb->ifa_netmask;
+			unsigned char mask;
+			const unsigned char *byte =
+			    (unsigned char *)&tmp->sin_addr.s_addr;
+			int i = 0, n = sizeof(tmp->sin_addr.s_addr);
+			while (n--) {
+				mask = ((unsigned char)-1 >> 1) + 1;
+				do {
+					if (mask & byte[n])
+						i++;
+					mask >>= 1;
+				} while (mask);
+			}
+			add_assoc_long(&addr, "subnetbits", i);
+
+			bzero(outputbuf, sizeof outputbuf);
+			inet_ntop(AF_INET, (void *)&tmp->sin_addr, outputbuf,
+			    sizeof(outputbuf));
+			add_assoc_string(&addr, "subnet", outputbuf);
+
+			if (mb->ifa_flags & IFF_BROADCAST) {
+				bzero(outputbuf, sizeof outputbuf);
+				tmp = (struct sockaddr_in *)mb->ifa_broadaddr;
+				inet_ntop(AF_INET, (void *)&tmp->sin_addr,
+				    outputbuf, sizeof(outputbuf));
+				add_assoc_string(&addr, "broadcast",
+				    outputbuf);
+			}
+
+			if (mb->ifa_flags & IFF_POINTOPOINT) {
+				tmp = (struct sockaddr_in *)mb->ifa_dstaddr;
+				if (tmp != NULL && tmp->sin_family == AF_INET) {
+					bzero(outputbuf, sizeof outputbuf);
+					inet_ntop(AF_INET,
+					    (void *)&tmp->sin_addr, outputbuf,
+					    sizeof(outputbuf));
+					add_assoc_string(&addr, "tunnel",
+					    outputbuf);
+				}
+			}
+			add_next_index_zval(&addrs4, &addr);
+			break;
+		case AF_INET6:
+			bzero(&addr, sizeof(addr));
+			array_init(&addr);
+			bzero(outputbuf, sizeof outputbuf);
+			tmp6 = (struct sockaddr_in6 *)mb->ifa_addr;
+			if (IN6_IS_ADDR_LINKLOCAL(&tmp6->sin6_addr))
+				break;
+			inet_ntop(AF_INET6, (void *)&tmp6->sin6_addr, outputbuf,
+			    sizeof(outputbuf));
+			add_assoc_string(&addr, "addr", outputbuf);
+
+			memset(&ifr6, 0, sizeof(ifr6));
+			strncpy(ifr6.ifr_name, mb->ifa_name,
+			    sizeof(ifr6.ifr_name));
+			memcpy(&ifr6.ifr_ifru.ifru_addr, tmp6, tmp6->sin6_len);
+			if (ioctl(PFSENSE_G(inets6),
+			    SIOCGIFAFLAG_IN6, &ifr6) == 0) {
+				llflag = ifr6.ifr_ifru.ifru_flags6;
+				if ((llflag & IN6_IFF_TENTATIVE) != 0)
+					add_assoc_long(&addr, "tentative", 1);
+			}
+
+			tmp6 = (struct sockaddr_in6 *)mb->ifa_netmask;
+			add_assoc_long(&addr, "subnetbits",
+			    prefix(&tmp6->sin6_addr, sizeof(struct in6_addr)));
+
+			if (mb->ifa_flags & IFF_POINTOPOINT) {
+				tmp6 = (struct sockaddr_in6 *)mb->ifa_dstaddr;
+				if (tmp6 != NULL &&
+				    tmp6->sin6_family == AF_INET6) {
+					bzero(outputbuf, sizeof outputbuf);
+					inet_ntop(AF_INET6,
+					    (void *)&tmp6->sin6_addr, outputbuf,
+					    sizeof(outputbuf));
+					add_assoc_string(&addr, "tunnel",
+					    outputbuf);
+				}
+			}
+			add_next_index_zval(&addrs6, &addr);
+			break;
+		default:
+			continue;
+		};
+	}
+	add_assoc_zval(return_value, "addrs", &addrs4);
+	add_assoc_zval(return_value, "addrs6", &addrs6);
+
+out:
+	freeifaddrs(ifdata);
+}
+
+PHP_FUNCTION(pfSense_get_interface_addresses)
+{
+	struct ifaddrs *ifdata, *mb;
+	struct sockaddr_in *tmp;
+	struct sockaddr_in6 *tmp6;
+	struct in6_ifreq ifr6;
+
+	char outputbuf[128];
+	char *ifname;
+	size_t ifname_len;
+	int llflag, addresscnt, addresscnt6;
+
+	ZEND_PARSE_PARAMETERS_START(1, 1)
+		Z_PARAM_STRING(ifname, ifname_len)
+	ZEND_PARSE_PARAMETERS_END();
+
+	if (getifaddrs(&ifdata) == -1)
+		RETURN_NULL();
+
+	/* addr list should be sorted by if_name with sortifaddrs (see
+	 * ifconfig.c), some parameters are specific to the interface and need
+	 * only be copied once (see ifconfig.c all interface listing, it only
+	 * uses the first struct ifaddrs for a new interface name for listing
+	 * interface params) */
+	
 	addresscnt = 0;
 	addresscnt6 = 0;
 	array_init(return_value);
@@ -2725,190 +1953,8 @@ PHP_FUNCTION(pfSense_get_interface_addresses)
 
 		if (mb->ifa_addr->sa_family != AF_LINK)
 			continue;
-
-		if (mb->ifa_flags & IFF_UP)
-			add_assoc_string(return_value, "status", "up");
-		else
-			add_assoc_string(return_value, "status", "down");
-		if (mb->ifa_flags & IFF_LINK0)
-			add_assoc_long(return_value, "link0", 1);
-		if (mb->ifa_flags & IFF_LINK1)
-			add_assoc_long(return_value, "link1", 1);
-		if (mb->ifa_flags & IFF_LINK2)
-			add_assoc_long(return_value, "link2", 1);
-		if (mb->ifa_flags & IFF_MULTICAST)
-			add_assoc_long(return_value, "multicast", 1);
-		if (mb->ifa_flags & IFF_LOOPBACK)
-			add_assoc_long(return_value, "loopback", 1);
-		if (mb->ifa_flags & IFF_POINTOPOINT)
-			add_assoc_long(return_value, "pointtopoint", 1);
-		if (mb->ifa_flags & IFF_PROMISC)
-			add_assoc_long(return_value, "promisc", 1);
-		if (mb->ifa_flags & IFF_PPROMISC)
-			add_assoc_long(return_value, "permanentpromisc", 1);
-		if (mb->ifa_flags & IFF_OACTIVE)
-			add_assoc_long(return_value, "oactive", 1);
-		if (mb->ifa_flags & IFF_ALLMULTI)
-			add_assoc_long(return_value, "allmulti", 1);
-		if (mb->ifa_flags & IFF_SIMPLEX)
-			add_assoc_long(return_value, "simplex", 1);
-		memset(&ifr, 0, sizeof(ifr));
-		strncpy(ifr.ifr_name, ifname, sizeof(ifr.ifr_name));
-		if (mb->ifa_data != NULL) {
-			md = mb->ifa_data;
-			if (md->ifi_link_state == LINK_STATE_UP)
-				add_assoc_long(return_value, "linkstateup", 1);
-			switch (md->ifi_type) {
-			case IFT_IEEE80211:
-				add_assoc_string(return_value, "iftype",
-				    "wireless");
-				break;
-			case IFT_ETHER:
-			case IFT_FASTETHER:
-			case IFT_FASTETHERFX:
-			case IFT_GIGABITETHERNET:
-				if (ioctl(PFSENSE_G(s), SIOCG80211STATS,
-				    (caddr_t)&ifr) == 0) {
-					add_assoc_string(return_value, "iftype",
-					    "wireless");
-					/* Reset ifr after use. */
-					memset(&ifr, 0, sizeof(ifr));
-					strncpy(ifr.ifr_name, ifname, sizeof(ifr.ifr_name));
-				} else {
-					add_assoc_string(return_value, "iftype",
-					    "ether");
-				}
-				break;
-			case IFT_L2VLAN:
-				add_assoc_string(return_value, "iftype",
-				    "vlan");
-				break;
-			case IFT_BRIDGE:
-				add_assoc_string(return_value, "iftype",
-				    "bridge");
-				break;
-			case IFT_TUNNEL:
-			case IFT_GIF:
-#if (__FreeBSD_version < 1100000)
-			case IFT_FAITH:
-#endif
-			case IFT_ENC:
-			case IFT_PFLOG:
-			case IFT_PFSYNC:
-				add_assoc_string(return_value, "iftype",
-				    "virtual");
-				break;
-			default:
-				add_assoc_string(return_value, "iftype",
-				    "other");
-			}
-		}
-
-		array_init(&caps);
-		array_init(&encaps);
-		if (ioctl(PFSENSE_G(s), SIOCGIFMTU, (caddr_t)&ifr) == 0)
-			add_assoc_long(return_value, "mtu", ifr.ifr_mtu);
-		if (ioctl(PFSENSE_G(s), SIOCGIFCAP, (caddr_t)&ifr) == 0) {
-			add_assoc_long(&caps, "flags", ifr.ifr_reqcap);
-			if (ifr.ifr_reqcap & IFCAP_POLLING)
-				add_assoc_long(&caps, "polling", 1);
-			if (ifr.ifr_reqcap & IFCAP_RXCSUM)
-				add_assoc_long(&caps, "rxcsum", 1);
-			if (ifr.ifr_reqcap & IFCAP_TXCSUM)
-				add_assoc_long(&caps, "txcsum", 1);
-			if (ifr.ifr_reqcap & IFCAP_RXCSUM_IPV6)
-				add_assoc_long(&caps, "rxcsum6", 1);
-			if (ifr.ifr_reqcap & IFCAP_TXCSUM_IPV6)
-				add_assoc_long(&caps, "txcsum6", 1);
-			if (ifr.ifr_reqcap & IFCAP_VLAN_MTU)
-				add_assoc_long(&caps, "vlanmtu", 1);
-			if (ifr.ifr_reqcap & IFCAP_JUMBO_MTU)
-				add_assoc_long(&caps, "jumbomtu", 1);
-			if (ifr.ifr_reqcap & IFCAP_VLAN_HWTAGGING)
-				add_assoc_long(&caps, "vlanhwtag", 1);
-			if (ifr.ifr_reqcap & IFCAP_VLAN_HWCSUM)
-				add_assoc_long(&caps, "vlanhwcsum", 1);
-			if (ifr.ifr_reqcap & IFCAP_TSO4)
-				add_assoc_long(&caps, "tso4", 1);
-			if (ifr.ifr_reqcap & IFCAP_TSO6)
-				add_assoc_long(&caps, "tso6", 1);
-			if (ifr.ifr_reqcap & IFCAP_LRO)
-				add_assoc_long(&caps, "lro", 1);
-			if (ifr.ifr_reqcap & IFCAP_WOL_UCAST)
-				add_assoc_long(&caps, "wolucast", 1);
-			if (ifr.ifr_reqcap & IFCAP_WOL_MCAST)
-				add_assoc_long(&caps, "wolmcast", 1);
-			if (ifr.ifr_reqcap & IFCAP_WOL_MAGIC)
-				add_assoc_long(&caps, "wolmagic", 1);
-			if (ifr.ifr_reqcap & IFCAP_TOE4)
-				add_assoc_long(&caps, "toe4", 1);
-			if (ifr.ifr_reqcap & IFCAP_TOE6)
-				add_assoc_long(&caps, "toe6", 1);
-			if (ifr.ifr_reqcap & IFCAP_VLAN_HWFILTER)
-				add_assoc_long(&caps, "vlanhwfilter", 1);
-
-			add_assoc_long(&encaps, "flags", ifr.ifr_curcap);
-			if (ifr.ifr_curcap & IFCAP_POLLING)
-				add_assoc_long(&encaps, "polling", 1);
-			if (ifr.ifr_curcap & IFCAP_RXCSUM)
-				add_assoc_long(&encaps, "rxcsum", 1);
-			if (ifr.ifr_curcap & IFCAP_TXCSUM)
-				add_assoc_long(&encaps, "txcsum", 1);
-			if (ifr.ifr_curcap & IFCAP_RXCSUM_IPV6)
-				add_assoc_long(&encaps, "rxcsum6", 1);
-			if (ifr.ifr_curcap & IFCAP_TXCSUM_IPV6)
-				add_assoc_long(&encaps, "txcsum6", 1);
-			if (ifr.ifr_curcap & IFCAP_VLAN_MTU)
-				add_assoc_long(&encaps, "vlanmtu", 1);
-			if (ifr.ifr_curcap & IFCAP_JUMBO_MTU)
-				add_assoc_long(&encaps, "jumbomtu", 1);
-			if (ifr.ifr_curcap & IFCAP_VLAN_HWTAGGING)
-				add_assoc_long(&encaps, "vlanhwtag", 1);
-			if (ifr.ifr_curcap & IFCAP_VLAN_HWCSUM)
-				add_assoc_long(&encaps, "vlanhwcsum", 1);
-			if (ifr.ifr_curcap & IFCAP_TSO4)
-				add_assoc_long(&encaps, "tso4", 1);
-			if (ifr.ifr_curcap & IFCAP_TSO6)
-				add_assoc_long(&encaps, "tso6", 1);
-			if (ifr.ifr_curcap & IFCAP_LRO)
-				add_assoc_long(&encaps, "lro", 1);
-			if (ifr.ifr_curcap & IFCAP_WOL_UCAST)
-				add_assoc_long(&encaps, "wolucast", 1);
-			if (ifr.ifr_curcap & IFCAP_WOL_MCAST)
-				add_assoc_long(&encaps, "wolmcast", 1);
-			if (ifr.ifr_curcap & IFCAP_WOL_MAGIC)
-				add_assoc_long(&encaps, "wolmagic", 1);
-			if (ifr.ifr_curcap & IFCAP_TOE4)
-				add_assoc_long(&encaps, "toe4", 1);
-			if (ifr.ifr_curcap & IFCAP_TOE6)
-				add_assoc_long(&encaps, "toe6", 1);
-			if (ifr.ifr_curcap & IFCAP_VLAN_HWFILTER)
-				add_assoc_long(&encaps, "vlanhwfilter", 1);
-		}
-
-		add_assoc_zval(return_value, "caps", &caps);
-		add_assoc_zval(return_value, "encaps", &encaps);
-
-		tmpdl = (struct sockaddr_dl *)mb->ifa_addr;
-		if (tmpdl->sdl_alen != ETHER_ADDR_LEN)
-			continue;
-		bzero(outputbuf, sizeof outputbuf);
-		ether_ntoa_r((struct ether_addr *)LLADDR(tmpdl), outputbuf);
-		add_assoc_string(return_value, "macaddr", outputbuf);
-
-		if (tmpdl->sdl_type != IFT_ETHER)
-			continue;
-		memcpy(&ifr.ifr_addr, mb->ifa_addr,
-		    sizeof(mb->ifa_addr->sa_len));
-		ifr.ifr_addr.sa_family = AF_LOCAL;
-		if (ioctl(PFSENSE_G(s), SIOCGHWADDR, &ifr) != 0)
-			continue;
-
-		bzero(outputbuf, sizeof outputbuf);
-		ether_ntoa_r((const struct ether_addr *)&ifr.ifr_addr.sa_data,
-		    outputbuf);
-		add_assoc_string(return_value, "hwaddr", outputbuf);
-	}
+		fill_interface_params(return_value, mb);
+	}		
 	freeifaddrs(ifdata);
 }
 
@@ -2918,9 +1964,10 @@ PHP_FUNCTION(pfSense_bridge_add_member) {
 	struct ifdrv drv;
 	struct ifbreq req;
 
-	if (zend_parse_parameters(ZEND_NUM_ARGS() TSRMLS_CC, "ss", &ifname, &ifname_len, &ifchld, &ifchld_len) == FAILURE) {
-		RETURN_NULL();
-	}
+	ZEND_PARSE_PARAMETERS_START(2, 2)
+		Z_PARAM_STRING(ifname, ifname_len)
+		Z_PARAM_STRING(ifchld, ifchld_len)
+	ZEND_PARSE_PARAMETERS_END();
 
 	memset(&drv, 0, sizeof(drv));
 	memset(&req, 0, sizeof(req));
@@ -2941,9 +1988,10 @@ PHP_FUNCTION(pfSense_bridge_del_member) {
 	struct ifdrv drv;
 	struct ifbreq req;
 
-	if (zend_parse_parameters(ZEND_NUM_ARGS() TSRMLS_CC, "ss", &ifname, &ifname_len, &ifchld, &ifchld_len) == FAILURE) {
-		RETURN_NULL();
-	}
+	ZEND_PARSE_PARAMETERS_START(2, 2)
+		Z_PARAM_STRING(ifname, ifname_len)
+		Z_PARAM_STRING(ifchld, ifchld_len)
+	ZEND_PARSE_PARAMETERS_END();
 
 	memset(&drv, 0, sizeof(drv));
 	memset(&req, 0, sizeof(req));
@@ -2965,9 +2013,11 @@ PHP_FUNCTION(pfSense_bridge_member_flags) {
 	struct ifbreq req;
 	zend_long flags = 0;
 
-	if (zend_parse_parameters(ZEND_NUM_ARGS() TSRMLS_CC, "ssl", &ifname, &ifname_len, &ifchld, &ifchld_len, &flags) == FAILURE) {
-		RETURN_NULL();
-	}
+	ZEND_PARSE_PARAMETERS_START(3, 3)
+		Z_PARAM_STRING(ifname, ifname_len)
+		Z_PARAM_STRING(ifchld, ifchld_len)
+		Z_PARAM_LONG(flags)
+	ZEND_PARSE_PARAMETERS_END();
 
 	memset(&drv, 0, sizeof(drv));
 	memset(&req, 0, sizeof(req));
@@ -2994,23 +2044,24 @@ PHP_FUNCTION(pfSense_bridge_member_flags) {
 	RETURN_TRUE;
 }
 
-PHP_FUNCTION(pfSense_interface_listget) {
+PHP_FUNCTION(pfSense_interface_listget)
+{
 	struct ifaddrs *ifdata, *mb;
-	char *ifname;
-	int ifname_len;
+	char *ifname = NULL;
+	int ifname_len = 0;
 	zend_long flags = 0;
 
-	if (zend_parse_parameters(ZEND_NUM_ARGS() TSRMLS_CC, "|l", &flags) == FAILURE)
-		RETURN_NULL();
+	ZEND_PARSE_PARAMETERS_START(0, 1)
+		Z_PARAM_OPTIONAL
+		Z_PARAM_LONG(flags)
+	ZEND_PARSE_PARAMETERS_END();
 
 	if (getifaddrs(&ifdata) == -1)
 		RETURN_NULL();
 
 	array_init(return_value);
-	ifname = NULL;
-	ifname_len = 0;
-	for(mb = ifdata; mb != NULL; mb = mb->ifa_next) {
 
+	for(mb = ifdata; mb != NULL; mb = mb->ifa_next) {
 		if (flags != 0) {
 			if (mb->ifa_flags & IFF_UP && flags < 0)
 				continue;
@@ -3020,6 +2071,7 @@ PHP_FUNCTION(pfSense_interface_listget) {
 
 		if (ifname != NULL && ifname_len == strlen(mb->ifa_name) && strcmp(ifname, mb->ifa_name) == 0)
 			continue;
+
 		ifname = mb->ifa_name;
 		ifname_len = strlen(mb->ifa_name);
 
@@ -3050,9 +2102,10 @@ PHP_FUNCTION(pfSense_interface_create) {
 	size_t ifname_len;
 	zend_string *str;
 
-	if (zend_parse_parameters(ZEND_NUM_ARGS() TSRMLS_CC, "s", &ifname, &ifname_len) == FAILURE) {
-		RETURN_NULL();
-	}
+	ZEND_PARSE_PARAMETERS_START(1, 1)
+		Z_PARAM_STRING(ifname, ifname_len)
+	ZEND_PARSE_PARAMETERS_END();
+
 	if (interface_create(ifname, SIOCIFCREATE, &str, return_value) == 0) {
 		RETURN_STR(str);
 	}
@@ -3063,9 +2116,10 @@ PHP_FUNCTION(pfSense_interface_create2) {
 	size_t ifname_len;
 	zend_string *str;
 
-	if (zend_parse_parameters(ZEND_NUM_ARGS() TSRMLS_CC, "s", &ifname, &ifname_len) == FAILURE) {
-		RETURN_NULL();
-	}
+	ZEND_PARSE_PARAMETERS_START(1, 1)
+		Z_PARAM_STRING(ifname, ifname_len)
+	ZEND_PARSE_PARAMETERS_END();
+
 	if (interface_create(ifname, SIOCIFCREATE2, &str, return_value) == 0) {
 		RETURN_STR(str);
 	}
@@ -3076,9 +2130,9 @@ PHP_FUNCTION(pfSense_interface_destroy) {
 	size_t ifname_len;
 	struct ifreq ifr;
 
-	if (zend_parse_parameters(ZEND_NUM_ARGS() TSRMLS_CC, "s", &ifname, &ifname_len) == FAILURE) {
-		RETURN_NULL();
-	}
+	ZEND_PARSE_PARAMETERS_START(1, 1)
+		Z_PARAM_STRING(ifname, ifname_len)
+	ZEND_PARSE_PARAMETERS_END();
 
 	memset(&ifr, 0, sizeof(ifr));
 	strlcpy(ifr.ifr_name, ifname, sizeof(ifr.ifr_name));
@@ -3095,9 +2149,10 @@ PHP_FUNCTION(pfSense_interface_setaddress) {
 	struct sockaddr_in *sin;
 	struct in_aliasreq ifra;
 
-	if (zend_parse_parameters(ZEND_NUM_ARGS() TSRMLS_CC, "ss", &ifname, &ifname_len, &ip, &ip_len) == FAILURE) {
-		RETURN_NULL();
-	}
+	ZEND_PARSE_PARAMETERS_START(2, 2)
+		Z_PARAM_STRING(ifname, ifname_len)
+		Z_PARAM_STRING(ip, ip_len)
+	ZEND_PARSE_PARAMETERS_END();
 
 	memset(&ifra, 0, sizeof(ifra));
 	strlcpy(ifra.ifra_name, ifname, sizeof(ifra.ifra_name));
@@ -3135,9 +2190,10 @@ PHP_FUNCTION(pfSense_interface_deladdress) {
 	char *ifname, *ip = NULL;
 	size_t ifname_len, ip_len;
 
-	if (zend_parse_parameters(ZEND_NUM_ARGS() TSRMLS_CC, "ss", &ifname, &ifname_len, &ip, &ip_len) == FAILURE) {
-		RETURN_NULL();
-	}
+	ZEND_PARSE_PARAMETERS_START(2, 2)
+		Z_PARAM_STRING(ifname, ifname_len)
+		Z_PARAM_STRING(ip, ip_len)
+	ZEND_PARSE_PARAMETERS_END();
 
 	if (strstr(ip, ":")) {
 		struct in6_aliasreq ifra6;
@@ -3182,9 +2238,10 @@ PHP_FUNCTION(pfSense_interface_rename) {
 	size_t ifname_len, newifname_len;
 	struct ifreq ifr;
 
-	if (zend_parse_parameters(ZEND_NUM_ARGS() TSRMLS_CC, "ss", &ifname, &ifname_len, &newifname, &newifname_len) == FAILURE) {
-		RETURN_NULL();
-	}
+	ZEND_PARSE_PARAMETERS_START(2, 2)
+		Z_PARAM_STRING(ifname, ifname_len)
+		Z_PARAM_STRING(newifname, newifname_len)
+	ZEND_PARSE_PARAMETERS_END();
 
 	memset(&ifr, 0, sizeof(ifr));
 	strlcpy(ifr.ifr_name, ifname, sizeof(ifr.ifr_name));
@@ -3200,58 +2257,17 @@ PHP_FUNCTION(pfSense_ngctl_name) {
 	char *ifname, *newifname;
 	size_t ifname_len, newifname_len;
 
+	ZEND_PARSE_PARAMETERS_START(2, 2)
+		Z_PARAM_STRING(ifname, ifname_len)
+		Z_PARAM_STRING(newifname, newifname_len)
+	ZEND_PARSE_PARAMETERS_END();
+
 	if (PFSENSE_G(csock) == -1)
 		RETURN_NULL();
-
-	if (zend_parse_parameters(ZEND_NUM_ARGS() TSRMLS_CC, "ss", &ifname, &ifname_len, &newifname, &newifname_len) == FAILURE) {
-		RETURN_NULL();
-	}
 
 	/* Send message */
 	if (NgNameNode(PFSENSE_G(csock), ifname, "%s", newifname) < 0)
 		RETURN_NULL();
-
-	RETURN_TRUE;
-}
-
-PHP_FUNCTION(pfSense_ngctl_attach) {
-	char *ifname, *newifname;
-	size_t ifname_len, newifname_len;
-	struct ngm_name name;
-
-	if (PFSENSE_G(csock) == -1)
-		RETURN_NULL();
-
-	if (zend_parse_parameters(ZEND_NUM_ARGS() TSRMLS_CC, "ss", &ifname, &ifname_len, &newifname, &newifname_len) == FAILURE) {
-		RETURN_NULL();
-	}
-
-	snprintf(name.name, sizeof(name.name), "%s", newifname);
-	/* Send message */
-	if (NgSendMsg(PFSENSE_G(csock), ifname, NGM_GENERIC_COOKIE,
-		NGM_ETHER_ATTACH, &name, sizeof(name)) < 0)
-			RETURN_NULL();
-
-	RETURN_TRUE;
-}
-
-PHP_FUNCTION(pfSense_ngctl_detach) {
-	char *ifname, *newifname;
-	size_t ifname_len, newifname_len;
-	struct ngm_name name;
-
-	if (PFSENSE_G(csock) == -1)
-		RETURN_NULL();
-
-	if (zend_parse_parameters(ZEND_NUM_ARGS() TSRMLS_CC, "ss", &ifname, &ifname_len, &newifname, &newifname_len) == FAILURE) {
-		RETURN_NULL();
-	}
-
-	snprintf(name.name, sizeof(name.name), "%s", newifname);
-	/* Send message */
-	if (NgSendMsg(PFSENSE_G(csock), ifname, NGM_ETHER_COOKIE,
-		NGM_ETHER_DETACH, &name, sizeof(name)) < 0)
-			RETURN_NULL();
 
 	RETURN_TRUE;
 }
@@ -3264,9 +2280,12 @@ PHP_FUNCTION(pfSense_vlan_create) {
 	struct ifreq ifr;
 	struct vlanreq params;
 
-	if (zend_parse_parameters(ZEND_NUM_ARGS() TSRMLS_CC, "ssll", &ifname, &ifname_len, &parentifname, &parent_len, &tag, &pcp) == FAILURE) {
-		RETURN_NULL();
-	}
+	ZEND_PARSE_PARAMETERS_START(4, 4)
+		Z_PARAM_STRING(ifname, ifname_len)
+		Z_PARAM_STRING(parentifname, parent_len)
+		Z_PARAM_LONG(tag)
+		Z_PARAM_LONG(pcp)
+	ZEND_PARSE_PARAMETERS_END();
 
 	memset(&ifr, 0, sizeof(ifr));
 	memset(&params, 0, sizeof(params));
@@ -3288,9 +2307,10 @@ PHP_FUNCTION(pfSense_interface_getmtu) {
 	size_t ifname_len;
 	struct ifreq ifr;
 
-	if (zend_parse_parameters(ZEND_NUM_ARGS() TSRMLS_CC, "s", &ifname, &ifname_len) == FAILURE) {
-		RETURN_NULL();
-	}
+	ZEND_PARSE_PARAMETERS_START(1, 1)
+		Z_PARAM_STRING(ifname, ifname_len)
+	ZEND_PARSE_PARAMETERS_END();
+
 	memset(&ifr, 0, sizeof(ifr));
 	strlcpy(ifr.ifr_name, ifname, sizeof(ifr.ifr_name));
 	if (ioctl(PFSENSE_G(s), SIOCGIFMTU, (caddr_t)&ifr) < 0)
@@ -3305,9 +2325,11 @@ PHP_FUNCTION(pfSense_interface_mtu) {
 	zend_long mtu;
 	struct ifreq ifr;
 
-	if (zend_parse_parameters(ZEND_NUM_ARGS() TSRMLS_CC, "sl", &ifname, &ifname_len, &mtu) == FAILURE) {
-		RETURN_NULL();
-	}
+	ZEND_PARSE_PARAMETERS_START(2, 2)
+		Z_PARAM_STRING(ifname, ifname_len)
+		Z_PARAM_LONG(mtu)
+	ZEND_PARSE_PARAMETERS_END();
+
 	memset(&ifr, 0, sizeof(ifr));
 	strlcpy(ifr.ifr_name, ifname, sizeof(ifr.ifr_name));
 	ifr.ifr_mtu = (int) mtu;
@@ -3323,9 +2345,10 @@ PHP_FUNCTION(pfSense_interface_flags) {
 	size_t ifname_len;
 	zend_long value;
 
-	if (zend_parse_parameters(ZEND_NUM_ARGS() TSRMLS_CC, "sl", &ifname, &ifname_len, &value) == FAILURE) {
-		RETURN_NULL();
-	}
+	ZEND_PARSE_PARAMETERS_START(2, 2)
+		Z_PARAM_STRING(ifname, ifname_len)
+		Z_PARAM_LONG(value)
+	ZEND_PARSE_PARAMETERS_END();
 
 	memset(&ifr, 0, sizeof(ifr));
 	strlcpy(ifr.ifr_name, ifname, sizeof(ifr.ifr_name));
@@ -3352,9 +2375,10 @@ PHP_FUNCTION(pfSense_interface_capabilities) {
 	size_t ifname_len;
 	zend_long value;
 
-	if (zend_parse_parameters(ZEND_NUM_ARGS() TSRMLS_CC, "sl", &ifname, &ifname_len, &value) == FAILURE) {
-		RETURN_NULL();
-	}
+	ZEND_PARSE_PARAMETERS_START(2, 2)
+		Z_PARAM_STRING(ifname, ifname_len)
+		Z_PARAM_LONG(value)
+	ZEND_PARSE_PARAMETERS_END();
 
 	memset(&ifr, 0, sizeof(ifr));
 	strlcpy(ifr.ifr_name, ifname, sizeof(ifr.ifr_name));
@@ -3386,9 +2410,9 @@ PHP_FUNCTION(pfSense_get_interface_info)
 	int error = 0;
 	int dev;
 
-	if (zend_parse_parameters(ZEND_NUM_ARGS() TSRMLS_CC, "s", &ifname, &ifname_len) == FAILURE) {
-		RETURN_NULL();
-	}
+	ZEND_PARSE_PARAMETERS_START(1, 1)
+		Z_PARAM_STRING(ifname, ifname_len)
+	ZEND_PARSE_PARAMETERS_END();
 
 	if ((dev = open("/dev/pf", O_RDWR)) < 0)
 		RETURN_NULL();
@@ -3410,20 +2434,21 @@ PHP_FUNCTION(pfSense_get_interface_info)
 		found = 1;
 
 		switch (mb->ifa_addr->sa_family) {
-		case AF_LINK:
+			case AF_LINK:
 
-			tmpd = (struct if_data *)mb->ifa_data;
-			add_assoc_long(return_value, "inerrs", tmpd->ifi_ierrors);
-			add_assoc_long(return_value, "outerrs", tmpd->ifi_oerrors);
-			add_assoc_long(return_value, "collisions", tmpd->ifi_collisions);
-			add_assoc_long(return_value, "inmcasts", tmpd->ifi_imcasts);
-			add_assoc_long(return_value, "outmcasts", tmpd->ifi_omcasts);
-			add_assoc_long(return_value, "unsuppproto", tmpd->ifi_noproto);
-			add_assoc_long(return_value, "mtu", tmpd->ifi_mtu);
+				tmpd = (struct if_data *)mb->ifa_data;
+				add_assoc_long(return_value, "inerrs", tmpd->ifi_ierrors);
+				add_assoc_long(return_value, "outerrs", tmpd->ifi_oerrors);
+				add_assoc_long(return_value, "collisions", tmpd->ifi_collisions);
+				add_assoc_long(return_value, "inmcasts", tmpd->ifi_imcasts);
+				add_assoc_long(return_value, "outmcasts", tmpd->ifi_omcasts);
+				add_assoc_long(return_value, "unsuppproto", tmpd->ifi_noproto);
+				add_assoc_long(return_value, "mtu", tmpd->ifi_mtu);
 
-			break;
+				break;
 		}
 	}
+
 	freeifaddrs(ifdata);
 
 	if (found == 0) {
@@ -3470,9 +2495,9 @@ PHP_FUNCTION(pfSense_get_interface_stats)
 	int name[6];
 	unsigned int ifidx;
 
-	if (zend_parse_parameters(ZEND_NUM_ARGS() TSRMLS_CC, "s", &ifname, &ifname_len) == FAILURE) {
-		RETURN_NULL();
-	}
+	ZEND_PARSE_PARAMETERS_START(1, 1)
+		Z_PARAM_STRING(ifname, ifname_len)
+	ZEND_PARSE_PARAMETERS_END();
 
 	ifidx = if_nametoindex(ifname);
 	if (ifidx == 0)
@@ -3512,6 +2537,8 @@ PHP_FUNCTION(pfSense_get_pf_rules) {
 	struct pfctl_rule r;
 	uint32_t mnr, nr;
 
+	ZEND_PARSE_PARAMETERS_NONE();
+
 	if ((dev = open("/dev/pf", O_RDWR)) < 0)
 		RETURN_NULL();
 	memset(&pr, 0, sizeof(pr));
@@ -3525,6 +2552,13 @@ PHP_FUNCTION(pfSense_get_pf_rules) {
 	array_init(return_value);
 	for (nr = 0; nr < mnr; ++nr) {
 		zval array;
+		zval labels;
+		char tlabel[64];
+		char scratch_key[12];
+		char *value = NULL;
+		char *key = NULL;
+		char *label = NULL;
+		int i;
 
 		if (pfctl_get_rule(dev, nr, pr.ticket, pr.anchor, pr.action,
 		    &r, pr.anchor_call)) {
@@ -3532,10 +2566,42 @@ PHP_FUNCTION(pfSense_get_pf_rules) {
 			break;
 		}
 
+		array_init(&labels);
+		for (i = 0; i < nitems(r.label) && *r.label[i] != 0; i++) {
+			value = tlabel;
+			key = NULL;
+
+			strncpy(tlabel, r.label[i], sizeof(tlabel));
+			key = strsep(&value, ":");
+			if (value == NULL) {
+				key = NULL;
+				value = tlabel;
+			}
+
+			/* Take a non-prefixed label only if another non-prefixed label or user rule isn't already
+			 * found. This hack is to get around the fact that not all rules have predictable prefixes at
+			 * this time and we have to pick the best one available. In the future consumers should pick
+			 * the label they are interested in by key, rather than referring to the singular label */
+			if ((key == NULL && label == NULL) ||
+			    (key != NULL && strcmp("USER_RULE", key) == 0)) {
+				label = r.label[i];
+			}
+
+			/* Generate a key for a non-prefixed label, and build the assoc array */
+			if (key == NULL) {
+				snprintf(scratch_key, sizeof(scratch_key), "label%d", i);
+				key = scratch_key;
+			}
+			add_assoc_string(&labels, key, value);
+		}
+		if (label == NULL) {
+			label = "";
+		}
 		array_init(&array);
 		add_assoc_long(&array, "id", (long)r.nr);
 		add_assoc_long(&array, "tracker", (long)r.ridentifier);
-		add_assoc_string(&array, "label", r.label[0]);
+		add_assoc_string(&array, "label", label);
+		add_assoc_zval(&array, "all_labels", &labels);
 		add_assoc_double(&array, "evaluations", (double)r.evaluations);
 		add_assoc_double(&array, "packets", (double)(r.packets[0] + r.packets[1]));
 		add_assoc_double(&array, "bytes", (double)(r.bytes[0] + r.bytes[1]));
@@ -3569,8 +2635,12 @@ PHP_FUNCTION(pfSense_get_pf_states) {
 	filter = NULL;
 	filter_if = filter_rl = 0;
 	zvar = NULL;
-	if (zend_parse_parameters(ZEND_NUM_ARGS() TSRMLS_CC, "|z", &zvar) == FAILURE)
-		RETURN_NULL();
+
+	ZEND_PARSE_PARAMETERS_START(0, 1)
+		Z_PARAM_OPTIONAL
+		Z_PARAM_ZVAL(zvar)
+	ZEND_PARSE_PARAMETERS_END();
+
 /*
 	Check if an array was passed as an argument to this function (meaning we want to filter the states in some way) e.g.:
 	Array
@@ -3843,6 +2913,8 @@ PHP_FUNCTION(pfSense_get_pf_stats) {
 	int i;
 	int dev;
 
+	ZEND_PARSE_PARAMETERS_NONE();
+
 	array_init(return_value);
 
 	if ((dev = open("/dev/pf", O_RDWR)) < 0) {
@@ -3897,7 +2969,7 @@ PHP_FUNCTION(pfSense_get_pf_stats) {
 		}
 		buf[i + i] = '\0';
 		add_assoc_string(return_value, "pfchecksum", buf);
-		printf("Checksum: 0x%s\n\n", buf);
+		/* printf("Checksum: 0x%s\n\n", buf); */
 
 		switch(status.debug) {
 		case PF_DEBUG_NONE:
@@ -3936,20 +3008,22 @@ PHP_FUNCTION(pfSense_get_pf_stats) {
 	}
 }
 
-PHP_FUNCTION(pfSense_sync) {
+PHP_FUNCTION(pfSense_sync)
+{
+	ZEND_PARSE_PARAMETERS_NONE();
 	sync();
 }
 
-PHP_FUNCTION(pfSense_fsync) {
+PHP_FUNCTION(pfSense_fsync)
+{
 	char *fname, *parent_dir;
 	size_t fname_len;
 	int fd;
 
-	if (ZEND_NUM_ARGS() != 1 ||
-	    zend_parse_parameters(ZEND_NUM_ARGS() TSRMLS_CC, "s", &fname,
-	    &fname_len) == FAILURE) {
-		RETURN_FALSE;
-	}
+	ZEND_PARSE_PARAMETERS_START(1, 1)
+		Z_PARAM_STRING(fname, fname_len)
+	ZEND_PARSE_PARAMETERS_END();
+
 	if (fname_len == 0)
 		RETURN_FALSE;
 
@@ -3980,7 +3054,8 @@ PHP_FUNCTION(pfSense_fsync) {
 	RETURN_TRUE;
 }
 
-PHP_FUNCTION(pfSense_get_modem_devices) {
+PHP_FUNCTION(pfSense_get_modem_devices)
+{
 	struct termios		attr, origattr;
 	struct pollfd		pfd;
 	glob_t			g;
@@ -3990,13 +3065,10 @@ PHP_FUNCTION(pfSense_get_modem_devices) {
 	zend_bool		show_info = 0;
 	zend_long		poll_timeout = 700;
 
-	if (ZEND_NUM_ARGS() > 2) {
-		RETURN_NULL();
-	}
-	if (zend_parse_parameters(ZEND_NUM_ARGS() TSRMLS_CC, "|bl", &show_info, &poll_timeout) == FAILURE) {
-		php_printf("Maximum two parameter can be passed\n");
-			RETURN_NULL();
-	}
+	ZEND_PARSE_PARAMETERS_START(0, 2)
+		Z_PARAM_BOOL(show_info)
+		Z_PARAM_LONG(poll_timeout)
+	ZEND_PARSE_PARAMETERS_END();
 
 	array_init(return_value);
 
@@ -4094,7 +3166,6 @@ tryagain2:
 				bzero(&pfd, sizeof pfd);
 				pfd.fd = fd;
 				pfd.events = POLLIN | POLLRDNORM | POLLRDBAND | POLLPRI | POLLHUP;
-
 				if (poll(&pfd, 1, 200) > 0) {
 					read(fd, buf, sizeof(buf));
 				buf[2047] = '\0';
@@ -4115,11 +3186,14 @@ errormodem:
 	}
 }
 
-PHP_FUNCTION(pfSense_get_os_hw_data) {
+PHP_FUNCTION(pfSense_get_os_hw_data)
+{
 	int mib[4], idata;
 	u_long ldata;
 	size_t len;
 	char *data;
+
+	ZEND_PARSE_PARAMETERS_NONE();
 
 	array_init(return_value);
 
@@ -4184,11 +3258,14 @@ PHP_FUNCTION(pfSense_get_os_hw_data) {
 		add_assoc_long(return_value, "realmem", ldata);
 }
 
-PHP_FUNCTION(pfSense_get_os_kern_data) {
+PHP_FUNCTION(pfSense_get_os_kern_data)
+{
 	int mib[4], idata;
 	size_t len;
 	char *data;
 	struct timeval bootime;
+
+	ZEND_PARSE_PARAMETERS_NONE();
 
 	array_init(return_value);
 
@@ -4283,7 +3360,9 @@ PHP_FUNCTION(pfSense_get_os_kern_data) {
 		add_assoc_long(return_value, "osreleasedate", idata);
 }
 
-static void build_ipsec_sa_array(void *salist, char *label, vici_res_t *res) {
+static void
+build_ipsec_sa_array(void *salist, char *label, vici_res_t *res)
+{
 	char *name, *value;
 	/* message sections may be nested. maintain a stack as we traverse */
 
@@ -4355,11 +3434,14 @@ static void build_ipsec_sa_array(void *salist, char *label, vici_res_t *res) {
 	return;
 }
 
-PHP_FUNCTION(pfSense_ipsec_list_sa) {
+PHP_FUNCTION(pfSense_ipsec_list_sa)
+{
 
 	vici_conn_t *conn;
 	vici_req_t *req;
 	vici_res_t *res;
+
+	ZEND_PARSE_PARAMETERS_NONE();
 
 	array_init(return_value);
 
@@ -4384,9 +3466,209 @@ PHP_FUNCTION(pfSense_ipsec_list_sa) {
 
 }
 
+#ifdef PF_CP_FUNCTIONS
+#define FLUSH_TYPE_RULES "rules"
+#define FLUSH_TYPE_NAT "nat"
+#define FLUSH_TYPE_ETH "ether"
+PHP_FUNCTION(pfSense_pf_cp_flush) {
+	char *path, *type;
+	size_t path_len, type_len = 0;
+	int dev = 0, ret = -1;
+
+	ZEND_PARSE_PARAMETERS_START(2, 2)
+		Z_PARAM_STRING(path, path_len)
+		Z_PARAM_STRING(type, type_len)
+	ZEND_PARSE_PARAMETERS_END();
+
+	if ((dev = open("/dev/pf", O_RDWR)) < 0) {
+		RETURN_NULL();
+	}
+
+	if (strncmp(FLUSH_TYPE_RULES, type, MIN(strlen(FLUSH_TYPE_RULES), type_len)) == 0) {
+		ret = pfctl_clear_rules(dev, path);
+	} else if (strncmp(FLUSH_TYPE_NAT, type, MIN(strlen(FLUSH_TYPE_NAT), type_len)) == 0) {
+		ret = pfctl_clear_nat(dev, path);
+	} else if (strncmp(FLUSH_TYPE_ETH, type, MIN(strlen(FLUSH_TYPE_ETH), type_len)) == 0) {
+		ret = pfctl_clear_eth_rules(dev, path);
+	} else {
+		close(dev);
+		RETURN_NULL();
+	}
+
+	close(dev);
+	if (ret == 0) {
+		RETURN_TRUE;
+	}
+	RETURN_FALSE;
+}
+
+PHP_FUNCTION(pfSense_pf_cp_get_eth_pipes) {
+	char *path;
+	size_t path_len;
+	struct pfctl_eth_rules_info info;
+	struct pfctl_eth_rule rule;
+	char anchor_call[MAXPATHLEN];
+	int dev = 0;
+
+	ZEND_PARSE_PARAMETERS_START(1, 1)
+		Z_PARAM_STRING(path, path_len)
+	ZEND_PARSE_PARAMETERS_END();
+
+	if ((dev = open("/dev/pf", O_RDWR)) < 0)
+		RETURN_NULL();
+
+	if (path_len > MAXPATHLEN)
+		goto error_out;
+	if (pfctl_get_eth_rules_info(dev, &info, path))
+		goto error_out;
+
+	array_init(return_value);
+	for (int nr = 0; nr < info.nr; nr++) {
+		if (pfctl_get_eth_rule(dev, nr, info.ticket, path, &rule, 0, anchor_call) != 0)
+			goto error_out;
+		if (rule.dnflags & PFRULE_DN_IS_PIPE) {
+			add_next_index_long(return_value, (zend_long)rule.dnpipe);
+		}
+	}
+
+error_out:
+	close(dev);
+}
+
+PHP_FUNCTION(pfSense_pf_cp_get_eth_rule_counters) {
+	char *path;
+	size_t path_len;
+	struct pfctl_eth_rules_info info;
+	struct pfctl_eth_rule rule;
+	char anchor_call[MAXPATHLEN];
+	int dev = 0;
+	zval counter;
+
+	ZEND_PARSE_PARAMETERS_START(1, 1)
+		Z_PARAM_STRING(path, path_len)
+	ZEND_PARSE_PARAMETERS_END();
+
+	if ((dev = open("/dev/pf", O_RDWR)) < 0)
+		RETURN_NULL();
+
+	if (path_len > MAXPATHLEN)
+		goto error_out;
+	if (pfctl_get_eth_rules_info(dev, &info, path))
+		goto error_out;
+	array_init(return_value);
+	for (int nr = 0; nr < info.nr; nr++) {
+		if (pfctl_get_eth_rule(dev, nr, info.ticket, path, &rule, 0,
+		    anchor_call) != 0)
+			goto error_out;
+		if (rule.dnflags&PFRULE_DN_IS_PIPE) {
+			array_init(&counter);
+			add_assoc_long(&counter, "direction", (zend_ulong)rule.direction);
+			add_assoc_long(&counter, "evaluations", (zend_ulong)rule.evaluations);
+			switch (rule.direction) {
+				case PF_IN:
+					add_assoc_long(&counter, "input_pkts", (zend_ulong)rule.packets[0]);
+					add_assoc_long(&counter, "input_bytes", (zend_ulong)rule.bytes[0]);
+					break;
+				case PF_OUT:
+					add_assoc_long(&counter, "output_pkts", (zend_ulong)rule.packets[1]);
+					add_assoc_long(&counter, "output_bytes", (zend_ulong)rule.bytes[1]);
+					break;
+				default:
+					add_assoc_long(&counter, "input_pkts", (zend_ulong)rule.packets[0]);
+					add_assoc_long(&counter, "input_bytes", (zend_ulong)rule.bytes[0]);
+					add_assoc_long(&counter, "output_pkts", (zend_ulong)rule.packets[1]);
+					add_assoc_long(&counter, "output_bytes", (zend_ulong)rule.bytes[1]);
+			}
+			add_next_index_zval(return_value, &counter);
+		}
+	}
+
+error_out:
+	close(dev);
+}
+
+PHP_FUNCTION(pfSense_pf_cp_zerocnt) {
+	char *path;
+	size_t path_len;
+	struct pfctl_rules_info info;
+	struct pfctl_rule rule;
+	struct pfctl_eth_rules_info einfo;
+	struct pfctl_eth_rule erule;
+
+	char anchor_call[MAXPATHLEN];
+	uint32_t if_rulesets[] = { PF_SCRUB, PF_PASS };
+
+	int dev = 0;
+
+	ZEND_PARSE_PARAMETERS_START(1, 1)
+		Z_PARAM_STRING(path, path_len)
+	ZEND_PARSE_PARAMETERS_END();
+
+	if ((dev = open("/dev/pf", O_RDWR)) < 0)
+		RETURN_NULL();
+
+	if (path_len > MAXPATHLEN)
+		goto error_out;
+
+	/* Zero eth rule counters */
+	if (pfctl_get_eth_rules_info(dev, &einfo, path))
+		goto error_out;
+	for (int nr = 0; nr < einfo.nr; nr++) {
+		if (pfctl_get_eth_rule(dev, nr, einfo.ticket, path, &erule, true, anchor_call) != 0)
+			goto error_out;
+	}
+
+	/* Zero all other rules */
+	for (int nrs = 0; nrs < nitems(if_rulesets); nrs++) {
+		if (pfctl_get_rules_info(dev, &info, if_rulesets[nrs], path))
+			goto error_out;
+		for (int nr = 0; nr < info.nr; nr++) {
+			if (pfctl_get_clear_rule(dev, nr, info.ticket, path, if_rulesets[nrs], &rule, anchor_call,
+			    true) != 0)
+				goto error_out;
+		}
+	}
+error_out:
+	close(dev);
+}
+
+PHP_FUNCTION(pfSense_pf_cp_get_eth_last_active) {
+	char *path;
+	size_t path_len;
+	struct pfctl_eth_rules_info info;
+	struct pfctl_eth_rule rule;
+	char anchor_call[MAXPATHLEN];
+	int dev = 0;
+
+	ZEND_PARSE_PARAMETERS_START(1, 1)
+		Z_PARAM_STRING(path, path_len)
+	ZEND_PARSE_PARAMETERS_END();
+
+	if ((dev = open("/dev/pf", O_RDWR)) < 0)
+		RETURN_NULL();
+
+	if (path_len > MAXPATHLEN)
+		goto error_out;
+	if (pfctl_get_eth_rules_info(dev, &info, path))
+		goto error_out;
+
+	array_init(return_value);
+	for (int nr = 0; nr < info.nr; nr++) {
+		if (pfctl_get_eth_rule(dev, nr, info.ticket, path, &rule, 0, anchor_call) != 0)
+			goto error_out;
+		add_next_index_long(return_value, (zend_long)rule.last_active_timestamp);
+	}
+
+error_out:
+	close(dev);
+}
+#endif
+
 PHP_FUNCTION(pfSense_kenv_dump) {
 	char *buf, *bp, *cp;
 	int size;
+
+	ZEND_PARSE_PARAMETERS_NONE();
 
 	size = kenv(KENV_DUMP, NULL, NULL, 0);
 	if (size < 0)
@@ -4416,3 +3698,149 @@ PHP_FUNCTION(pfSense_kenv_dump) {
 
 	free(buf);
 }
+
+PHP_MINIT_FUNCTION(pfsense)
+{
+	int csock;
+
+	PFSENSE_G(s) = socket(AF_LOCAL, SOCK_DGRAM, 0);
+	if (PFSENSE_G(s) < 0)
+		return FAILURE;
+
+	PFSENSE_G(inets) = socket(AF_INET, SOCK_DGRAM, 0);
+	if (PFSENSE_G(inets) < 0) {
+		close(PFSENSE_G(s));
+		return FAILURE;
+	}
+	PFSENSE_G(inets6) = socket(AF_INET6, SOCK_DGRAM, 0);
+	if (PFSENSE_G(inets6) < 0) {
+		close(PFSENSE_G(s));
+		close(PFSENSE_G(inets));
+		return FAILURE;
+	}
+
+	if (geteuid() == 0 || getuid() == 0) {
+		/* Create a new socket node */
+		if (NgMkSockNode(NULL, &csock, NULL) < 0)
+			csock = -1;
+		else
+			fcntl(csock, F_SETFD, fcntl(csock, F_GETFD, 0) | FD_CLOEXEC);
+
+		PFSENSE_G(csock) = csock;
+
+#ifdef DHCP_INTEGRATION
+		pfSense_dhcpd = zend_register_list_destructors_ex(php_pfSense_destroy_dhcpd, NULL, PHP_PFSENSE_RES_NAME, module_number);
+		dhcpctl_initialize();
+		omapi_init();
+#endif
+	} else
+		PFSENSE_G(csock) = -1;
+
+	/* Don't leak these sockets to child processes */
+	fcntl(PFSENSE_G(s), F_SETFD, fcntl(PFSENSE_G(s), F_GETFD, 0) | FD_CLOEXEC);
+	fcntl(PFSENSE_G(inets), F_SETFD, fcntl(PFSENSE_G(inets), F_GETFD, 0) | FD_CLOEXEC);
+	fcntl(PFSENSE_G(inets6), F_SETFD, fcntl(PFSENSE_G(inets6), F_GETFD, 0) | FD_CLOEXEC);
+
+	REGISTER_LONG_CONSTANT("IFF_UP", IFF_UP, CONST_PERSISTENT | CONST_CS);
+	REGISTER_LONG_CONSTANT("IFF_LINK0", IFF_LINK0, CONST_PERSISTENT | CONST_CS);
+	REGISTER_LONG_CONSTANT("IFF_LINK1", IFF_LINK1, CONST_PERSISTENT | CONST_CS);
+	REGISTER_LONG_CONSTANT("IFF_LINK2", IFF_LINK2, CONST_PERSISTENT | CONST_CS);
+	REGISTER_LONG_CONSTANT("IFF_NOARP", IFF_NOARP, CONST_PERSISTENT | CONST_CS);
+	REGISTER_LONG_CONSTANT("IFF_STATICARP", IFF_STATICARP, CONST_PERSISTENT | CONST_CS);
+	REGISTER_LONG_CONSTANT("IFCAP_RXCSUM", IFCAP_RXCSUM, CONST_PERSISTENT | CONST_CS);
+	REGISTER_LONG_CONSTANT("IFCAP_TXCSUM", IFCAP_TXCSUM, CONST_PERSISTENT | CONST_CS);
+	REGISTER_LONG_CONSTANT("IFCAP_POLLING", IFCAP_POLLING, CONST_PERSISTENT | CONST_CS);
+	REGISTER_LONG_CONSTANT("IFCAP_TSO", IFCAP_TSO, CONST_PERSISTENT | CONST_CS);
+	REGISTER_LONG_CONSTANT("IFCAP_LRO", IFCAP_LRO, CONST_PERSISTENT | CONST_CS);
+	REGISTER_LONG_CONSTANT("IFCAP_WOL", IFCAP_WOL, CONST_PERSISTENT | CONST_CS);
+	REGISTER_LONG_CONSTANT("IFCAP_WOL_UCAST", IFCAP_WOL_UCAST, CONST_PERSISTENT | CONST_CS);
+	REGISTER_LONG_CONSTANT("IFCAP_WOL_MCAST", IFCAP_WOL_MCAST, CONST_PERSISTENT | CONST_CS);
+	REGISTER_LONG_CONSTANT("IFCAP_WOL_MAGIC", IFCAP_WOL_MAGIC, CONST_PERSISTENT | CONST_CS);
+
+	REGISTER_LONG_CONSTANT("IFCAP_VLAN_HWTAGGING", IFCAP_VLAN_HWTAGGING, CONST_PERSISTENT | CONST_CS);
+	REGISTER_LONG_CONSTANT("IFCAP_VLAN_MTU", IFCAP_VLAN_MTU, CONST_PERSISTENT | CONST_CS);
+	REGISTER_LONG_CONSTANT("IFCAP_VLAN_HWFILTER", IFCAP_VLAN_HWFILTER, CONST_PERSISTENT | CONST_CS);
+#ifdef IFCAP_VLAN_HWCSUM
+	REGISTER_LONG_CONSTANT("IFCAP_VLAN_HWCSUM", IFCAP_VLAN_HWCSUM, CONST_PERSISTENT | CONST_CS);
+#endif
+#ifdef IFCAP_VLAN_HWTSO
+	REGISTER_LONG_CONSTANT("IFCAP_VLAN_HWTSO", IFCAP_VLAN_HWTSO, CONST_PERSISTENT | CONST_CS);
+#endif
+	REGISTER_LONG_CONSTANT("IFCAP_RXCSUM_IPV6", IFCAP_RXCSUM_IPV6, CONST_PERSISTENT | CONST_CS);
+	REGISTER_LONG_CONSTANT("IFCAP_TXCSUM_IPV6", IFCAP_TXCSUM_IPV6, CONST_PERSISTENT | CONST_CS);
+
+	REGISTER_LONG_CONSTANT("IFBIF_LEARNING", IFBIF_LEARNING, CONST_PERSISTENT | CONST_CS);
+	REGISTER_LONG_CONSTANT("IFBIF_DISCOVER", IFBIF_DISCOVER, CONST_PERSISTENT | CONST_CS);
+	REGISTER_LONG_CONSTANT("IFBIF_STP", IFBIF_STP, CONST_PERSISTENT | CONST_CS);
+	REGISTER_LONG_CONSTANT("IFBIF_SPAN", IFBIF_SPAN, CONST_PERSISTENT | CONST_CS);
+	REGISTER_LONG_CONSTANT("IFBIF_STICKY", IFBIF_STICKY, CONST_PERSISTENT | CONST_CS);
+	REGISTER_LONG_CONSTANT("IFBIF_BSTP_EDGE", IFBIF_BSTP_EDGE, CONST_PERSISTENT | CONST_CS);
+	REGISTER_LONG_CONSTANT("IFBIF_BSTP_AUTOEDGE", IFBIF_BSTP_AUTOEDGE, CONST_PERSISTENT | CONST_CS);
+	REGISTER_LONG_CONSTANT("IFBIF_BSTP_PTP", IFBIF_BSTP_PTP, CONST_PERSISTENT | CONST_CS);
+	REGISTER_LONG_CONSTANT("IFBIF_BSTP_AUTOPTP", IFBIF_BSTP_AUTOPTP, CONST_PERSISTENT | CONST_CS);
+	REGISTER_LONG_CONSTANT("IFBIF_BSTP_ADMEDGE", IFBIF_BSTP_ADMEDGE, CONST_PERSISTENT | CONST_CS);
+	REGISTER_LONG_CONSTANT("IFBIF_BSTP_ADMCOST", IFBIF_BSTP_ADMCOST, CONST_PERSISTENT | CONST_CS);
+	REGISTER_LONG_CONSTANT("IFBIF_PRIVATE", IFBIF_PRIVATE, CONST_PERSISTENT | CONST_CS);
+
+	return SUCCESS;
+}
+
+PHP_MSHUTDOWN_FUNCTION(pfsense)
+{
+	if (PFSENSE_G(csock) != -1)
+		close(PFSENSE_G(csock));
+	if (PFSENSE_G(inets) != -1)
+		close(PFSENSE_G(inets));
+	if (PFSENSE_G(inets6) != -1)
+		close(PFSENSE_G(inets6));
+	if (PFSENSE_G(s) != -1)
+		close(PFSENSE_G(s));
+
+	return SUCCESS;
+}
+
+/* {{{ PHP_RINIT_FUNCTION */
+PHP_RINIT_FUNCTION(pfsense)
+{
+#if defined(ZTS) && defined(COMPILE_DL_PFSENSE)
+	ZEND_TSRMLS_CACHE_UPDATE();
+#endif
+
+	return SUCCESS;
+}
+/* }}} */
+
+/* {{{ PHP_MINFO_FUNCTION */
+PHP_MINFO_FUNCTION(pfsense)
+{
+	php_info_print_table_start();
+	php_info_print_table_header(2, "pfsense support", "enabled");
+	php_info_print_table_end();
+}
+/* }}} */
+
+/* {{{ pfsense_module_entry */
+zend_module_entry pfsense_module_entry = {
+	STANDARD_MODULE_HEADER,
+	"pfSense",						/* Extension name */
+	ext_functions,					/* zend_function_entry */
+	PHP_MINIT(pfsense),				/* PHP_MINIT - Module initialization */
+	PHP_MSHUTDOWN(pfsense),			/* PHP_MSHUTDOWN - Module shutdown */
+	PHP_RINIT(pfsense),				/* PHP_RINIT - Request initialization */
+	NULL,							/* PHP_RSHUTDOWN - Request shutdown */
+	PHP_MINFO(pfsense),				/* PHP_MINFO - Module info */
+	PHP_PFSENSE_VERSION,			/* Version */
+    PHP_MODULE_GLOBALS(pfSense),  	/* Module globals */
+    NULL,         		 			/* PHP_GINIT – Globals initialization */
+    NULL,                      		/* PHP_GSHUTDOWN – Globals shutdown */
+    NULL,
+    STANDARD_MODULE_PROPERTIES_EX
+};
+/* }}} */
+
+#ifdef COMPILE_DL_PFSENSE
+# ifdef ZTS
+ZEND_TSRMLS_CACHE_DEFINE()
+# endif
+ZEND_GET_MODULE(pfsense)
+#endif

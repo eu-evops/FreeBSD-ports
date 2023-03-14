@@ -1,8 +1,6 @@
-# Created by: Kubilay Kocak <koobs@FreeBSD.org>
-
 PORTNAME=	python
 DISTVERSION=	${PYTHON_DISTVERSION}
-PORTREVISION=	1
+PORTREVISION=	2
 CATEGORIES=	lang python
 MASTER_SITES=	PYTHON/ftp/python/${DISTVERSION:C/[a-z].*//}
 PKGNAMESUFFIX=	${PYTHON_SUFFIX}
@@ -10,14 +8,15 @@ DISTNAME=	Python-${DISTVERSION}
 DIST_SUBDIR=	python
 
 MAINTAINER=	python@FreeBSD.org
-COMMENT=	Interpreted object-oriented programming language (beta version)
+COMMENT=	Interpreted object-oriented programming language
+WWW=		https://www.python.org/
 
 LICENSE=	PSFL
 
 LIB_DEPENDS=	libffi.so:devel/libffi
 
-USES=		compiler:c11 cpe ncurses pathfix pkgconfig readline \
-		shebangfix ssl tar:xz
+USES=		compiler:c11 cpe ncurses pathfix pkgconfig \
+		python:${PYTHON_DISTVERSION:R},env readline shebangfix ssl tar:xz
 PATHFIX_MAKEFILEIN=	Makefile.pre.in
 USE_LDCONFIG=	yes
 GNU_CONFIGURE=	yes
@@ -26,11 +25,6 @@ SHEBANG_FILES=	Lib/*.py Lib/*/*.py Lib/*/*/*.py Lib/*/*/*/*.py
 SHEBANG_FILES+=	Lib/test/ziptestdata/exe_with_z64 \
 		Lib/test/ziptestdata/exe_with_zip \
 		Lib/test/ziptestdata/header.sh
-
-# Duplicate python.mk variables. TODO: Let lang/python?? ports use python.mk bits.
-PYTHON_VER=		${PYTHON_DISTVERSION:R}
-PYTHON_VERSION=		python${PYTHON_VER}
-PYTHON_SUFFIX=		${PYTHON_VER:S/.//g}
 
 DISABLED_EXTENSIONS=	_sqlite3 _tkinter _gdbm
 CONFIGURE_ARGS+=	--enable-shared --without-ensurepip \
@@ -53,8 +47,9 @@ PLIST_SUB=		ABI=${ABIFLAGS} \
 			XYZDOT=${DISTVERSION:C/[a-z].*//} \
 			OSMAJOR=${OSVERSION:C/([0-9]*)[0-9]{5}/\1/}		# For plat-freebsd* in pkg-plist. https://bugs.python.org/issue19554
 
-OPTIONS_DEFINE=		DEBUG IPV6 LIBMPDEC NLS PYMALLOC
+OPTIONS_DEFINE=		DEBUG IPV6 LIBMPDEC LTO NLS PYMALLOC
 OPTIONS_DEFAULT=	LIBMPDEC PYMALLOC
+OPTIONS_EXCLUDE_riscv64=	LTO
 OPTIONS_RADIO=		HASH
 OPTIONS_RADIO_HASH=	FNV SIPHASH
 OPTIONS_SUB=		yes
@@ -75,6 +70,8 @@ IPV6_CONFIGURE_ENABLE=	ipv6
 
 LIBMPDEC_CONFIGURE_ON=	--with-system-libmpdec
 LIBMPDEC_LIB_DEPENDS=	libmpdec.so:math/mpdecimal
+
+LTO_CONFIGURE_ON=	--with-lto
 
 # Use CPPFLAGS over CFLAGS due to -I ordering, causing elementtree and pyexpat
 # to break in Python 2.7, or preprocessor complaints in Python >= 3.3
@@ -121,10 +118,6 @@ PLIST_SUB+=	SUPPORTED_OPENSSL=""
 .endif
 
 post-patch:
-# disable the detection of includes and library from e2fsprogs-libuuid,
-# which introduces hidden dependency and breaks build
-	@${REINPLACE_CMD} -e 's|uuid/uuid.h|ignore_&|' ${WRKSRC}/configure
-	@${REINPLACE_CMD} -e '/find_library_file/ s|uuid|ignore_&|' ${WRKSRC}/setup.py
 # disable detection of multiarch as it breaks with clang >= 13, which adds a
 # major.minor version number in -print-multiarch output, confusing Python
 	@${REINPLACE_CMD} -e 's|^\( *MULTIARCH=\).*--print-multiarch.*|\1|' ${WRKSRC}/configure

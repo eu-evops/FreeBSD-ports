@@ -1,5 +1,3 @@
-# Created by: Nicola Vitale <nivit@FreeBSD.org>
-
 PORTNAME=	sahi
 PORTVERSION=	3.5.${SAHI_BUILD}
 PORTREVISION=	2
@@ -9,6 +7,7 @@ DISTNAME=	${PORTNAME}_${SAHI_BUILD:S,.,,g}
 
 MAINTAINER=	nivit@FreeBSD.org
 COMMENT=	Web automation and testing tool
+WWW=		http://www.sahi.co.in/w/sahi
 
 LICENSE=	APACHE20 MPL11
 LICENSE_COMB=	multi
@@ -34,11 +33,6 @@ USES=		dos2unix zip
 DOS2UNIX_GLOB=	linux.xml os.properties sahi.properties
 
 .include <bsd.port.options.mk>
-
-.if ${PORT_OPTIONS:MCHROME}
-DEPRECATED=	Uses EOL Python 2.7 via www/chromium
-EXPIRATION_DATE=2021-06-23
-.endif
 
 SAHI_BUILD=	2011.07.19
 

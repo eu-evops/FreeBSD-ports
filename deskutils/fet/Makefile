@@ -1,7 +1,5 @@
-# Created by: Leinier Cruz Salfran <salfrancl@yahoo.es>
-
 PORTNAME=	fet
-DISTVERSION=	6.2.0
+DISTVERSION=	6.8.3
 CATEGORIES=	deskutils education
 MASTER_SITES=	https://lalescu.ro/liviu/fet/download/ \
 		https://lalescu.ro/liviu/fet/download/old/ \
@@ -10,13 +8,14 @@ MASTER_SITES=	https://lalescu.ro/liviu/fet/download/ \
 
 MAINTAINER=	uzsolt@uzsolt.hu
 COMMENT=	Free timetabling software
+WWW=		https://lalescu.ro/liviu/fet/
 
 LICENSE=	GPLv3+
 LICENSE_FILE=	${WRKSRC}/COPYING
 
 USES=		compiler:c++14-lang gl qmake qt:5 tar:bzip2
 USE_GL=		gl
-USE_QT=		core printsupport widgets buildtools_build
+USE_QT=		core printsupport widgets buildtools:build
 
 INSTALL_TARGET=	${WRKSRC}/fet-cl
 

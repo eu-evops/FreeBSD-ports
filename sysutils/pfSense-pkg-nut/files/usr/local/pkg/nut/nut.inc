@@ -3,7 +3,7 @@
  * nut.inc
  *
  * part of pfSense (https://www.pfsense.org)
- * Copyright (c) 2004-2022 Rubicon Communications, LLC (Netgate)
+ * Copyright (c) 2004-2023 Rubicon Communications, LLC (Netgate)
  * Copyright (c) 2016-2017 Denny Page
  * All rights reserved.
  *
@@ -130,8 +130,8 @@ function nut_sync_config() {
 		stop_service('nut');
 	}
  
-	$nut_config = &$config['installedpackages']['nut']['config'][0];
-	if (isset($nut_config['type'])) {
+	$nut_config = config_get_path('installedpackages/nut/config/0', []);
+	if (!empty($nut_config) && isset($nut_config['type'])) {
 		$type = $nut_config['type'];
 	} else {
 		$type = 'disabled';
@@ -303,8 +303,8 @@ function nut_ups_status()
 	global $config;
 	$status = array();
 
-	$nut_config = &$config['installedpackages']['nut']['config'][0];
-	if (isset($nut_config['type'])) {
+	$nut_config = config_get_path('installedpackages/nut/config/0', []);
+	if (!empty($nut_config) && isset($nut_config['type'])) {
 		$type = $nut_config['type'];
 	} else {
 		$type = 'disabled';
@@ -446,22 +446,6 @@ function nut_ups_status()
 	}
 
 	return $status;
-}
-
-
-function nut_install_command() {
-	global $config;
-
-	/* Remove obsolete menu entry */
-	$menus =& $config['installedpackages']['menu'];
-	if (is_array($config['installedpackages']['menu'])) {
-		foreach ($menus as $key => $menu) {
-			if ($menu['name'] == 'NUT') {
-				unset($menus[$key]);
-				break;
-			}
-		}
-	}
 }
 
 

@@ -1,13 +1,11 @@
-# Created by: TAKATSU Tomonari <tota@FreeBSD.org>
-
 PORTNAME=	strucchange
-DISTVERSION=	1.5-2
-PORTREVISION=	1
+DISTVERSION=	1.5-3
 CATEGORIES=	finance
 DISTNAME=	${PORTNAME}_${DISTVERSION}
 
 MAINTAINER=	tota@FreeBSD.org
 COMMENT=	Testing, Monitoring, and Dating Structural Changes
+WWW=		https://cran.r-project.org/web/packages/strucchange/
 
 LICENSE=	GPLv2+
 

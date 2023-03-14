@@ -1,16 +1,15 @@
 PORTNAME=	gleam
 DISTVERSIONPREFIX=	v
-DISTVERSION=	0.17.0
-PORTREVISION=	2
+DISTVERSION=	0.25.3
+PORTREVISION?=	1
 CATEGORIES=	lang
 
 MAINTAINER=	dch@FreeBSD.org
 COMMENT=	ML-flavoured type-safe language using Erlang's BEAM runtime
+WWW=		https://gleam.run/
 
 LICENSE=	APACHE20
 LICENSE_FILE=	${WRKSRC}/compiler-core/LICENCE
-
-RUN_DEPENDS=	rebar3:devel/rebar3
 
 USES=		cargo ssl
 USE_GITHUB=	yes
@@ -20,24 +19,38 @@ GH_ACCOUNT=	gleam-lang
 
 RUSTFLAGS+=	--cap-lints=warn
 
+PORTSCOUT=	limit:[0-9.]+
+
 PLIST_FILES=	bin/gleam
 
 PORTDOCS=	README.md
 
 OPTIONS_DEFINE=	DOCS
 
+PORTSCOUT=	limit:[0-9.]+
+
 do-build:
-	(cd ${WRKSRC} && cargo build --release)
-	(cd ${WRKSRC}/compiler-cli && cargo install --path . --force --locked)
+	(cd ${WRKSRC} && \
+		cargo build --release)
+	(cd ${WRKSRC}/compiler-cli && \
+		env HOME=${WRKDIR} cargo install --path . --force --locked)
 
 do-install:
 	${MKDIR} ${STAGEDIR}${PREFIX}/bin/
-	${MV} ${WRKSRC}/target/release/gleam ${STAGEDIR}${PREFIX}/bin/
+	${MV} ${WRKSRC}/target/release/gleam \
+		${STAGEDIR}${PREFIX}/bin/
 
 post-install:
 	@${STRIP_CMD} ${STAGEDIR}${PREFIX}/bin/gleam
 
 post-install-DOCS-on:
-	(cd ${WRKSRC} && ${COPYTREE_SHARE} README.md ${STAGEDIR}${DOCSDIR})
+	(cd ${WRKSRC} && \
+		${COPYTREE_SHARE} README.md ${STAGEDIR}${DOCSDIR})
+
+do-test:
+	(cd ${WRKSRC} && \
+		gleam new hello && \
+		cd hello && \
+		gleam test)
 
 .include <bsd.port.mk>

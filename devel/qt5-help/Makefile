@@ -1,6 +1,5 @@
 PORTNAME=	help
-DISTVERSION=	${QT5_VERSION}
-PORTREVISION=	1
+PORTVERSION=	${QT5_VERSION}${QT5_KDE_PATCH}
 CATEGORIES=	devel
 PKGNAMEPREFIX=	qt5-
 
@@ -9,7 +8,7 @@ COMMENT=	Qt online help integration module
 
 USES=		compiler:c++11-lang qmake qt-dist:5,tools
 USE_QT=		core gui network sql widgets \
-		buildtools_build sql-sqlite3_run
+		buildtools:build sql-sqlite3:run
 
 QT_BINARIES=	yes
 

@@ -1,5 +1,3 @@
-# Created by: kmoore@FreeBSD.org
-
 PORTNAME=	grub2-efi
 PORTVERSION=	2.02
 PORTREVISION=	20
@@ -9,6 +7,7 @@ DISTNAME=	grub-${PORTVERSION}_7
 
 MAINTAINER=	kevlo@FreeBSD.org
 COMMENT=	Multiboot EFI boot loader
+WWW=		https://www.gnu.org/software/grub/
 
 LICENSE=	GPLv3
 

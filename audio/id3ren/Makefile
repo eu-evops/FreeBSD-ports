@@ -1,13 +1,15 @@
-# Created by: Joao Carlos Mendes Luis <jonny@jonny.eng.br>
-
 PORTNAME=	id3ren
 PORTVERSION=	1.1b0
 CATEGORIES=	audio
 
 MAINTAINER=	crees@FreeBSD.org
 COMMENT=	Rename MP3 files, edit tags, search, etc
+WWW=		https://github.com/sebcode/id3ren
 
 LICENSE=	GPLv2
+
+DEPRECATED=	Abandonware and obsolete, doesn't support ID3v2 tagging
+EXPIRATION_DATE=2023-03-31
 
 USE_GITHUB=	yes
 GH_ACCOUNT=	sebcode

@@ -1,11 +1,12 @@
 PORTNAME=	permutation
 DISTVERSION=	0.3.1
 CATEGORIES=	math python
-MASTER_SITES=	CHEESESHOP
+MASTER_SITES=	PYPI
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
 
 MAINTAINER=	yuri@FreeBSD.org
 COMMENT=	Permutations of finitely many positive integers
+WWW=		https://github.com/jwodder/permutation
 
 LICENSE=	MIT
 LICENSE_FILE=	${WRKSRC}/LICENSE

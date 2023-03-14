@@ -5,10 +5,12 @@ CATEGORIES=	print
 
 MAINTAINER=	hrs@FreeBSD.org
 COMMENT=	LaTeX class to create a beamer presentation
+WWW=		https://github.com/josephwright/beamer
 
 LICENSE=	GPLv2 LPPL13c
 LICENSE_COMB=	dual
 
+USES=	tex
 USE_TEX=	texmf latex texhash texlua
 USE_GITHUB=	yes
 GH_ACCOUNT=	josephwright

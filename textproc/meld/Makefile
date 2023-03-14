@@ -1,13 +1,13 @@
-# Created by: Pav Lucistnik <pav@oook.cz>
-
 PORTNAME=	meld
 PORTVERSION=	3.20.4
+PORTREVISION=	1
 PORTEPOCH=	1
 CATEGORIES=	textproc devel python
 MASTER_SITES=	GNOME
 
 MAINTAINER=	gnome@FreeBSD.org
 COMMENT=	GNOME visual diff and merge tool
+WWW=		https://meldmerge.org/
 
 LICENSE=	GPLv2
 LICENSE_FILE=	${WRKSRC}/COPYING

@@ -1,5 +1,3 @@
-# Created by: Aaron Dalton <aaron@FreeBSD.org>
-
 PORTNAME=	CAD-Drawing
 PORTVERSION=	0.26
 PORTREVISION=	10
@@ -9,6 +7,7 @@ PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	perl@FreeBSD.org
 COMMENT=	Methods to create, load, and save vector graphics
+WWW=		https://metacpan.org/release/CAD-Drawing
 
 LICENSE=	ART10 GPLv1+
 LICENSE_COMB=	dual
@@ -18,10 +17,9 @@ RUN_DEPENDS=	p5-CAD-Calc>=0:math/p5-CAD-Calc \
 		p5-Math-Geometry-Planar>=0:math/p5-Math-Geometry-Planar \
 		p5-Math-MatrixReal>=0:math/p5-Math-MatrixReal \
 		p5-Math-Vec>=0:math/p5-Math-Vec \
-		p5-Stream>=0:devel/p5-Stream \
-		convert:graphics/ImageMagick6
+		p5-Stream>=0:devel/p5-Stream
 
-USES=		perl5
+USES=		magick:6,run perl5
 USE_PERL5=	modbuild
 
 .include <bsd.port.mk>

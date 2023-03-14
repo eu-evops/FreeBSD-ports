@@ -1,7 +1,5 @@
-# Created by: James FitzGibbon <jfitz@FreeBSD.org>
-
 PORTNAME=	libwww
-PORTVERSION=	6.58
+PORTVERSION=	6.67
 DISTVERSIONPREFIX=	perl-
 CATEGORIES=	www devel perl5
 MASTER_SITES=	CPAN
@@ -10,6 +8,7 @@ PKGNAMEPREFIX=	p5-
 
 MAINTAINER=	sunpoet@FreeBSD.org
 COMMENT=	Perl5 library for WWW access
+WWW=		https://metacpan.org/release/libwww-perl
 
 LICENSE=	ART10 GPLv1+
 LICENSE_COMB=	dual

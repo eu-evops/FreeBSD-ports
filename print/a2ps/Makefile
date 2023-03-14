@@ -1,13 +1,12 @@
-# Created by: Chuck Robey <chuckr@FreeBSD.org>
-
 PORTNAME=	a2ps
 PORTVERSION=	4.13b
-PORTREVISION=	14
+PORTREVISION=	18
 CATEGORIES=	print
 MASTER_SITES=	GNU LOCAL/hrs/a2ps/:i18n
 
 MAINTAINER=	dinoex@FreeBSD.org
 COMMENT=	Formats an ASCII file for printing on a postscript printer
+WWW=		https://www.gnu.org/software/a2ps/
 
 LICENSE=	GPLv2
 
@@ -23,6 +22,11 @@ INFO=		a2ps ogonkify regex
 WRKSRC=		${WRKDIR}/${PORTNAME}-4.13
 I18N_PACKAGE=	i18n-fonts-0.1
 CPE_VENDOR=	gnu
+# CVE-2015-8107 fixed in files/patch-output.c
+# CVE-2014-0466 fixed in files/patch-fixps.in
+# CVE-2004-1377 fixed in files/patch-fixps.in files/patch-contrib-tmpdircreation
+# CVE-2004-1170 fixed in files/patch-select.c
+# CVE-2001-1593 fixed in files/patch-routines.[hc]
 
 CONFIGURE_ARGS=	--with-medium=libpaper --sharedstatedir=${PREFIX}/share \
 	--sysconfdir=${PREFIX}/etc --datadir=${PREFIX}/share \

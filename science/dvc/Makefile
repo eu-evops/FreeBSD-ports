@@ -2,10 +2,11 @@ PORTNAME=	dvc
 DISTVERSION=	0.30.1
 PORTREVISION=	3
 CATEGORIES=	science python
-MASTER_SITES=	CHEESESHOP
+MASTER_SITES=	PYPI
 
 MAINTAINER=	yuri@FreeBSD.org
 COMMENT=	Git for data scientists: manage code and data together
+WWW=		https://dvc.org/
 
 LICENSE=	APACHE20
 

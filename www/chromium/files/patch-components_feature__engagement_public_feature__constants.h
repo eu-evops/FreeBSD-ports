@@ -1,29 +1,21 @@
---- components/feature_engagement/public/feature_constants.h.orig	2021-09-24 04:26:03 UTC
+--- components/feature_engagement/public/feature_constants.h.orig	2023-02-08 09:03:45 UTC
 +++ components/feature_engagement/public/feature_constants.h
-@@ -19,7 +19,7 @@ extern const base::Feature kIPHSnooze;
- // A feature to ensure all arrays can contain at least one feature.
- extern const base::Feature kIPHDummyFeature;
+@@ -32,7 +32,7 @@ BASE_DECLARE_FEATURE(kIPHDummyFeature);
+ BASE_DECLARE_FEATURE(kEnableIPH);
  
--#if defined(OS_WIN) || defined(OS_APPLE) || defined(OS_LINUX) || \
-+#if defined(OS_WIN) || defined(OS_APPLE) || defined(OS_LINUX) || defined(OS_BSD) || \
-     defined(OS_CHROMEOS) || defined(OS_FUCHSIA)
- extern const base::Feature kIPHDesktopTabGroupsNewGroupFeature;
- extern const base::Feature kIPHFocusModeFeature;
-@@ -35,7 +35,7 @@ extern const base::Feature kIPHDesktopSnoozeFeature;
- extern const base::Feature kIPHDesktopPwaInstallFeature;
- extern const base::Feature kIPHProfileSwitchFeature;
- extern const base::Feature kIPHUpdatedConnectionSecurityIndicatorsFeature;
--#endif  // defined(OS_WIN) || defined(OS_APPLE) || defined(OS_LINUX) ||
-+#endif  // defined(OS_WIN) || defined(OS_APPLE) || defined(OS_LINUX) || defined(OS_BSD) ||
-         // defined(OS_CHROMEOS) || defined(OS_FUCHSIA)
+ #if BUILDFLAG(IS_WIN) || BUILDFLAG(IS_APPLE) || BUILDFLAG(IS_LINUX) || \
+-    BUILDFLAG(IS_CHROMEOS) || BUILDFLAG(IS_FUCHSIA)
++    BUILDFLAG(IS_CHROMEOS) || BUILDFLAG(IS_FUCHSIA) || BUILDFLAG(IS_BSD)
+ BASE_DECLARE_FEATURE(kIPHBatterySaverModeFeature);
+ BASE_DECLARE_FEATURE(kIPHDesktopSharedHighlightingFeature);
+ BASE_DECLARE_FEATURE(kIPHDesktopTabGroupsNewGroupFeature);
+@@ -185,7 +185,8 @@ BASE_DECLARE_FEATURE(kIPHPriceNotificationsWhileBrowsi
+ #endif  // BUILDFLAG(IS_IOS)
  
- // All the features declared for Android below that are also used in Java,
-@@ -126,7 +126,7 @@ extern const base::Feature kIPHBadgedTranslateManualTr
- extern const base::Feature kIPHDiscoverFeedHeaderFeature;
- #endif  // defined(OS_IOS)
- 
--#if defined(OS_WIN) || defined(OS_APPLE) || defined(OS_LINUX) || \
-+#if defined(OS_WIN) || defined(OS_APPLE) || defined(OS_LINUX) || defined(OS_BSD) || \
-     defined(OS_CHROMEOS) || defined(OS_ANDROID) || defined(OS_FUCHSIA)
- extern const base::Feature kIPHUpdatedConnectionSecurityIndicatorsFeature;
- #endif
+ #if BUILDFLAG(IS_WIN) || BUILDFLAG(IS_APPLE) || BUILDFLAG(IS_LINUX) || \
+-    BUILDFLAG(IS_CHROMEOS) || BUILDFLAG(IS_ANDROID) || BUILDFLAG(IS_FUCHSIA)
++    BUILDFLAG(IS_CHROMEOS) || BUILDFLAG(IS_ANDROID) || BUILDFLAG(IS_FUCHSIA) || \
++    BUILDFLAG(IS_BSD)
+ BASE_DECLARE_FEATURE(kIPHAutofillVirtualCardSuggestionFeature);
+ #endif  // BUILDFLAG(IS_WIN) || BUILDFLAG(IS_APPLE) || BUILDFLAG(IS_LINUX) ||
+         // BUILDFLAG(IS_CHROMEOS) || BUILDFLAG(IS_ANDROID) ||

@@ -3,7 +3,7 @@
  * apcupsd_status.php
  *
  * part of pfSense (https://www.pfsense.org)
- * Copyright (c) 2015-2022 Rubicon Communications, LLC (Netgate)
+ * Copyright (c) 2015-2023 Rubicon Communications, LLC (Netgate)
  * Copyright (c) 2013-2016 Danilo G. Baio <dbaio@bsd.com.br>
  * All rights reserved.
  *
@@ -23,7 +23,9 @@
 require("guiconfig.inc");
 require_once("/usr/local/pkg/apcupsd.inc");
 
-$pgtitle = array(gettext("Package"), gettext("Services: Apcupsd"), gettext("Status"));
+$shortcut_section = 'apcupsd';
+
+$pgtitle = array(gettext('Status'), gettext('Apcupsd'));
 include("head.inc");
 
 function puts($arg) {

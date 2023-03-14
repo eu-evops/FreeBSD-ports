@@ -1,14 +1,11 @@
-# Created by: rooneg@electricjellyfish.net
-
-PORTREVISION=	0
+PORTREVISION=	3
 PKGNAMESUFFIX=	-lts
 
 MAINTAINER=	lev@FreeBSD.org
 COMMENT=	Version control system, long-time-support version
+WWW=		https://subversion.apache.org/
 
-CONFLICTS_INSTALL=	subversion-1.[0-9].[0-9]* \
-			subversion-1.1[0-9].[0-9]* \
-			subversion1[0-9]-1.[0-9].[0-9]*
+CONFLICTS_INSTALL=	subversion
 
 USE_RC_SUBR=	svnserve
 
@@ -27,7 +24,7 @@ OPTIONS_DEFINE=	\
 		TEST		\
 		TOOLS
 
-OPTIONS_DEFAULT=FREEBSD_TEMPLATE SERF TOOLS
+OPTIONS_DEFAULT=SERF TOOLS
 
 FREEBSD_TEMPLATE_DESC=	FreeBSD Project log template
 GPG_AGENT_DESC=		Enable GPG agent password store
@@ -59,9 +56,11 @@ CONFIGURE_ARGS+=	--without-gnome-keyring \
 .if ${PORT_OPTIONS:MSVNSERVE_WRAPPER}
 SUB_LIST+=	SVNSERVE_BIN_EXT=".bin"
 PLIST_SUB+=	NO_SVNSERVE_WRAPPER="@comment "
+SVNSERVE_EXT=	.bin
 .else
 SUB_LIST+=	SVNSERVE_BIN_EXT=""
 PLIST_SUB+=	NO_SVNSERVE_WRAPPER=""
+SVNSERVE_EXT=
 .endif
 
 .if ${PORT_OPTIONS:MTEST}
@@ -134,6 +133,14 @@ LIBS+=		${LIBS_SQLITE3}
 LIBS+=		-lc++ -lm
 .endif
 
+BINS_TO_STRIP= svn svnadmin svnbench svndumpfilter svnfsfs svnlook svnmucc \
+		svnrdump svnserve${SVNSERVE_EXT} svnsync svnversion
+
+TOOLS_TO_STRIP=	fsfs-access-map svn-mergeinfo-normalizer \
+		 svn-populate-node-origins-index svnauthz \
+		 svnauthz-validate svnconflict svndiff svndiff3 \
+		 svndiff4 svnmover svnraisetreeconflict x509-parser
+
 post-configure:
 # Enable GNOME Keyring / KWallet support in main code, as it is harmless
 	@${REINPLACE_CMD} -E 's%.*#undef SVN_HAVE_(GNOME_KEYRING|KWALLET).*%#define SVN_HAVE_\1 1%' ${WRKSRC}/subversion/svn_private_config.h
@@ -151,7 +158,9 @@ post-build-TOOLS-on:
 	@${MAKE} -C ${WRKSRC} tools ${MAKE_ARGS}
 
 post-install:	${MKREPOS_TARGET}
-	-@${STRIP_CMD} ${STAGEDIR}${PREFIX}/bin/*
+	for F in ${BINS_TO_STRIP} ; do \
+	 ${STRIP_CMD} "${STAGEDIR}${PREFIX}/bin/$${F}" ; \
+	done
 	@${MKDIR} ${STAGEDIR}${DATADIR}
 	(cd ${WRKSRC}/tools.examples && ${TAR} --exclude '*.in' -cf - * | ${TAR} -C ${STAGEDIR}${DATADIR} -xof - )
 	@${MKDIR} ${STAGEDIR}${DOCSDIR}
@@ -165,7 +174,9 @@ post-install-SVNSERVE_WRAPPER-on:
 
 post-install-TOOLS-on:
 	@${MAKE} -C ${WRKSRC} install-tools ${MAKE_ARGS}
-	-@${STRIP_CMD} ${STAGEDIR}${PREFIX}/bin/*
+	for F in ${TOOLS_TO_STRIP} ; do \
+	 ${STRIP_CMD} "${STAGEDIR}${PREFIX}/bin/$${F}" ; \
+	done
 
 # ===============================================================================
 repository:	_mkrepos

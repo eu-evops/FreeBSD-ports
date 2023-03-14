@@ -1,12 +1,11 @@
-# Created by: TAKATSU Tomonari <tota@FreeBSD.org>
-
 PORTNAME=	quantmod
-DISTVERSION=	0.4.18
+DISTVERSION=	0.4.20
 CATEGORIES=	finance
 DISTNAME=	${PORTNAME}_${DISTVERSION}
 
 MAINTAINER=	tota@FreeBSD.org
 COMMENT=	Quantitative Financial Modelling and Trading Framework for R
+WWW=		https://www.quantmod.com/
 
 LICENSE=	GPLv3
 

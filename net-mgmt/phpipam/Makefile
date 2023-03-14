@@ -1,20 +1,20 @@
-# Created by: Jake Smith <jake@xz.cx>
-
 PORTNAME=	phpipam
-PORTVERSION=	1.4.4
+DISTVERSION=	1.5.0
 CATEGORIES=	net-mgmt
 
 MAINTAINER=	jake@xz.cx
 COMMENT=	PHP IP Address Management IPv4/IPv6
+WWW=		https://phpipam.net/
 
 LICENSE=	GPLv3
 
 RUN_DEPENDS=	${LOCALBASE}/share/pear/System.php:devel/pear@${PHP_FLAVOR}
 
 USES=		cpe gettext php:web tar:
+IGNORE_WITH_PHP=	82
 
 USE_GITHUB=	yes
-GH_TAGNAME=	a14bc06
+GH_TAGNAME=	f8c651d
 
 USE_PHP=	ctype curl dom filter gd gettext gmp iconv json mbstring mcrypt \
 		openssl pcntl pdo pdo_mysql posix session simplexml sockets

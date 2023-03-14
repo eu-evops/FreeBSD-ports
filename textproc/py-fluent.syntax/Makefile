@@ -1,13 +1,12 @@
-# Created by: Po-Chuan Hsieh <sunpoet@FreeBSD.org>
-
 PORTNAME=	fluent.syntax
 PORTVERSION=	0.18.1
 CATEGORIES=	textproc python
-MASTER_SITES=	CHEESESHOP
+MASTER_SITES=	PYPI
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
 
 MAINTAINER=	sunpoet@FreeBSD.org
 COMMENT=	Localization library for expressive translations
+WWW=		https://github.com/projectfluent/python-fluent/tree/master/fluent.syntax
 
 LICENSE=	APACHE20
 

@@ -1,5 +1,3 @@
-# Created by: Philip Paeps <philip@paeps.cx>
-
 PORTNAME=	crip
 PORTVERSION=	3.9
 PORTREVISION=	1
@@ -8,6 +6,10 @@ MASTER_SITES=	http://bach.dynet.com/crip/src/
 
 MAINTAINER=	philip@FreeBSD.org
 COMMENT=	Terminal-based ripper/encoder/tagger
+WWW=		http://bach.dynet.com/crip/
+
+DEPRECATED=	Abandonware, last release in 2007. Please consider using audio/cyanrip or audio/abcde
+EXPIRATION_DATE=2023-03-31
 
 OPTIONS_DEFINE=	SOX DOCS
 SOX_DESC=	SoX audio support

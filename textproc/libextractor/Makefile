@@ -1,12 +1,12 @@
-# Created by: Kevin Lo <kevlo@FreeBSD.org>
-
 PORTNAME=	libextractor
 PORTVERSION=	1.11
+PORTREVISION=	4
 CATEGORIES=	textproc
 MASTER_SITES=	GNU
 
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Library for keyword extraction
+WWW=		https://www.gnu.org/software/libextractor/
 
 LICENSE=	GPLv3
 LICENSE_FILE=	${WRKSRC}/COPYING
@@ -21,6 +21,8 @@ CPE_VENDOR=	gnu
 
 USE_GNOME=	gtk20 gdkpixbuf2
 USE_LDCONFIG=	yes
+
+CONFLICTS_INSTALL=	csound outguess # bin/extract
 
 GNU_CONFIGURE=	yes
 CONFIGURE_ARGS=	--with-gtk-version=2 \
@@ -56,7 +58,7 @@ GIF_LIB_DEPENDS=	libgif.so:graphics/giflib
 GIF_CONFIGURE_ENV_OFF=	ac_cv_lib_gif_DGifOpen=no
 GSF_USE=		gnome=libgsf
 GSF_CONFIGURE_ENV_OFF=	ac_cv_lib_gsf_1_gsf_init=no
-GSTREAMER_USE=		gstreamer1=yes
+GSTREAMER_USES=		gstreamer
 GSTREAMER_CONFIGURE_WITH=	gstreamer
 MP4_LIB_DEPENDS=	libmp4v2.so:multimedia/mp4v2
 MP4_CONFIGURE_ENV_OFF=	ac_cv_lib_mp4v2_MP4ReadProvider=no

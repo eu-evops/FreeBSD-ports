@@ -1,5 +1,3 @@
-# Created by: Mateusz Piotrowski <0mp@FreeBSD.org>
-
 PORTNAME=	meh
 DISTVERSIONPREFIX=	v
 DISTVERSION=	0.3-27
@@ -8,15 +6,15 @@ CATEGORIES=	graphics
 
 MAINTAINER=	0mp@FreeBSD.org
 COMMENT=	Simple image viewer using raw XLib convert from ImageMagick
+WWW=		https://www.johnhawthorn.com/meh/
 
 LICENSE=	MIT
 LICENSE_FILE=	${WRKSRC}/COPYING
 
 LIB_DEPENDS=	libgif.so:graphics/giflib \
 		libpng.so:graphics/png
-RUN_DEPENDS=	convert:graphics/ImageMagick7
 
-USES=		gmake jpeg localbase xorg
+USES=		gmake jpeg localbase magick:7,run xorg
 USE_GITHUB=	yes
 GH_ACCOUNT=	jhawthorn
 USE_XORG=	x11 xext

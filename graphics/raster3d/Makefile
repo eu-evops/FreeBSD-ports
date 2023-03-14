@@ -1,5 +1,3 @@
-# Created by: Shaun Amott <shaun@inerd.com>
-
 PORTNAME=	raster3d
 DISTVERSION=	3.0.7
 CATEGORIES=	graphics biology
@@ -8,6 +6,7 @@ DISTNAME=	Raster3D_${DISTVERSION:R}-${DISTVERSION:E}
 
 MAINTAINER=	yuri@FreeBSD.org
 COMMENT=	Set of tools for generating raster images of proteins and molecules
+WWW=		http://skuld.bmsc.washington.edu/raster3d/
 
 LICENSE=	ART20
 
@@ -30,7 +29,7 @@ OPTIONS_DEFINE=	IMAGEMAGICK DOCS EXAMPLES
 OPTIONS_DEFAULT=IMAGEMAGICK
 OPTIONS_SUB=		yes
 
-IMAGEMAGICK_RUN_DEPENDS=	convert:graphics/ImageMagick6
+IMAGEMAGICK_USES=	magick:6,run
 
 .include <bsd.port.options.mk>
 

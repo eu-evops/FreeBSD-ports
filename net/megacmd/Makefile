@@ -1,10 +1,12 @@
 PORTNAME=	megacmd
-DISTVERSION=	1.4.1
-DISTVERSIONSUFFIX=	_Win
+DISTVERSION=	1.5.0
+PORTREVISION=	1
+DISTVERSIONSUFFIX=	_Linux
 CATEGORIES=	net
 
-MAINTAINER=	menelkir@itroll.org
+MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Command Line Interactive and Scriptable Application to access MEGA
+WWW=		https://mega.nz/cm
 
 LICENSE=	GPLv3 BSD2CLAUSE
 LICENSE_COMB=	multi
@@ -19,7 +21,7 @@ USE_GITHUB=	yes
 GH_ACCOUNT=	meganz
 GH_PROJECT=	MEGAcmd sdk:sdk
 GH_SUBDIR=	sdk:sdk
-GH_TAGNAME=	v3.7.3c:sdk
+GH_TAGNAME=	v3.9.11a:sdk
 
 USE_LDCONFIG=	yes
 
@@ -95,7 +97,5 @@ CONFIGURE_ARGS=	--disable-examples \
 		--with-zlib --with-readline=${LOCALBASE}
 
 INSTALL_TARGET=	install-strip
-
-CXXFLAGS+=	`pkgconf --cflags-only-other libcryptopp`
 
 .include <bsd.port.mk>

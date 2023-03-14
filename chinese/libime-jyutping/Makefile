@@ -1,7 +1,6 @@
-# Created by: Ka Ho Ng <khng300@gmail.com>
-
 PORTNAME=	libime-jyutping
 DISTVERSION=	1.0.3
+PORTREVISION=	3
 CATEGORIES=	chinese textproc
 MASTER_SITES=	https://download.fcitx-im.org/data/:dict,model
 DISTFILES=	${DICT_TAR}:dict \
@@ -11,6 +10,7 @@ EXTRACT_ONLY=	${DISTNAME}${EXTRACT_SUFX}
 
 MAINTAINER=	khng@FreeBSD.org
 COMMENT=	Library to support Jyutping through libime
+WWW=		https://github.com/fcitx/libime-jyutping
 
 LICENSE=	LGPL21+ GPLv3+
 LICENSE_COMB=	multi

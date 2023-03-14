@@ -1,11 +1,12 @@
 PORTNAME=	qspin
 DISTVERSION=	2.3.2
 CATEGORIES=	science education
-MASTER_SITES=	CHEESESHOP
+MASTER_SITES=	PYPI
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
 
 MAINTAINER=	yuri@FreeBSD.org
 COMMENT=	Learn quantum spin and entanglement
+WWW=		https://bitbucket.org/donald_gavel/qspin
 
 LICENSE=	MIT
 

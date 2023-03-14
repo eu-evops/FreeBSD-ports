@@ -7,6 +7,7 @@ PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
 
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Framework for performance analysis
+WWW=		https://github.com/linkedin/naarad
 
 LICENSE=	APACHE20
 LICENSE_FILE=	${WRKSRC}/LICENSE
@@ -25,5 +26,7 @@ SHEBANG_FILES=	bin/naarad_metric_collector.sh bin/PrintGCStats
 USE_PYTHON=	autoplist concurrent distutils
 USE_GITHUB=	yes
 GH_ACCOUNT=	linkedin
+
+NO_ARCH=	yes
 
 .include <bsd.port.mk>

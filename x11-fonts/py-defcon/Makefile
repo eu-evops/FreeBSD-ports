@@ -2,11 +2,12 @@ PORTNAME=	defcon
 PORTVERSION=	0.6.0
 PORTREVISION=	3
 CATEGORIES=	x11-fonts python
-MASTER_SITES=	CHEESESHOP
+MASTER_SITES=	PYPI
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
 
 MAINTAINER=	lantw44@gmail.com
 COMMENT=	Set of flexible objects for representing UFO data
+WWW=		https://github.com/typesupply/defcon
 
 LICENSE=	MIT
 LICENSE_FILE=	${WRKSRC}/License.txt

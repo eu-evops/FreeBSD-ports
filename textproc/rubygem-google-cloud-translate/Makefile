@@ -1,12 +1,11 @@
-# Created by: Po-Chuan Hsieh <sunpoet@FreeBSD.org>
-
 PORTNAME=	google-cloud-translate
-PORTVERSION=	3.2.2
+PORTVERSION=	3.3.0
 CATEGORIES=	textproc rubygems
 MASTER_SITES=	RG
 
 MAINTAINER=	sunpoet@FreeBSD.org
 COMMENT=	Ruby Client for the Cloud Translation API
+WWW=		https://github.com/googleapis/google-cloud-ruby/tree/main/google-cloud-translate
 
 LICENSE=	APACHE20
 LICENSE_FILE=	${WRKSRC}/LICENSE.md
@@ -16,7 +15,6 @@ RUN_DEPENDS=	rubygem-google-cloud-core>=1.6<2:net/rubygem-google-cloud-core \
 		rubygem-google-cloud-translate-v3>=0.0<2.0:textproc/rubygem-google-cloud-translate-v3
 
 USES=		gem
-USE_RUBY=	yes
 
 NO_ARCH=	yes
 

@@ -1,21 +1,22 @@
 PORTNAME=	dooble
-DISTVERSION=	2021.08.30
+DISTVERSION=	2023.02.25
 CATEGORIES=	www
 
 MAINTAINER=	eric@camachat.org
 COMMENT=	Dooble Web Browser
+WWW=		https://textbrowser.github.io/dooble/
 
 LICENSE=	BSD3CLAUSE
 LICENSE_FILE=	${WRKSRC}/LICENSE
 
-USES=		compiler:c++17-lang desktop-file-utils gmake qmake qt:5 ssl tar \
-		xorg
-
+USES=		compiler:c++17-lang desktop-file-utils gl gmake qmake qt:5 ssl \
+		tar xorg
 USE_GITHUB=	yes
 GH_ACCOUNT=	textbrowser
-
-USE_QT=		concurrent core gui network printsupport sql webengine widgets \
-		xml buildtools_build qmake_build
+USE_GL=		gl
+USE_QT=		concurrent core declarative gui location network printsupport \
+		sql webchannel webengine widgets xml sql-sqlite3:run \
+		buildtools:build qmake:build
 USE_XORG=	xcb
 
 QMAKE_SOURCE_PATH=	${PORTNAME}.pro

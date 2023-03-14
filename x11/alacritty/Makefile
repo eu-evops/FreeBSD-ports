@@ -1,11 +1,12 @@
 PORTNAME=	alacritty
 DISTVERSIONPREFIX=	v
-DISTVERSION=	0.9.0
-PORTREVISION=	4
-CATEGORIES=	x11
+DISTVERSION=	0.11.0
+PORTREVISION=	5
+CATEGORIES=	x11 wayland
 
 MAINTAINER=	mikael@FreeBSD.org
 COMMENT=	GPU-accelerated terminal emulator
+WWW=		https://github.com/jwilm/alacritty
 
 LICENSE=	APACHE20
 LICENSE_FILE=	${WRKSRC}/LICENSE-APACHE
@@ -18,198 +19,219 @@ TEST_DEPENDS=	dejavu>0:x11-fonts/dejavu
 USES=		cargo localbase:ldflags python:3.6+,build ssl:build
 USE_GITHUB=	yes
 
-CARGO_CRATES=	ab_glyph_rasterizer-0.1.4 \
-		adler32-1.2.0 \
-		andrew-0.3.1 \
-		android_glue-0.2.3 \
-		ansi_term-0.11.0 \
+CARGO_CRATES=	adler-1.0.2 \
+		arrayref-0.3.6 \
+		arrayvec-0.5.2 \
 		atty-0.2.14 \
-		autocfg-1.0.1 \
+		autocfg-1.1.0 \
 		base64-0.13.0 \
-		bitflags-1.2.1 \
+		bitflags-1.3.2 \
 		block-0.1.6 \
-		calloop-0.6.5 \
-		cc-1.0.69 \
+		bumpalo-3.11.0 \
+		bytemuck-1.12.1 \
+		calloop-0.10.1 \
+		cc-1.0.73 \
 		cfg-if-0.1.10 \
 		cfg-if-1.0.0 \
 		cgl-0.3.2 \
-		clap-2.33.3 \
+		clap-3.2.21 \
+		clap_complete-3.2.5 \
+		clap_derive-3.2.18 \
+		clap_lex-0.2.4 \
 		clipboard-win-3.1.1 \
-		cmake-0.1.45 \
-		cocoa-0.23.0 \
+		cmake-0.1.48 \
 		cocoa-0.24.0 \
 		cocoa-foundation-0.1.0 \
-		copypasta-0.7.1 \
-		core-foundation-0.7.0 \
-		core-foundation-0.9.1 \
-		core-foundation-sys-0.7.0 \
-		core-foundation-sys-0.8.2 \
-		core-graphics-0.19.2 \
-		core-graphics-0.22.2 \
+		copypasta-0.8.1 \
+		core-foundation-0.9.3 \
+		core-foundation-sys-0.8.3 \
+		core-graphics-0.22.3 \
 		core-graphics-types-0.1.1 \
 		core-text-19.2.0 \
-		core-video-sys-0.1.4 \
-		crc32fast-1.2.1 \
-		crossfont-0.3.1 \
-		darling-0.10.2 \
-		darling_core-0.10.2 \
-		darling_macro-0.10.2 \
-		derivative-2.2.0 \
-		dirs-3.0.2 \
-		dirs-sys-0.3.6 \
+		crc32fast-1.3.2 \
+		crossfont-0.5.0 \
+		cty-0.2.2 \
+		darling-0.13.4 \
+		darling_core-0.13.4 \
+		darling_macro-0.13.4 \
+		dirs-4.0.0 \
+		dirs-sys-0.3.7 \
 		dispatch-0.2.0 \
-		dlib-0.4.2 \
 		dlib-0.5.0 \
 		downcast-rs-1.2.0 \
-		dtoa-0.4.8 \
 		dwrote-0.11.0 \
-		embed-resource-1.6.3 \
+		embed-resource-1.7.3 \
 		expat-sys-2.1.6 \
-		filetime-0.2.14 \
+		filetime-0.2.17 \
+		flate2-1.0.24 \
 		fnv-1.0.7 \
 		foreign-types-0.3.2 \
 		foreign-types-0.5.0 \
-		foreign-types-macros-0.2.1 \
+		foreign-types-macros-0.2.2 \
 		foreign-types-shared-0.1.1 \
-		foreign-types-shared-0.3.0 \
+		foreign-types-shared-0.3.1 \
 		freetype-rs-0.26.0 \
 		freetype-sys-0.13.1 \
 		fsevent-0.4.0 \
 		fsevent-sys-2.0.1 \
 		fuchsia-zircon-0.3.3 \
 		fuchsia-zircon-sys-0.3.3 \
-		getrandom-0.2.3 \
+		getrandom-0.2.7 \
 		gl_generator-0.14.0 \
-		glutin-0.26.0 \
-		glutin_egl_sys-0.1.5 \
-		glutin_emscripten_sys-0.1.1 \
+		glutin-0.29.1 \
+		glutin_egl_sys-0.1.6 \
 		glutin_gles2_sys-0.1.5 \
-		glutin_glx_sys-0.1.7 \
+		glutin_glx_sys-0.1.8 \
 		glutin_wgl_sys-0.1.5 \
+		hashbrown-0.12.3 \
+		heck-0.4.0 \
 		hermit-abi-0.1.19 \
 		ident_case-1.0.1 \
+		indexmap-1.9.1 \
 		inotify-0.7.1 \
 		inotify-sys-0.1.5 \
-		instant-0.1.10 \
+		instant-0.1.12 \
 		iovec-0.1.4 \
-		itoa-0.4.7 \
+		itoa-1.0.3 \
 		jni-sys-0.3.0 \
+		js-sys-0.3.60 \
 		kernel32-sys-0.2.2 \
 		khronos_api-3.1.0 \
 		lazy-bytes-cast-5.0.1 \
 		lazy_static-1.4.0 \
 		lazycell-1.3.0 \
-		libc-0.2.98 \
-		libloading-0.6.7 \
-		libloading-0.7.0 \
-		linked-hash-map-0.5.4 \
-		lock_api-0.4.4 \
-		log-0.4.14 \
+		libc-0.2.132 \
+		libloading-0.7.3 \
+		linked-hash-map-0.5.6 \
+		lock_api-0.4.8 \
+		log-0.4.17 \
 		malloc_buf-0.0.6 \
-		maybe-uninit-2.0.0 \
-		memchr-2.3.4 \
-		memmap2-0.1.0 \
-		memmap2-0.2.3 \
-		memoffset-0.6.4 \
-		miniz_oxide-0.3.7 \
+		memchr-2.5.0 \
+		memmap2-0.5.7 \
+		memoffset-0.6.5 \
+		minimal-lexical-0.2.1 \
+		miniz_oxide-0.5.4 \
 		mio-0.6.23 \
+		mio-0.8.4 \
 		mio-anonymous-pipes-0.2.0 \
 		mio-extras-2.0.6 \
+		mio-uds-0.6.8 \
 		miow-0.2.2 \
 		miow-0.3.7 \
-		ndk-0.2.1 \
-		ndk-glue-0.2.1 \
-		ndk-macro-0.2.0 \
-		ndk-sys-0.2.1 \
+		ndk-0.7.0 \
+		ndk-context-0.1.1 \
+		ndk-glue-0.7.0 \
+		ndk-macro-0.3.0 \
+		ndk-sys-0.4.0 \
 		net2-0.2.37 \
-		nix-0.18.0 \
-		nix-0.20.0 \
-		nix-0.22.0 \
-		nom-6.2.1 \
+		nix-0.24.2 \
+		nom-7.1.1 \
 		notify-4.0.17 \
-		num_enum-0.4.3 \
-		num_enum_derive-0.4.3 \
+		num_enum-0.5.7 \
+		num_enum_derive-0.5.7 \
 		objc-0.2.7 \
 		objc-foundation-0.1.1 \
 		objc_id-0.1.1 \
-		once_cell-1.8.0 \
+		once_cell-1.14.0 \
+		os_str_bytes-6.3.0 \
 		osmesa-sys-0.1.2 \
-		owned_ttf_parser-0.6.0 \
-		parking_lot-0.11.1 \
-		parking_lot_core-0.8.3 \
-		percent-encoding-2.1.0 \
-		pkg-config-0.3.19 \
-		png-0.16.8 \
-		proc-macro-crate-0.1.5 \
-		proc-macro2-1.0.28 \
-		quote-1.0.9 \
-		raw-window-handle-0.3.3 \
-		redox_syscall-0.2.9 \
-		redox_users-0.4.0 \
+		parking_lot-0.11.2 \
+		parking_lot-0.12.1 \
+		parking_lot_core-0.8.5 \
+		parking_lot_core-0.9.3 \
+		percent-encoding-2.2.0 \
+		pkg-config-0.3.25 \
+		png-0.17.6 \
+		proc-macro-crate-1.2.1 \
+		proc-macro-error-1.0.4 \
+		proc-macro-error-attr-1.0.4 \
+		proc-macro2-1.0.43 \
+		quick-xml-0.22.0 \
+		quote-1.0.21 \
+		raw-window-handle-0.4.3 \
+		raw-window-handle-0.5.0 \
+		redox_syscall-0.2.16 \
+		redox_users-0.4.3 \
 		regex-automata-0.1.10 \
-		regex-syntax-0.6.25 \
-		rusttype-0.9.2 \
-		ryu-1.0.5 \
+		regex-syntax-0.6.27 \
+		rustc_version-0.4.0 \
+		ryu-1.0.11 \
+		safe_arch-0.5.2 \
 		same-file-1.0.6 \
 		scoped-tls-1.0.0 \
 		scopeguard-1.1.0 \
-		serde-1.0.127 \
-		serde_derive-1.0.127 \
-		serde_json-1.0.66 \
-		serde_yaml-0.8.17 \
+		sctk-adwaita-0.4.2 \
+		semver-1.0.14 \
+		serde-1.0.144 \
+		serde_derive-1.0.144 \
+		serde_json-1.0.85 \
+		serde_yaml-0.8.26 \
 		servo-fontconfig-0.5.1 \
 		servo-fontconfig-sys-5.1.0 \
 		shared_library-0.1.9 \
-		signal-hook-0.1.17 \
+		signal-hook-0.3.14 \
+		signal-hook-mio-0.2.3 \
 		signal-hook-registry-1.4.0 \
-		slab-0.4.3 \
-		smallvec-1.6.1 \
-		smithay-client-toolkit-0.12.3 \
-		smithay-client-toolkit-0.14.0 \
-		smithay-clipboard-0.6.4 \
+		slab-0.4.7 \
+		slotmap-1.0.6 \
+		smallvec-1.9.0 \
+		smithay-client-toolkit-0.16.0 \
+		smithay-clipboard-0.6.6 \
 		spsc-buffer-0.1.1 \
-		strsim-0.8.0 \
-		strsim-0.9.3 \
-		syn-1.0.74 \
-		textwrap-0.11.0 \
-		thiserror-1.0.26 \
-		thiserror-impl-1.0.26 \
-		time-0.1.43 \
+		strsim-0.10.0 \
+		syn-1.0.99 \
+		termcolor-1.1.3 \
+		textwrap-0.15.1 \
+		thiserror-1.0.35 \
+		thiserror-impl-1.0.35 \
+		tiny-skia-0.7.0 \
+		tiny-skia-path-0.7.0 \
 		toml-0.5.8 \
-		ttf-parser-0.6.2 \
-		unicode-width-0.1.8 \
-		unicode-xid-0.2.2 \
+		unicode-ident-1.0.4 \
+		unicode-width-0.1.10 \
 		utf8parse-0.2.0 \
 		vec_map-0.8.2 \
-		version_check-0.9.3 \
+		version_check-0.9.4 \
 		vswhom-0.1.0 \
-		vswhom-sys-0.1.0 \
+		vswhom-sys-0.1.1 \
 		vte-0.10.1 \
 		vte_generate_state_changes-0.1.1 \
 		walkdir-2.3.2 \
-		wasi-0.10.2+wasi-snapshot-preview1 \
-		wayland-client-0.28.6 \
-		wayland-commons-0.28.6 \
-		wayland-cursor-0.28.6 \
-		wayland-egl-0.28.6 \
-		wayland-protocols-0.28.6 \
-		wayland-scanner-0.28.6 \
-		wayland-sys-0.28.6 \
+		wasi-0.11.0+wasi-snapshot-preview1 \
+		wasm-bindgen-0.2.83 \
+		wasm-bindgen-backend-0.2.83 \
+		wasm-bindgen-macro-0.2.83 \
+		wasm-bindgen-macro-support-0.2.83 \
+		wasm-bindgen-shared-0.2.83 \
+		wayland-client-0.29.5 \
+		wayland-commons-0.29.5 \
+		wayland-cursor-0.29.5 \
+		wayland-egl-0.29.5 \
+		wayland-protocols-0.29.5 \
+		wayland-scanner-0.29.5 \
+		wayland-sys-0.29.5 \
+		web-sys-0.3.60 \
 		winapi-0.2.8 \
 		winapi-0.3.9 \
 		winapi-build-0.1.1 \
 		winapi-i686-pc-windows-gnu-0.4.0 \
 		winapi-util-0.1.5 \
 		winapi-x86_64-pc-windows-gnu-0.4.0 \
-		winit-0.24.0 \
-		winreg-0.9.0 \
+		windows-sys-0.36.1 \
+		windows_aarch64_msvc-0.36.1 \
+		windows_i686_gnu-0.36.1 \
+		windows_i686_msvc-0.36.1 \
+		windows_x86_64_gnu-0.36.1 \
+		windows_x86_64_msvc-0.36.1 \
+		winit-0.27.4 \
+		winreg-0.10.1 \
 		wio-0.2.2 \
 		ws2_32-sys-0.2.1 \
-		x11-clipboard-0.5.2 \
-		x11-dl-2.18.5 \
-		xcb-0.9.0 \
-		xcursor-0.3.3 \
-		xdg-2.2.0 \
+		x11-clipboard-0.6.1 \
+		x11-dl-2.20.0 \
+		xcb-1.1.1 \
+		xcursor-0.3.4 \
+		xdg-2.4.1 \
 		xml-rs-0.8.4 \
 		yaml-rust-0.4.5
 CARGO_INSTALL_PATH=	alacritty

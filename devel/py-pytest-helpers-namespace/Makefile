@@ -1,11 +1,12 @@
 PORTNAME=	pytest-helpers-namespace
 PORTVERSION=	2019.1.8
 CATEGORIES=	devel python
-MASTER_SITES=	CHEESESHOP
+MASTER_SITES=	PYPI
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
 
 MAINTAINER=	matthew@FreeBSD.org
 COMMENT=	Provide a helpers namespace in pytest
+WWW=		https://pypi.org/project/pytest-helpers-namespace/
 
 LICENSE=	APACHE20
 

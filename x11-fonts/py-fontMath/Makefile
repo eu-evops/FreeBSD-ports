@@ -2,11 +2,12 @@ PORTNAME=	fontMath
 PORTVERSION=	0.4.9
 PORTREVISION=	1
 CATEGORIES=	x11-fonts python
-MASTER_SITES=	CHEESESHOP
+MASTER_SITES=	PYPI
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
 
 MAINTAINER=	lantw44@gmail.com
 COMMENT=	Set of objects for performing math operations on font data
+WWW=		https://github.com/typesupply/fontMath
 
 LICENSE=	MIT
 LICENSE_FILE=	${WRKSRC}/License.txt

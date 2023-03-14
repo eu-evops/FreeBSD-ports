@@ -3,8 +3,8 @@
  * pfblockerng_update.php
  *
  * part of pfSense (https://www.pfsense.org)
- * Copyright (c) 2016-2022 Rubicon Communications, LLC (Netgate)
- * Copyright (c) 2015-2021 BBcan177@gmail.com
+ * Copyright (c) 2016-2023 Rubicon Communications, LLC (Netgate)
+ * Copyright (c) 2015-2023 BBcan177@gmail.com
  * All rights reserved.
  *
  * Portions of this code are based on original work done for
@@ -42,7 +42,7 @@ pfb_global();
 
 // Collect pfBlockerNG log file and post live output to terminal window.
 function pfbupdate_output($text) {
-	$text = htmlspecialchars(str_replace("\n", "\\n", $text));
+	$text = htmlspecialchars(str_replace("\n", "\\n", $text), ENT_COMPAT);
 	print("\n<script type=\"text/javascript\">");
 	print("\n//<![CDATA[");
 	print("\nthis.document.forms[0].pfb_output.value = \"" . $text . "\";");
@@ -56,7 +56,7 @@ function pfbupdate_output($text) {
 
 // Post status message to terminal window.
 function pfbupdate_status($status) {
-	$status = htmlspecialchars(str_replace("\n", "\\n", $status));
+	$status = htmlspecialchars(str_replace("\n", "\\n", $status), ENT_COMPAT);
 	print("\n<script type=\"text/javascript\">");
 	print("\n//<![CDATA[");
 	print("\nthis.document.forms[0].pfb_status.value=\"" . $status . "\";");
@@ -70,6 +70,10 @@ function pfbupdate_status($status) {
 // Function to perform a Force Update, Cron or Reload
 function pfb_cron_update($type) {
 	global $pfb, $pconfig;
+
+	if (!in_array($type, array('update', 'cron', 'reload'))) {
+		exit;
+	}
 
 	// Query for any active pfBlockerNG CRON jobs
 	exec('/bin/ps -wx', $result_cron);
@@ -109,7 +113,9 @@ function pfb_cron_update($type) {
 
 	// Execute PHP process in the background
 	pfb_logger("\n [ Force Reload Task - {$pconfig['pfb_reload_option']} ]\n", 1);
-	mwexec_bg("/usr/local/bin/php /usr/local/www/pfblockerng/pfblockerng.php {$type} >> {$pfb['log']} 2>&1");
+
+	$type_esc = escapeshellarg($type);
+	mwexec_bg("/usr/local/bin/php /usr/local/www/pfblockerng/pfblockerng.php {$type_esc} >> {$pfb['log']} 2>&1");
 
 	// Execute Live Tail function
 	pfb_livetail($pfb['log'], 'force');
@@ -169,6 +175,10 @@ if ($pfb['enable'] == 'on') {
 	$currentmin	= date('i');
 	$currentsec	= date('s');
 	$currentdaysec	= ($currenthour * 3600) + ($currentmin * 60) + $currentsec;
+
+	if (!is_numeric($pfb['min'])) {
+		$pfb['min'] = 0;
+	}
 
 	if ($pfb['interval'] == 1) {
 		if ($currentmin < $pfb['min']) {
@@ -320,7 +330,6 @@ $group->add(new Form_Checkbox(
 ))->displayAsRadio('pfb_force_reload')->setAttribute('title', 'Force Reload: IP & DNSBL.')->setWidth(1);
 $section->add($group);
 
-
 // Build 'Force Options' group section
 $group = new Form_Group('Select \'Reload\' option');
 $group->add(new Form_Checkbox(
@@ -417,7 +426,6 @@ if (isset($pconfig['log_view'])) {
 		clearstatcache(false, $pfb['log']);
 		ob_flush();
 		flush();
-		@fclose("{$pfb['log']}");
 	}
 }
 

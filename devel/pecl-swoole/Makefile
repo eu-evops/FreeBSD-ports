@@ -1,11 +1,10 @@
-# Created by: vanilla@
-
 PORTNAME=	swoole
-PORTVERSION=	4.8.3
+PORTVERSION=	5.0.2
 CATEGORIES=	devel net
 
 MAINTAINER=	vanilla@FreeBSD.org
 COMMENT=	Asynchronous, concurrent, and distributed networking framework
+WWW=		https://pecl.php.net/package/swoole
 
 LICENSE=	APACHE20
 LICENSE_FILE=	${WRKSRC}/LICENSE
@@ -15,7 +14,7 @@ USE_PHP=	hash:build pcre
 
 CONFIGURE_ARGS+=	--enable-mysqlnd
 
-OPTIONS_DEFINE=		CARES CURL HTTP2 JSON SOCKETS
+OPTIONS_DEFINE=		BROTLI CARES CURL HTTP2 JSON PGSQL SOCKETS
 CARES_LIB_DEPENDS=	libcares.so:dns/c-ares
 CARES_CONFIGURE_ON=	--enable-cares
 HTTP2_CONFIGURE_ON=	--enable-http2 \
@@ -28,5 +27,9 @@ CURL_CONFIGURE_ON=	--enable-swoole-curl
 CURL_USE=		PHP=curl
 JSON_CONFIGURE_ON=	--enable-swoole-json
 JSON_USE=		PHP=json:build
+PGSQL_CONFIGURE_ON=	--enable-swoole-pgsql
+PGSQL_USES=		pgsql
+BROTLI_CONFIGURE_ON=	--enable-brotli
+BROTLI_LIB_DEPENDS=	libbrotlicommon.so:archivers/brotli
 
 .include <bsd.port.mk>

@@ -1,11 +1,12 @@
 PORTNAME=	snowballstemmer
 PORTVERSION=	2.2.0
 CATEGORIES=	textproc python
-MASTER_SITES=	CHEESESHOP
+MASTER_SITES=	PYPI
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
 
 MAINTAINER=	sunpoet@FreeBSD.org
 COMMENT=	Snowball stemming library collection for Python
+WWW=		https://snowballstem.org/
 
 LICENSE=	BSD3CLAUSE
 LICENSE_FILE=	${WRKSRC}/COPYING

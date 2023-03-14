@@ -1,13 +1,11 @@
-# Created by: Ashish Shukla <wahjava@gmail.com>
-
 PORTNAME=	libxcb
-PORTVERSION=	1.14
-PORTREVISION=	1
-CATEGORIES=	x11 python
+PORTVERSION=	1.15
+CATEGORIES=	x11
 MASTER_SITES=	https://xcb.freedesktop.org/dist/
 
 MAINTAINER=	x11@FreeBSD.org
 COMMENT=	The X protocol C-language Binding (XCB) library
+WWW=		https://xcb.freedesktop.org/
 
 LICENSE=	MIT
 LICENSE_FILE=	${WRKSRC}/COPYING

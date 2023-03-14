@@ -1,13 +1,11 @@
-# Created by: TAKATSU Tomonari <tota@FreeBSD.org>
-
 PORTNAME=	dimRed
-PORTVERSION=	0.2.3
-PORTREVISION=	2
+PORTVERSION=	0.2.6
 CATEGORIES=	math
 DISTNAME=	${PORTNAME}_${PORTVERSION}
 
 MAINTAINER=	tota@FreeBSD.org
 COMMENT=	Framework for Dimensionality Reduction
+WWW=		https://cran.r-project.org/web/packages/dimRed/
 
 LICENSE=	GPLv3
 LICENSE_FILE=	${WRKSRC}/LICENSE

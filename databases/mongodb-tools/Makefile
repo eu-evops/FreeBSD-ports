@@ -1,9 +1,11 @@
 PORTNAME=	mongodb-tools
-DISTVERSION=	100.5.1
+DISTVERSION=	100.6.1
+PORTREVISION=	4
 CATEGORIES=	databases
 
-MAINTAINER=	ronald-lists@klop.ws
+MAINTAINER=	ronald@FreeBSD.org
 COMMENT=	Tools for MongoDB 4.4.x and up
+WWW=		https://docs.mongodb.com/database-tools/
 
 LICENSE=	APACHE20
 LICENSE_FILE=	${WRKSRC}/LICENSE.md
@@ -50,7 +52,6 @@ MONGOSTAT_VARS=		go_target+=./mongostat/main:mongostat
 MONGOTOP_VARS=		go_target+=./mongotop/main:mongotop
 SASL_LIB_DEPENDS=	libsasl2.so:security/cyrus-sasl2
 SASL_USE=		my_tags=sasl
-SSL_USES=		ssl
 SSL_USE=		my_tags=ssl
 
 post-install-DOCS-on:

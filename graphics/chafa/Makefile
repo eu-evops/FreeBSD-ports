@@ -1,25 +1,25 @@
-# Created by: Emanuel Haupt <ehaupt@FreeBSD.org>
-
 PORTNAME=	chafa
-PORTVERSION=	1.8.0
+PORTVERSION=	1.12.4
 CATEGORIES=	graphics
 MASTER_SITES=	https://hpjansson.org/chafa/releases/ \
 		https://github.com/hpjansson/chafa/releases/download/${PORTVERSION}/
 
 MAINTAINER=	ehaupt@FreeBSD.org
 COMMENT=	Character art facsimile generator
+WWW=		https://hpjansson.org/chafa/
 
 LICENSE=	GPLv3 LGPL3+
 LICENSE_COMB=	multi
 LICENSE_FILE_GPLv3=	${WRKSRC}/COPYING
 LICENSE_FILE_LGPL3+ =	${WRKSRC}/COPYING.LESSER
 
-BUILD_DEPENDS=	convert:graphics/ImageMagick7
 LIB_DEPENDS=	libfreetype.so:print/freetype2 \
-		libMagickCore-7.so:graphics/ImageMagick7
+		libtiff.so:graphics/tiff \
+		libwebpdemux.so:graphics/webp
 
-USES=		gettext-runtime gnome libtool tar:xz
-USE_GNOME=	glib20
+USES=		cpe gettext-runtime gnome jpeg libtool magick:7 tar:xz
+CPE_VENDOR=	chafa_project
+USE_GNOME=	cairo gdkpixbuf2 glib20 librsvg2
 USE_LDCONFIG=	yes
 GNU_CONFIGURE=	yes
 CONFIGURE_ARGS=	--with-html-dir=${DOCSDIR}/html

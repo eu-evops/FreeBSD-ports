@@ -1,25 +1,28 @@
-# Created by: Goran Lowkrantz <glz@hidden-powers.com>
-
 PORTNAME=	piwigo
-DISTVERSION=	11.5.0
+DISTVERSION=	13.6.0
+PORTREVISION=	0
+PKGNAMESUFFIX=	${PHP_PKGNAMESUFFIX}
 CATEGORIES=	www
 MASTER_SITES=	https://piwigo.org/download/dlcounter.php?code=${PORTVERSION}&/
 
-MAINTAINER=	sunpoet@FreeBSD.org
+MAINTAINER=	netchild@FreeBSD.org
 COMMENT=	PHP based Web Gallery
+WWW=		https://piwigo.org/
 
 LICENSE=	GPLv2
 LICENSE_FILE=	${WRKSRC}/doc/COPYING
 
-RUN_DEPENDS+=	${LOCALBASE}/lib/php/${PHP_EXT_DIR}/sodium.so:security/pecl-libsodium@${PHP_FLAVOR}
-
-USES=		cpe php:web zip
+USES=		cpe php:web,flavors zip
 USE_PHP=	ctype dom exif filter gd hash iconv json mbstring mysqli \
-		openssl pcre pdo session simplexml spl tokenizer xml zlib
+		openssl pcre pdo session simplexml sodium spl tokenizer \
+		xml zip zlib
+# sodium is needed for randomisation stuff (prefferred option),
+# 	could be replaced by mcrypt
+# zip is used by an optional plugin
 
 NO_ARCH=	yes
 NO_BUILD=	yes
-SUB_FILES=	pkg-deinstall pkg-message
+SUB_FILES=	pkg-message
 SUB_LIST+=	CHOWN="${CHOWN}" \
 		CP="${CP}" \
 		MKDIR="${MKDIR}" \
@@ -64,5 +67,20 @@ do-install:
 	@${INSTALL} -d ${STAGEDIR}${WWWDIR}
 	@${TAR} -C ${WRKSRC} -cf - . | \
 	${TAR} --unlink -C ${STAGEDIR}${WWWDIR} -xf -
+
+gen-plist:
+	${ECHO} '@dir(%%WWWOWN%%,%%WWWGRP%%,750) %%WWWDIR%%/language' > ${PLIST}.new
+	${ECHO} '@dir(%%WWWOWN%%,%%WWWGRP%%,750) %%WWWDIR%%/plugins' >> ${PLIST}.new
+	${ECHO} '@dir(%%WWWOWN%%,%%WWWGRP%%,750) %%WWWDIR%%/themes' >> ${PLIST}.new
+	${FIND} ${STAGEDIR}${PREFIX} -type f -o -type l | \
+	    ${SED} -e "s:${STAGEDIR}${PREFIX}/::g ; \
+	        s:www/piwigo/language:@(%%WWWOWN%%,%%WWWGRP%%,750) %%WWWDIR%%/language:g ; \
+		s:www/piwigo/plugins:@(%%WWWOWN%%,%%WWWGRP%%,750) %%WWWDIR%%/plugins:g ; \
+		s:www/piwigo/themes:@(%%WWWOWN%%,%%WWWGRP%%,750) %%WWWDIR%%/themes:g ; \
+	    	s:www/piwigo:%%WWWDIR%%:g ; \
+		s:share/examples/piwigo:%%PORTEXAMPLES%%%%EXAMPLESDIR%%:g ;" |  \
+	    ${GREP} -v -E '^share/(doc|licenses)/' | ${SORT} >> ${PLIST}.new
+	${ECHO} '@dir(%%WWWOWN%%,%%WWWGRP%%,777) %%WWWDIR%%/_data' >> ${PLIST}.new
+	${ECHO} '@dir(%%WWWOWN%%,%%WWWGRP%%,750) %%WWWDIR%%/upload' >> ${PLIST}.new
 
 .include <bsd.port.post.mk>

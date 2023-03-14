@@ -1,16 +1,13 @@
-# Created by: Thierry Thomas (<thierry@pompo.net>)
-
 PORTNAME=	${MPORTNAME:tl}
-PORTVERSION=	5.0.5
-PORTREVISION=	1
+PORTVERSION=	7.4.3
 CATEGORIES=	math
 
 COMMENT=	Graph algorithms in the language of linear algebra
+WWW=		https://faculty.cse.tamu.edu/davis/suitesparse.html
 
 LICENSE=	APACHE20
 
-USES=		cmake:insource localbase:ldflags
-OMP_NEEDED=	yes
+USES=		localbase:ldflags
 
 MPORTNAME=	GraphBLAS
 USE_LDCONFIG=	yes
@@ -20,10 +17,6 @@ PORTDOCS=	CSC20_OpenMP_GraphBLAS.pdf GraphBLAS_API_C_v13.pdf	\
 		toms_graphblas.pdf
 
 .include "${.CURDIR}/../../math/suitesparse/bsd.suitesparse.mk"
-
-pre-configure-OPENMP-off:
-	${REINPLACE_CMD} -e '/find_package.*OpenMP/d' \
-		${WRKSRC}/GraphBLAS/CMakeLists.txt
 
 post-stage-DOCS-on:
 	@${MKDIR} ${STAGEDIR}${DOCSDIR}

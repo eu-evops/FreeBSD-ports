@@ -1,19 +1,17 @@
-# Created by: adamw
-
 PORTNAME=	geoipupdate
-PORTVERSION=	4.8.0
+PORTVERSION=	4.10.0
+PORTREVISION=	5
 DISTVERSIONPREFIX=	v
 CATEGORIES=	net geography
 
 MAINTAINER=	adamw@FreeBSD.org
 COMMENT=	Fetch the latest copies of the GeoIP2 databases
+WWW=		https://github.com/maxmind/geoipupdate
 
 LICENSE=	APACHE20 MIT
 LICENSE_COMB=	dual
 LICENSE_FILE_APACHE20=	${WRKSRC}/LICENSE-APACHE
 LICENSE_FILE_MIT=	${WRKSRC}/LICENSE-MIT
-
-RUN_DEPENDS=	ca_root_nss>=3:security/ca_root_nss
 
 USES=		gmake go:modules,no_targets
 GO_MODULE=	github.com/maxmind/geoipupdate/v4

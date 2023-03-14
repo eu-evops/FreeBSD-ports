@@ -1,11 +1,11 @@
 PORTNAME=	jmatconvol
-DISTVERSION=	0.4.2
-PORTREVISION=	1
+DISTVERSION=	0.5.2
 CATEGORIES=	audio
 MASTER_SITES=	https://kokkinizita.linuxaudio.org/linuxaudio/downloads/
 
 MAINTAINER=	yuri@FreeBSD.org
 COMMENT=	Real-time convolution engine for dense matrix of short convolutions
+WWW=		https://kokkinizita.linuxaudio.org/linuxaudio/
 
 LICENSE=	GPLv3
 LICENSE_FILE=	${WRKSRC}/../COPYING

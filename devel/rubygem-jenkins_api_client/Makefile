@@ -5,6 +5,7 @@ MASTER_SITES=	RG
 
 MAINTAINER=	ruby@FreeBSD.org
 COMMENT=	Jenkins JSON API Client
+WWW=		https://github.com/arangamani/jenkins_api_client
 
 LICENSE=	MIT
 
@@ -16,7 +17,6 @@ RUN_DEPENDS=	rubygem-json>=1.0:devel/rubygem-json \
 		rubygem-thor>=0.16.0:devel/rubygem-thor
 
 USES=		gem
-USE_RUBY=	yes
 
 NO_ARCH=	yes
 

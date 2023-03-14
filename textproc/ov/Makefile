@@ -1,10 +1,12 @@
 PORTNAME=	ov
 DISTVERSIONPREFIX=	v
-DISTVERSION=	0.9.4
+DISTVERSION=	0.11.2
+PORTREVISION=	8
 CATEGORIES=	textproc
 
 MAINTAINER=	lcook@FreeBSD.org
 COMMENT=	Feature rich terminal pager
+WWW=		https://github.com/noborus/ov
 
 LICENSE=	MIT
 LICENSE_FILE=	${WRKSRC}/LICENSE
@@ -12,7 +14,7 @@ LICENSE_FILE=	${WRKSRC}/LICENSE
 USES=		go:modules
 
 _BUILD_VERSION=		${DISTVERSIONFULL}
-_BUILD_REVISION=	baf0bee
+_BUILD_REVISION=	f29cc5b
 
 GO_MODULE=	github.com/noborus/${PORTNAME}
 GO_BUILDFLAGS=	-ldflags "\

@@ -1,11 +1,12 @@
 PORTNAME=	Cerberus
 PORTVERSION=	1.3.4
 CATEGORIES=	devel python
-MASTER_SITES=	CHEESESHOP
+MASTER_SITES=	PYPI
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
 
 MAINTAINER=	matthew@FreeBSD.org
 COMMENT=	Lightweight, extensible validation tool for Python dictionaries
+WWW=		https://github.com/pyeve/cerberus
 
 LICENSE=	MIT
 LICENSE_FILE=	${WRKSRC}/LICENSE

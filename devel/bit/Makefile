@@ -1,10 +1,12 @@
 PORTNAME=	bit
 DISTVERSIONPREFIX=	v
 DISTVERSION=	1.1.2
+PORTREVISION=	10
 CATEGORIES=	devel
 
 MAINTAINER=	ashish@FreeBSD.org
 COMMENT=	Modern command-line interface to Git
+WWW=		https://github.com/chriswalz/bit
 
 LICENSE=	APACHE20
 LICENSE_FILE=	${WRKSRC}/LICENSE

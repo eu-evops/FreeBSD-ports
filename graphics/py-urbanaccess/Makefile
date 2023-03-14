@@ -1,13 +1,12 @@
-# Created by: Po-Chuan Hsieh <sunpoet@FreeBSD.org>
-
 PORTNAME=	urbanaccess
 PORTVERSION=	0.2.2
 CATEGORIES=	graphics python
-MASTER_SITES=	CHEESESHOP
+MASTER_SITES=	PYPI
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
 
 MAINTAINER=	sunpoet@FreeBSD.org
 COMMENT=	Tool for creating GTFS transit and OSM pedestrian networks
+WWW=		https://github.com/UDST/urbanaccess
 
 LICENSE=	AGPLv3
 LICENSE_FILE=	${WRKSRC}/License.txt

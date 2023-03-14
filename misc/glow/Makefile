@@ -1,17 +1,20 @@
 PORTNAME=	glow
 DISTVERSION=	g20200721
-PORTREVISION=	3
+PORTREVISION=	7
 CATEGORIES=	misc # machine-learning
 PKGNAMESUFFIX=	-nn-compiler
 
 MAINTAINER=	yuri@FreeBSD.org
 COMMENT=	Machine learning compiler and execution engine
+WWW=		https://github.com/pytorch/glow
 
 LICENSE=	APACHE20
 LICENSE_FILE=	${WRKSRC}/LICENSE
 
 BROKEN_i386=	non-constant-expression cannot be narrowed from type 'dim_t', see https://github.com/pytorch/glow/issues/4024
 BROKEN=		does not link: undefined reference to typeinfo for snappy::Source
+DEPRECATED=	Broken since 2021
+EXPIRATION_DATE=	2023-03-21
 
 LIB_DEPENDS=	libLLVM-${LLVM_VER:R}.so:devel/llvm${LLVM_VER:S/.//} \
 		libboost_system.so:devel/boost-libs \

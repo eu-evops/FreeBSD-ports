@@ -1,12 +1,11 @@
-# Created by: Palle Girgensohn <girgen@FreeBSD.org>
-
 PORTNAME=	pg_stat_kcache
 DISTVERSIONPREFIX=	REL
-DISTVERSION=	2_2_0
+DISTVERSION=	2_2_1
 CATEGORIES=	databases
 
 MAINTAINER=	girgen@FreeBSD.org
 COMMENT=	Gather statistics about PostgreSQL I/O and CPU usage
+WWW=		https://github.com/dalibo/pg_stat_kcache
 
 LICENSE=	PostgreSQL
 

@@ -1,14 +1,13 @@
-# Created by: Loïc BARTOLETTI <lbartoletti@FreeBSD.org>
-
 PORTNAME=	postgis
-PORTVERSION=	3.0.4
-PORTREVISION=	1
+PORTVERSION=	3.0.8
+PORTREVISION=	2
 CATEGORIES=	databases geography
 MASTER_SITES=	https://download.osgeo.org/postgis/source/
 PKGNAMESUFFIX=	30
 
 MAINTAINER=	lbartoletti@FreeBSD.org
 COMMENT=	Geographic objects support for PostgreSQL databases
+WWW=		https://postgis.net/
 
 LICENSE=	GPLv2
 LICENSE_FILE=	${WRKSRC}/COPYING
@@ -26,7 +25,7 @@ USE_PERL5=	build
 GNU_CONFIGURE=	yes
 CONFIGURE_ARGS=	${ICONV_CONFIGURE_BASE} NUMERICFLAGS=${PORTVERSION}
 SHEBANG_FILES=	extensions/address_standardizer/*.pl raster/test/regress/*.pl \
-		raster/test/regress/loader/*.pl regress/run_test.pl \
+		regress/run_test.pl \
 		utils/postgis_restore.pl.in utils/*.pl
 WANT_PGSQL=	server
 
@@ -59,7 +58,7 @@ SFCGAL_LIB_DEPENDS=		libSFCGAL.so:databases/sfcgal
 TOPOLOGY_CONFIGURE_WITH=	topology
 WAGYU_CONFIGURE_WITH=		wagyu
 
-CONFLICTS_INSTALL=	postgis20 postgis21 postgis22 postgis23 postgis24 postgis25 postgis31
+CONFLICTS_INSTALL=	postgis[0-9][0-9] # lib/postgresql/address_standardizer-3.so
 
 VER=		${PORTVERSION:R}
 

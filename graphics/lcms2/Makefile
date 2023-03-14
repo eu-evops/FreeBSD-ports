@@ -1,12 +1,11 @@
-# Created by: Stanislav Sedov <stas@FreeBSD.org>
-
 PORTNAME=	lcms2
-PORTVERSION=	2.12
+PORTVERSION=	2.13.1
 CATEGORIES=	graphics
 MASTER_SITES=	https://github.com/mm2/Little-CMS/releases/download/lcms${PORTVERSION}/
 
 MAINTAINER=	sunpoet@FreeBSD.org
 COMMENT=	Accurate, fast, and small-footprint color management engine
+WWW=		https://www.littlecms.com/
 
 LICENSE=	MIT
 LICENSE_FILE=	${WRKSRC}/COPYING
@@ -18,7 +17,7 @@ INSTALL_TARGET=	install-strip
 TEST_TARGET=	check
 USE_LDCONFIG=	yes
 
-PLIST_SUB=	PORTVERSION=${PORTVERSION}
+PLIST_SUB=	PORTVERSION=${PORTVERSION:R}
 
 CPE_VENDOR=	littlecms
 CPE_PRODUCT=	little_cms_color_engine

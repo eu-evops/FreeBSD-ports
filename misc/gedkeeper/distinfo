@@ -1,5 +1,7 @@
-TIMESTAMP = 1636309479
-SHA256 (Serg-Norseman-GEDKeeper-v2.19.1_GH0.tar.gz) = 3de8759300e2e2a17ec6829df28a4bb281dc6db21afb62160ccd472423d53792
-SIZE (Serg-Norseman-GEDKeeper-v2.19.1_GH0.tar.gz) = 16229752
-SHA256 (Serg-Norseman-GKCommunicator-cfd6393_GH0.tar.gz) = a10271c07931fd6aed68c7fbc5d8485a6cb9423b33d4a4799d0ac0084eda6020
-SIZE (Serg-Norseman-GKCommunicator-cfd6393_GH0.tar.gz) = 2667938
+TIMESTAMP = 1677525130
+SHA256 (Serg-Norseman-GEDKeeper-v2.24.0_GH0.tar.gz) = 46625fa49cb02388ca6642a5ead9983ccf49413bbce8aef1c5a2f7e719157338
+SIZE (Serg-Norseman-GEDKeeper-v2.24.0_GH0.tar.gz) = 16469776
+SHA256 (Serg-Norseman-GKCommunicator-22157c2_GH0.tar.gz) = 977cc4fccebadd7341702abceef75d8ad60f50cb7c2d7357e703cc89eaf88e26
+SIZE (Serg-Norseman-GKCommunicator-22157c2_GH0.tar.gz) = 1866811
+SHA256 (Serg-Norseman-GKGenetix-568338b_GH0.tar.gz) = edab1ae9bb70070c4f11bc17e593fe524cdadcceb279c715754ecee61ebc2537
+SIZE (Serg-Norseman-GKGenetix-568338b_GH0.tar.gz) = 343103

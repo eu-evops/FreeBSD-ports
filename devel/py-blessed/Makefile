@@ -1,11 +1,12 @@
 PORTNAME=	blessed
-DISTVERSION=	1.19.0
+DISTVERSION=	1.19.1
 CATEGORIES=	devel python
-MASTER_SITES=	CHEESESHOP
+MASTER_SITES=	PYPI
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
 
 MAINTAINER=	yuri@FreeBSD.org
 COMMENT=	Easy, practical library for making terminal apps
+WWW=		https://github.com/jquast/blessed
 
 LICENSE=	MIT
 LICENSE_FILE=	${WRKSRC}/LICENSE

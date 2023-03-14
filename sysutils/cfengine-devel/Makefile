@@ -1,17 +1,14 @@
-# Created by: jrhett@netconsonance.com
-
 PORTNAME=	cfengine
 PORTVERSION=	3.${CFENGINE_COMMIT_DATE}
 CATEGORIES=	sysutils
 PKGNAMESUFFIX=	-devel
-CFENGINE_HASH=		73261fc17
-LIBNTECH_HASH=		66274a1
-CFENGINE_COMMIT_DATE=	2021.12.03
+CFENGINE_HASH=		8c38b8b08
+LIBNTECH_HASH=		da3d519
+CFENGINE_COMMIT_DATE=	2023.02.20
 
 MAINTAINER=	cy@FreeBSD.org
-#		gjb@FreeBSD.org is also committer for this port
-#		skreuzer@FreeBSD.org is also committer for this port
 COMMENT=	Systems administration tool for networks
+WWW=		https://cfengine.com/
 
 LICENSE=	GPLv3
 
@@ -22,9 +19,7 @@ GH_TUPLE=	cfengine:core:${CFENGINE_HASH} \
 		cfengine:libntech:${LIBNTECH_HASH}:libntech/libntech
 CPE_VENDOR=	gnu
 
-CONFLICTS=	cfengine-2* cfengine3[0-9]-* cfengine31[02-9]-* cfengine-3.*
-
-CONFLICTS=	cfengine-[12-9]*
+CONFLICTS=	cfengine cfengine3[0-9] cfengine3[0-9][0-9]
 
 USE_RC_SUBR=	cf-execd cf-serverd cf-monitord
 

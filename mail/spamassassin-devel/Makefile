@@ -1,17 +1,17 @@
-# Created by: Anthony Kim
-
 PORTNAME=	spamassassin
 PORTVERSION=	${SA_COMMIT_DATE}
+PORTREVISION=	1
 CATEGORIES?=	mail perl5
 PKGNAMESUFFIX=	-devel
 
 MAINTAINER?=	cy@FreeBSD.org
 COMMENT?=	Highly efficient mail filter for identifying spam
+WWW=		https://spamassassin.apache.org/
 
 USE_GITHUB=	yes
 GH_ACCOUNT=	apache
-GH_TAGNAME=	b4541db8c
-SA_COMMIT_DATE=	2021.12.06
+GH_TAGNAME=	968ba98b9
+SA_COMMIT_DATE=	2023.02.21
 
 LICENSE=	APACHE20
 
@@ -25,6 +25,8 @@ RUN_DEPENDS:=	${BUILD_DEPENDS} \
 		p5-Net-IDN-Encode>=0:textproc/p5-Net-IDN-Encode \
 		p5-Net-LibIDN>=0:dns/p5-Net-LibIDN \
 		p5-URI>=0:net/p5-URI \
+		p5-Class-XSAccessor>=0:devel/p5-Class-XSAccessor \
+		p5-XString>=0:textproc/p5-XString \
 		re2c>=.12.0:devel/re2c
 
 .for dep in DCC DKIM MYSQL PGSQL PYZOR RAZOR RELAY_COUNTRY RLIMIT SPF_QUERY SSL

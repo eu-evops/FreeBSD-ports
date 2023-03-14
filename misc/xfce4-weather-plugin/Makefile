@@ -1,13 +1,13 @@
-# Created by: Filippo Natali <filippo@widestore.net>
-
 PORTNAME=	xfce4-weather-plugin
 PORTVERSION=	0.11.0
+PORTREVISION=	3
 CATEGORIES=	misc xfce geography
 MASTER_SITES=	XFCE/panel-plugins
 DIST_SUBDIR=	xfce4
 
 MAINTAINER=	xfce@FreeBSD.org
 COMMENT=	Weather plugin for the Xfce panel
+WWW=		https://goodies.xfce.org/projects/panel-plugins/xfce4-weather-plugin
 
 LICENSE=	GPLv2
 LICENSE_FILE=	${WRKSRC}/COPYING

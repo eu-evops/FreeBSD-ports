@@ -3,7 +3,7 @@
  * cron.php
  *
  * part of pfSense (https://www.pfsense.org)
- * Copyright (c) 2015-2022 Rubicon Communications, LLC (Netgate)
+ * Copyright (c) 2015-2023 Rubicon Communications, LLC (Netgate)
  * Copyright (c) 2008 Mark J Crane
  * All rights reserved.
  *
@@ -81,17 +81,17 @@ display_top_tabs($tab_array);
 			foreach ($a_cron as $ent) {
 	?>
 					<tr>
-						<td><?=$ent['minute']?></td>
-						<td><?=$ent['hour']?></td>
-						<td><?=$ent['mday']?></td>
-						<td><?=$ent['month']?></td>
-						<td><?=$ent['wday']?></td>
-						<td><?=$ent['who']?></td>
-						<td><?=$ent['command']?></td>
+						<td><?= htmlspecialchars($ent['minute']) ?></td>
+						<td><?= htmlspecialchars($ent['hour']) ?></td>
+						<td><?= htmlspecialchars($ent['mday']) ?></td>
+						<td><?= htmlspecialchars($ent['month']) ?></td>
+						<td><?= htmlspecialchars($ent['wday']) ?></td>
+						<td><?= htmlspecialchars($ent['who']) ?></td>
+						<td><?= htmlspecialchars($ent['command']) ?></td>
 						<td>
-							<a href="cron_edit.php?id=<?=$i?>"><i class="fa fa-pencil" alt="edit"></i></a>
-							<a href="cron_edit.php?dup=<?=$i?>"><i class="fa fa-clone" alt="copy"></i></a>
-							<a href="cron_edit.php?type=php&amp;act=del&amp;id=<?=$i?>"><i class="fa fa-trash" alt="delete"></i></a>
+							<a href="cron_edit.php?id=<?=$i?>"><i class="fa fa-pencil" alt="edit" title="<?=gettext('Edit this job')?>"></i></a>
+							<a href="cron_edit.php?dup=<?=$i?>"><i class="fa fa-clone" alt="copy" title="<?=gettext('Copy this job')?>"></i></a>
+							<a href="cron_edit.php?type=php&amp;act=del&amp;id=<?=$i?>"><i class="fa fa-trash" alt="delete" title="<?=gettext('Delete this job')?>"></i></a>
 						</td>
 					</tr>
 	<?php

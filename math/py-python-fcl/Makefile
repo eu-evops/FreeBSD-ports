@@ -2,11 +2,12 @@ PORTNAME=	python-fcl
 PORTVERSION=	0.0.12
 PORTREVISION=	2
 CATEGORIES=	math python
-MASTER_SITES=	CHEESESHOP
+MASTER_SITES=	PYPI
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
 
 MAINTAINER=	db@FreeBSD.org
 COMMENT=	Python bindings for the Flexible Collision Library
+WWW=		https://libraries.io/pypi/python-fcl
 
 LICENSE=	BSD3CLAUSE
 LICENSE_FILE=	${WRKSRC}/LICENSE

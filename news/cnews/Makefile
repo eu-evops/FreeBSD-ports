@@ -1,5 +1,3 @@
-# Created by: adam
-
 PORTNAME=	cnews
 PORTVERSION=	cr.g
 PORTREVISION=	18
@@ -29,6 +27,7 @@ PATCHFILES=	c-news-patch-fileart.c c-news-patch-namelen \
 
 MAINTAINER=	dinoex@FreeBSD.org
 COMMENT=	News server
+WWW=		https://www.dinoex.net/c-news.html
 
 LICENSE=	BSD2CLAUSE
 LICENSE_FILE=	${WRKSRC}/COPYRIGHT
@@ -38,6 +37,8 @@ MAKE_JOBS_UNSAFE=	yes
 USES=		tar:Z
 USE_CSTD=	gnu89
 CFLAGS+=	-Wno-return-type
+
+CONFLICTS_INSTALL=	s-news trn4 # bin/inews
 
 DIST_SUBDIR=	${DISTNAME}
 NO_WRKSUBDIR=	yes

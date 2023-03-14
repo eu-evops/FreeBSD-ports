@@ -1,5 +1,3 @@
-# Created by: Steve Wills <swills@FreeBSD.org>
-
 PORTNAME=	rye
 PORTVERSION=	0.9.13
 PORTREVISION=	1
@@ -8,6 +6,7 @@ MASTER_SITES=	RG
 
 MAINTAINER=	swills@FreeBSD.org
 COMMENT=	Safely run SSH commands on a bunch of machines at the same time
+WWW=		https://github.com/delano/rye/
 
 LICENSE=	MIT
 LICENSE_FILE=	${WRKSRC}/LICENSE.txt
@@ -20,7 +19,6 @@ RUN_DEPENDS=	rubygem-annoy>=0:devel/rubygem-annoy \
 		rubygem-sysinfo>=0.8.1:devel/rubygem-sysinfo
 
 NO_ARCH=	yes
-USE_RUBY=	yes
 USES=		gem shebangfix
 SHEBANG_FILES=	try/*.rb tst/*.rb
 

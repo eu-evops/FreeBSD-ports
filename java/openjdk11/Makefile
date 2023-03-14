@@ -8,6 +8,7 @@ PATCH_SITES=	https://github.com/${GH_ACCOUNT}/${GH_PROJECT}/commit/
 
 MAINTAINER=	java@FreeBSD.org
 COMMENT?=	Java Development Kit ${JDK_MAJOR_VERSION}
+WWW=		https://openjdk.java.net/
 
 LICENSE=	GPLv2
 
@@ -62,8 +63,8 @@ NOPRECIOUSMAKEVARS=	yes
 
 JDK_MAJOR_VERSION=	11
 JDK_MINOR_VERSION=	0
-JDK_PATCH_VERSION=	13
-JDK_BUILD_NUMBER=	8
+JDK_PATCH_VERSION=	18
+JDK_BUILD_NUMBER=	10
 BSD_JDK_VERSION=	1
 
 JDK_BUG_URL=	https://bugs.freebsd.org/bugzilla/enter_bug.cgi?product=Ports%20%26%20Packages&component=Individual%20Port(s)&short_desc=java/${PORTNAME}${JDK_MAJOR_VERSION}%3A%20
@@ -93,7 +94,6 @@ CONFIGURE_ARGS=	--with-boot-jdk=${BOOTSTRAPJDKDIR} \
 		--with-lcms=system \
 		--x-includes=${LOCALBASE}/include \
 		--x-libraries=${LOCALBASE}/lib \
-		--with-cacerts-file=${FILESDIR}/cacerts \
 		--with-version-string=${JDK_MAJOR_VERSION}.${JDK_MINOR_VERSION}.${JDK_PATCH_VERSION}+${JDK_BUILD_NUMBER}-${BSD_JDK_VERSION} \
 		--with-native-debug-symbols=none \
 		--with-debug-level=release \
@@ -142,7 +142,10 @@ CONFIGURE_ARGS+=	--with-extra-ldflags="-Wl,-rpath=${LOCALBASE}/lib/gcc${GCC_DEFA
 .else
 MAKE_ENV+=	USE_CLANG=true
 .if ${COMPILER_VERSION} >= 130
-CONFIGURE_ARGS+=	--with-extra-cflags="-Wno-unused-but-set-parameter"
+LLVM_VER=	12
+BUILD_DEPENDS+=	clang${LLVM_VER}:devel/llvm${LLVM_VER}
+CC=		${LOCALBASE}/bin/clang${LLVM_VER}
+CXX=		${LOCALBASE}/bin/clang++${LLVM_VER}
 .endif
 .endif
 

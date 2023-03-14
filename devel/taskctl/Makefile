@@ -1,9 +1,11 @@
 PORTNAME=	taskctl
 PORTVERSION=	1.4.2
+PORTREVISION=	10
 CATEGORIES=	devel
 
 MAINTAINER=	olgeni@FreeBSD.org
 COMMENT=	Simple modern alternative to GNU Make
+WWW=		https://github.com/taskctl/taskctl
 
 LICENSE=	GPLv3
 LICENSE_FILE=	${WRKSRC}/LICENSE.md

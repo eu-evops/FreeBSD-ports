@@ -33,6 +33,7 @@ include/KF5/KPIMTextEdit/kpimtextedit/abstractmarkupbuilder.h
 include/KF5/KPIMTextEdit/kpimtextedit/abstracttexttospeechinterface.h
 include/KF5/KPIMTextEdit/kpimtextedit/editorutil.h
 include/KF5/KPIMTextEdit/kpimtextedit/emoticonunicodetab.h
+include/KF5/KPIMTextEdit/kpimtextedit/kpimtextedit-texttospeech.h
 include/KF5/KPIMTextEdit/kpimtextedit/kpimtextedit_export.h
 include/KF5/KPIMTextEdit/kpimtextedit/markupdirector.h
 include/KF5/KPIMTextEdit/kpimtextedit/plaintexteditfindbar.h
@@ -61,7 +62,7 @@ include/KF5/KPIMTextEdit/kpimtextedit/texttospeechactions.h
 include/KF5/KPIMTextEdit/kpimtextedit/texttospeechinterface.h
 include/KF5/KPIMTextEdit/kpimtextedit/texttospeechwidget.h
 include/KF5/KPIMTextEdit/kpimtextedit/textutils.h
-include/KF5/kpimtextedit_version.h
+include/KF5/KPIMTextEdit/kpimtextedit_version.h
 lib/cmake/KF5PimTextEdit/KF5PimTextEditConfig.cmake
 lib/cmake/KF5PimTextEdit/KF5PimTextEditConfigVersion.cmake
 lib/cmake/KF5PimTextEdit/KF5PimTextEditTargets-%%CMAKE_BUILD_TYPE%%.cmake
@@ -72,6 +73,7 @@ lib/libKF5PimTextEdit.so.%%KDE_APPLICATIONS_SHLIB_VER%%
 %%QT_MKSPECDIR%%/modules/qt_KPIMTextEdit.pri
 %%QT_PLUGINDIR%%/designer/kpimtexteditwidgets.so
 share/locale/ar/LC_MESSAGES/libkpimtextedit.mo
+share/locale/az/LC_MESSAGES/libkpimtextedit.mo
 share/locale/bs/LC_MESSAGES/libkpimtextedit.mo
 share/locale/ca/LC_MESSAGES/libkpimtextedit.mo
 share/locale/ca@valencia/LC_MESSAGES/libkpimtextedit.mo
@@ -83,6 +85,7 @@ share/locale/en_GB/LC_MESSAGES/libkpimtextedit.mo
 share/locale/eo/LC_MESSAGES/libkpimtextedit.mo
 share/locale/es/LC_MESSAGES/libkpimtextedit.mo
 share/locale/et/LC_MESSAGES/libkpimtextedit.mo
+share/locale/eu/LC_MESSAGES/libkpimtextedit.mo
 share/locale/fi/LC_MESSAGES/libkpimtextedit.mo
 share/locale/fr/LC_MESSAGES/libkpimtextedit.mo
 share/locale/ga/LC_MESSAGES/libkpimtextedit.mo
@@ -91,6 +94,7 @@ share/locale/hu/LC_MESSAGES/libkpimtextedit.mo
 share/locale/ia/LC_MESSAGES/libkpimtextedit.mo
 share/locale/it/LC_MESSAGES/libkpimtextedit.mo
 share/locale/ja/LC_MESSAGES/libkpimtextedit.mo
+share/locale/ka/LC_MESSAGES/libkpimtextedit.mo
 share/locale/kk/LC_MESSAGES/libkpimtextedit.mo
 share/locale/km/LC_MESSAGES/libkpimtextedit.mo
 share/locale/ko/LC_MESSAGES/libkpimtextedit.mo
@@ -111,6 +115,9 @@ share/locale/sk/LC_MESSAGES/libkpimtextedit.mo
 share/locale/sl/LC_MESSAGES/libkpimtextedit.mo
 share/locale/sq/LC_MESSAGES/libkpimtextedit.mo
 share/locale/sr/LC_MESSAGES/libkpimtextedit.mo
+share/locale/sr@ijekavian/LC_MESSAGES/libkpimtextedit.mo
+share/locale/sr@ijekavianlatin/LC_MESSAGES/libkpimtextedit.mo
+share/locale/sr@latin/LC_MESSAGES/libkpimtextedit.mo
 share/locale/sv/LC_MESSAGES/libkpimtextedit.mo
 share/locale/tr/LC_MESSAGES/libkpimtextedit.mo
 share/locale/ug/LC_MESSAGES/libkpimtextedit.mo

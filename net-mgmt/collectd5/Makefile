@@ -1,14 +1,13 @@
-# Created by: Matt Peterson <matt@peterson.org>
-
 PORTNAME=	collectd
 PORTVERSION=	5.12.0
-PORTREVISION=	2
+PORTREVISION=	7
 CATEGORIES=	net-mgmt
 MASTER_SITES=	https://storage.googleapis.com/collectd-tarballs/
 PKGNAMESUFFIX=	5
 
 MAINTAINER=	ports@bsdserwis.com
 COMMENT=	Systems & network statistics collection daemon
+WWW=		https://www.collectd.org/
 
 LICENSE=	GPLv2
 LICENSE_FILE=	${WRKSRC}/COPYING
@@ -183,7 +182,7 @@ NOTIFYEMAIL_LIB_DEPENDS=	libesmtp.so:mail/libesmtp
 NOTIFYEMAIL_CONFIGURE_ENABLE=	notify_email
 NOTIFYEMAIL_CONFIGURE_WITH=	libesmtp=${LOCALBASE}
 
-NUTUPS_LIB_DEPENDS=		libupsclient.so:sysutils/nut
+NUTUPS_LIB_DEPENDS=		libnutclient.so:sysutils/nut
 NUTUPS_CONFIGURE_ENABLE=	nut
 NUTUPS_CONFIGURE_WITH=		upsclient=${LOCALBASE}
 
@@ -193,7 +192,7 @@ ONEWIRE_LIB_DEPENDS=		libow.so:comms/owfs
 ONEWIRE_CONFIGURE_ENABLE=	onewire
 ONEWIRE_CONFIGURE_WITH=		libowcapi=${LOCALBASE}
 
-OPENLDAP_USE=			OPENLDAP=yes
+OPENLDAP_USES=			ldap
 OPENLDAP_CONFIGURE_ENABLE=	openldap
 OPENLDAP_CONFIGURE_WITH=	libldap=${LOCALBASE}
 
@@ -231,7 +230,7 @@ REDIS_CONFIGURE_ENABLE=	redis write_redis
 REDIS_CONFIGURE_WITH=	libhiredis=${LOCALBASE}
 
 RIEMANN_LIB_DEPENDS=		libltdl.so:devel/libltdl \
-				libriemann-client.so:net-mgmt/riemann-c-client
+				libriemann-client-gnutls.so:net-mgmt/riemann-c-client
 RIEMANN_CONFIGURE_ENABLE=	write_riemann
 
 RRDTOOL_LIB_DEPENDS=		librrd.so:databases/rrdtool

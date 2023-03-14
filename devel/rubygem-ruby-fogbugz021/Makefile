@@ -6,13 +6,13 @@ PKGNAMESUFFIX=	021
 
 MAINTAINER=	ruby@FreeBSD.org
 COMMENT=	Simple Ruby wrapper for the Fogbugz XML API
+WWW=		https://github.com/firmafon/ruby-fogbugz
 
 LICENSE=	MIT
 
 RUN_DEPENDS=	rubygem-crack>=0.4:devel/rubygem-crack
 
 NO_ARCH=	yes
-USE_RUBY=	yes
 USES=		gem
 
 PORTSCOUT=	limit:^0\.2\.1

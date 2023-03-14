@@ -2,11 +2,12 @@ PORTNAME=	penrose
 DISTVERSIONPREFIX=	v
 DISTVERSION=	0.1-737
 DISTVERSIONSUFFIX=	-gb336c8d
-PORTREVISION=	4
+PORTREVISION=	5
 CATEGORIES=	math haskell
 
 MAINTAINER=	yuri@FreeBSD.org
 COMMENT=	Create diagrams by typing mathematical notation in plain text
+WWW=		https://penrose.ink/
 
 LICENSE=	MIT
 LICENSE_FILE=	${WRKSRC}/LICENSE
@@ -137,5 +138,7 @@ USE_CABAL=	MonadRandom-0.5.1.2 \
 .if ${GCC_DEFAULT} >= 10
 BROKEN=		fails to build with GCC 10: cabal: Missing dependency on a foreign library: Missing (or bad) C library: gfortran
 .endif
+DEPRECATED=	Broken since 2021
+EXPIRATION_DATE=	2023-03-21
 
 .include <bsd.port.post.mk>

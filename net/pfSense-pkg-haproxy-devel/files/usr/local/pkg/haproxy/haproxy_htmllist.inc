@@ -3,7 +3,7 @@
  * haproxy_htmllist.inc
  *
  * part of pfSense (https://www.pfsense.org)
- * Copyright (c) 2016-2022 Rubicon Communications, LLC (Netgate)
+ * Copyright (c) 2016-2023 Rubicon Communications, LLC (Netgate)
  * Copyright (c) 2016 PiBa-NL
  * All rights reserved.
  *
@@ -43,7 +43,7 @@ class HaproxyHtmlList
 	public $fields_details = null;
 	public $keyfield = "";
 
-	public function HaproxyHtmlList($tablename, $fields) {
+	public function __construct($tablename, $fields) {
 		$this->tablename = $tablename;
 		$this->fields = $fields;
 	}

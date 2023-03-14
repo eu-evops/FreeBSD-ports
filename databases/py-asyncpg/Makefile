@@ -1,13 +1,12 @@
-# Created by: Babak Farrokhi <farrokhi@FreeBSD.org>
-
 PORTNAME=	asyncpg
-PORTVERSION=	0.25.0
+PORTVERSION=	0.27.0
 CATEGORIES=	databases python
-MASTER_SITES=	CHEESESHOP
+MASTER_SITES=	PYPI
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
 
 MAINTAINER=	farrokhi@FreeBSD.org
 COMMENT=	High performance PostgreSQL Client Library for Python/asyncio
+WWW=		https://github.com/MagicStack/asyncpg/
 
 LICENSE=	APACHE20
 LICENSE_FILE=	${WRKSRC}/LICENSE

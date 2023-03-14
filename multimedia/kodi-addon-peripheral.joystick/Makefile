@@ -1,13 +1,11 @@
-# Created by: Rozhuk Ivan 2018 <rozhuk.im@gmail.com>
-
 PORTNAME=	peripheral.joystick
-DISTVERSION=	1.7.1
-DISTVERSIONSUFFIX=	-Matrix
-PORTREVISION=	3
+DISTVERSION=	20.1.0
+DISTVERSIONSUFFIX=	-Nexus
 CATEGORIES=	multimedia
 
 MAINTAINER=	rozhuk.im@gmail.com
 COMMENT=	Joystick support for Kodi
+WWW=		https://github.com/xbmc/peripheral.joystick
 
 LICENSE=	GPLv2+
 

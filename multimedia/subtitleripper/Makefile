@@ -1,5 +1,3 @@
-# Created by: Mario Sergio Fujikawa Ferreira <lioux@FreeBSD.org>
-
 PORTNAME=	subtitleripper
 DISTVERSION=	0.3-4
 PORTREVISION=	11
@@ -8,8 +6,12 @@ MASTER_SITES=	SF/${PORTNAME}/${PORTNAME}/${PORTNAME}-0.3-4
 
 MAINTAINER=	multimedia@FreeBSD.org
 COMMENT=	Convert DVD subtitles into text format (subrip srt) or VobSub format
+WWW=		http://subtitleripper.sourceforge.net/
 
 LICENSE=	GPLv2
+
+DEPRECATED=	Depends on broken transcode port
+EXPIRATION_DATE=	2023-03-31
 
 LIB_DEPENDS=	libnetpbm.so:graphics/netpbm \
 		libpng.so:graphics/png

@@ -1,8 +1,6 @@
-# Created by: Shin'ya Murakami <murakami@ahs.scitec.kobe-u.ac.jp>
-
 PORTNAME=	dcl
 PORTVERSION=	5.4.8
-PORTREVISION=	9
+PORTREVISION=	10
 CATEGORIES=	science graphics
 MASTER_SITES=	http://www.gfd-dennou.org/library/dcl/ \
 		http://dennou-h.gfd-dennou.org/library/dcl/ \
@@ -10,6 +8,7 @@ MASTER_SITES=	http://www.gfd-dennou.org/library/dcl/ \
 
 MAINTAINER=	murashin@gfd-dennou.org
 COMMENT=	Scientific graphic library for geoscience
+WWW=		https://www.gfd-dennou.org/arch/dcl/
 
 # Converted from RESTRICTED
 LICENSE=	dcl
@@ -18,6 +17,8 @@ LICENSE_TEXT=	No commercial use
 LICENSE_PERMS=	auto-accept
 
 BROKEN=		fails to fetch from mastersite (newest release is 7.4.0 of 2020611)
+DEPRECATED=	Broken since 2021
+EXPIRATION_DATE=	2023-03-21
 
 MAKE_JOBS_UNSAFE=	yes
 USES=		desthack fortran gnome pkgconfig xorg

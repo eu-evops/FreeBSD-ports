@@ -1,10 +1,11 @@
 PORTNAME=	screengrab
-PORTVERSION=	2.3.0
+PORTVERSION=	2.4.0
 CATEGORIES=	x11
 MASTER_SITES=	LXQT
 
 MAINTAINER=	jsm@FreeBSD.org
 COMMENT=	Screen dump utility
+WWW=		https://github.com/lxqt/screengrab
 
 LICENSE=	LGPL21+
 

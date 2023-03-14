@@ -1,12 +1,11 @@
-# Created by: Po-Chuan Hsieh <sunpoet@FreeBSD.org>
-
 PORTNAME=	tty-markdown
-PORTVERSION=	0.7.0
+PORTVERSION=	0.7.1
 CATEGORIES=	devel rubygems
 MASTER_SITES=	RG
 
 MAINTAINER=	sunpoet@FreeBSD.org
 COMMENT=	Convert markdown document/text into terminal friendly output
+WWW=		https://ttytoolkit.org/
 
 LICENSE=	MIT
 LICENSE_FILE=	${WRKSRC}/LICENSE.txt
@@ -19,7 +18,6 @@ RUN_DEPENDS=	rubygem-kramdown>=1.16.2<3.0:textproc/rubygem-kramdown \
 		rubygem-tty-screen>=0.8<1:devel/rubygem-tty-screen
 
 USES=		gem
-USE_RUBY=	yes
 
 NO_ARCH=	yes
 

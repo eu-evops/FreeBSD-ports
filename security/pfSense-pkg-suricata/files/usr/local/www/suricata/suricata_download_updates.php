@@ -3,11 +3,11 @@
  * suricata_download_updates.php
  *
  * part of pfSense (https://www.pfsense.org)
- * Copyright (c) 2006-2022 Rubicon Communications, LLC (Netgate)
+ * Copyright (c) 2006-2023 Rubicon Communications, LLC (Netgate)
  * Copyright (c) 2003-2004 Manuel Kasper
  * Copyright (c) 2005 Bill Marquette
  * Copyright (c) 2009 Robert Zelaya Sr. Developer
- * Copyright (c) 2021 Bill Meeks
+ * Copyright (c) 2023 Bill Meeks
  * All rights reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -31,15 +31,14 @@ require_once("/usr/local/pkg/suricata/suricata.inc");
 $suricatadir = SURICATADIR;
 $suricata_rules_upd_log = SURICATA_RULES_UPD_LOGFILE;
 
-$snortdownload = $config['installedpackages']['suricata']['config'][0]['enable_vrt_rules'];
-$emergingthreats = $config['installedpackages']['suricata']['config'][0]['enable_etopen_rules'];
-$etpro = $config['installedpackages']['suricata']['config'][0]['enable_etpro_rules'];
-$snortcommunityrules = $config['installedpackages']['suricata']['config'][0]['snortcommunityrules'];
-$feodotracker_rules = $config['installedpackages']['suricata']['config'][0]['enable_feodo_botnet_c2_rules'];
-$sslbl_rules = $config['installedpackages']['suricata']['config'][0]['enable_abuse_ssl_blacklist_rules'];
-$enable_extra_rules = $config['installedpackages']['suricata']['config'][0]['enable_extra_rules'] == "on" ? 'on' : 'off';
-init_config_arr(array('installedpackages', 'suricata' ,'config', 0, 'extra_rules', 'rule'));
-$extra_rules = $config['installedpackages']['suricata']['config'][0]['extra_rules']['rule'];
+$snortdownload = config_get_path('installedpackages/suricata/config/0/enable_vrt_rules');
+$emergingthreats = config_get_path('installedpackages/suricata/config/0/enable_etopen_rules');
+$etpro = config_get_path('installedpackages/suricata/config/0/enable_etpro_rules');
+$snortcommunityrules = config_get_path('installedpackages/suricata/config/0/snortcommunityrules');
+$feodotracker_rules = config_get_path('installedpackages/suricata/config/0/enable_feodo_botnet_c2_rules');
+$sslbl_rules = config_get_path('installedpackages/suricata/config/0/enable_abuse_ssl_blacklist_rules');
+$enable_extra_rules = config_get_path('installedpackages/suricata/config/0/enable_extra_rules') == "on" ? 'on' : 'off';
+$extra_rules = config_get_path('installedpackages/suricata/config/0/extra_rules/rule', []);
 
 /* Get last update information if available */
 if (file_exists(SURICATADIR . "rulesupd_status")) {
@@ -54,22 +53,22 @@ else {
 
 // Check for any custom URLs and extract custom filenames
 // if present, else use package default values.
-if ($config['installedpackages']['suricata']['config'][0]['enable_snort_custom_url'] == 'on') {
-	$snort_rules_file = trim(substr($config['installedpackages']['suricata']['config'][0]['snort_custom_url'], strrpos($config['installedpackages']['suricata']['config'][0]['snort_custom_url'], '/') + 1));
+if (config_get_path('installedpackages/suricata/config/0/enable_snort_custom_url') == 'on') {
+	$snort_rules_file = trim(substr(config_get_path('installedpackages/suricata/config/0/snort_custom_url'), strrpos(config_get_path('installedpackages/suricata/config/0/snort_custom_url'), '/') + 1));
 }
 else {
-	$snort_rules_file = $config['installedpackages']['suricata']['config'][0]['snort_rules_file'];
+	$snort_rules_file = config_get_path('installedpackages/suricata/config/0/snort_rules_file');
 }
-if ($config['installedpackages']['suricata']['config'][0]['enable_gplv2_custom_url'] == 'on') {
-	$snort_community_rules_filename = trim(substr($config['installedpackages']['suricata']['config'][0]['gplv2_custom_url'], strrpos($config['installedpackages']['suricata']['config'][0]['gplv2_custom_url'], '/') + 1));
+if (config_get_path('installedpackages/suricata/config/0/enable_gplv2_custom_url') == 'on') {
+	$snort_community_rules_filename = trim(substr(config_get_path('installedpackages/suricata/config/0/gplv2_custom_url'), strrpos(config_get_path('installedpackages/suricata/config/0/gplv2_custom_url'), '/') + 1));
 }
 else {
 	$snort_community_rules_filename = GPLV2_DNLD_FILENAME;
 }
 if ($etpro == "on") {
 	$et_name = "Emerging Threats Pro Rules";
-	if ($config['installedpackages']['suricata']['config'][0]['enable_etpro_custom_url'] == 'on') {
-		$emergingthreats_filename = trim(substr($config['installedpackages']['suricata']['config'][0]['etpro_custom_rule_url'], strrpos($config['installedpackages']['suricata']['config'][0]['etpro_custom_rule_url'], '/') + 1));
+	if (config_get_path('installedpackages/suricata/config/0/enable_etpro_custom_url') == 'on') {
+		$emergingthreats_filename = trim(substr(config_get_path('installedpackages/suricata/config/0/etpro_custom_rule_url'), strrpos(config_get_path('installedpackages/suricata/config/0/etpro_custom_rule_url'), '/') + 1));
 	}
 	else {
 		$emergingthreats_filename = ETPRO_DNLD_FILENAME;
@@ -77,8 +76,8 @@ if ($etpro == "on") {
 }
 else {
 	$et_name = "Emerging Threats Open Rules";
-	if ($config['installedpackages']['suricata']['config'][0]['enable_etopen_custom_url'] == 'on') {
-		$emergingthreats_filename = trim(substr($config['installedpackages']['suricata']['config'][0]['etopen_custom_rule_url'], strrpos($config['installedpackages']['suricata']['config'][0]['etopen_custom_rule_url'], '/') + 1));
+	if (config_get_path('installedpackages/suricata/config/0/enable_etopen_custom_url') == 'on') {
+		$emergingthreats_filename = trim(substr(config_get_path('installedpackages/suricata/config/0/etopen_custom_rule_url'), strrpos(config_get_path('installedpackages/suricata/config/0/etopen_custom_rule_url'), '/') + 1));
 	}
 	else {
 		$emergingthreats_filename = ET_DNLD_FILENAME;
@@ -175,7 +174,7 @@ if ($_REQUEST['updatemode']) {
 	// Launch a background process to download the updates
 	$upd_pid = 0;
 	$upd_pid = mwexec_bg("/usr/local/bin/php -f /usr/local/pkg/suricata/suricata_check_for_rule_updates.php");
-	print($upd_pid);
+	print $upd_pid;
 
 	// If we failed to launch our background process, throw up an error for the user.
 	if ($upd_pid == 0) {
@@ -189,13 +188,14 @@ if ($_REQUEST['ajax'] == 'status') {
 	if (is_numeric($_REQUEST['pid'])) {
 		// Check for the PID launched as the rules update task
 		$rc = shell_exec("/bin/ps -o pid= -p {$_REQUEST['pid']}");
+
 		if (!empty($rc)) {
-			print("RUNNING");
+			print "RUNNING";
 		} else {
-			print("DONE");
+			print "DONE";
 		}
 	} else {
-		print("DONE");
+		print "DONE";
 	}
 	exit;
 }
@@ -438,7 +438,7 @@ $modal->addInput(new Form_StaticText (
 	'<i class="content fa fa-spinner fa-pulse fa-lg text-center text-info"></i>'
 ));
 $form->add($modal);
-print($form);
+print $form;
 ?>
 
 <div class="infoblock">

@@ -1,13 +1,13 @@
-# Created by: Thorsten Greiner <thorsten.greiner@web.de>
-
 PORTNAME=	xfce4-battery-plugin
 PORTVERSION=	1.1.4
+PORTREVISION=	1
 CATEGORIES=	sysutils xfce
 MASTER_SITES=	XFCE/panel-plugins
 DIST_SUBDIR=	xfce4
 
 MAINTAINER=	xfce@FreeBSD.org
 COMMENT=	Battery monitor panel plugin for Xfce4
+WWW=		https://goodies.xfce.org/projects/panel-plugins/xfce4-battery-plugin
 
 LICENSE=	GPLv2
 

@@ -7,6 +7,7 @@ DISTNAME=	WindowMaker-${PORTVERSION}
 
 MAINTAINER=	hrs@FreeBSD.org
 COMMENT=	Window Maker raster graphics library
+WWW=		https://www.windowmaker.org/
 
 LICENSE=	LGPL21
 
@@ -37,7 +38,7 @@ INSTALL_TARGET=	install-strip
 OPTIONS_DEFINE=	IMAGEMAGICK
 OPTIONS_DEFAULT=	IMAGEMAGICK
 
-IMAGEMAGICK_LIB_DEPENDS=	libMagickWand-${IMAGEMAGICK_DEFAULT}.so:graphics/ImageMagick${IMAGEMAGICK_DEFAULT}
+IMAGEMAGICK_USES=	magick
 IMAGEMAGICK_CONFIGURE_OFF=	--disable-magick
 
 .include <bsd.port.options.mk>

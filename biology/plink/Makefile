@@ -6,6 +6,7 @@ CATEGORIES=		biology
 
 MAINTAINER=	mzaki@e-mail.ne.jp
 COMMENT=	Whole genome association analysis toolset
+WWW=		https://www.cog-genomics.org/plink/
 
 LICENSE=	GPLv3
 LICENSE_FILE=	${WRKSRC}/LICENSE
@@ -26,6 +27,8 @@ MAKE_ARGS=	ZLIB=-lz BLASFLAGS="${BLASLIB} ${LAPACKLIB}"
 CFLAGS+=	-DDYNAMIC_ZLIB -I${LOCALBASE}/include
 LDFLAGS+=	-lthr
 INSTALL_TARGET=	install-strip
+
+CONFLICTS_INSTALL=	putty putty-nogtk # bin/plink
 
 OPTIONS_DEFINE=		EXAMPLES
 OPTIONS_SINGLE=		BLAS

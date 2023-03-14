@@ -1,4 +1,3 @@
-# Created by: Martin Matuska <mm@FreeBSD.org>
 PORTREVISION=	1
 
 PKGNAMESUFFIX=	-im7
@@ -12,7 +11,7 @@ MASTERDIR=	${.CURDIR}/../pecl-imagick
 
 CONFLICTS_INSTALL=	${PKGNAMEPREFIX}${PORTNAME}
 
-X11_LIB_DEPENDS?=	libMagickWand-7.so:graphics/ImageMagick7
-X11_LIB_DEPENDS_OFF?=	libMagickWand-7.so:graphics/ImageMagick7-nox11
+X11_USES?=		magick:7
+X11_USES_OFF?=		magick:7,nox11
 
 .include "${MASTERDIR}/Makefile"

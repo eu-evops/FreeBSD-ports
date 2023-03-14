@@ -1,27 +1,36 @@
-# Created by: Brendan Molloy <brendan+freebsd@bbqsrc.net>
-
 PORTNAME=	canonicaljson
-PORTVERSION=	1.5.0
+PORTVERSION=	1.6.4
 CATEGORIES=	devel python
-MASTER_SITES=	CHEESESHOP
+MASTER_SITES=	PYPI
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
 
 MAINTAINER=	sunpoet@FreeBSD.org
 COMMENT=	Canonical JSON
+WWW=		https://github.com/matrix-org/python-canonicaljson
 
 LICENSE=	APACHE20
 LICENSE_FILE=	${WRKSRC}/LICENSE
 
-RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}frozendict>=1.0:devel/py-frozendict@${PY_FLAVOR} \
-		${PYTHON_PKGNAMEPREFIX}simplejson>=3.14.0:devel/py-simplejson@${PY_FLAVOR}
-TEST_DEPENDS=	${PYTHON_PKGNAMEPREFIX}pytest>=0:devel/py-pytest@${PY_FLAVOR}
+RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}simplejson>=3.14.0:devel/py-simplejson@${PY_FLAVOR}
+TEST_DEPENDS=	${PYTHON_PKGNAMEPREFIX}frozendict>=1.0:devel/py-frozendict@${PY_FLAVOR}
 
-USES=		python:3.5+
-USE_PYTHON=	autoplist concurrent distutils
+USES=		python:3.7+
+USE_PYTHON=	autoplist concurrent distutils pytest
 
 NO_ARCH=	yes
 
-do-test:
-	cd ${WRKSRC} && ${PYTHON_CMD} -m pytest
+OPTIONS_DEFINE=	FROZENDICT
+FROZENDICT_DESC=Frozendict immutable dictionaries support
 
-.include <bsd.port.mk>
+FROZENDICT_RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}frozendict>=1.0:devel/py-frozendict@${PY_FLAVOR}
+
+.include <bsd.port.pre.mk>
+
+.if ${PYTHON_REL} < 30800
+RUN_DEPENDS+=	${PYTHON_PKGNAMEPREFIX}typing-extensions>=4.0.0:devel/py-typing-extensions@${PY_FLAVOR}
+.endif
+
+post-patch:
+	@${CP} ${FILESDIR}/setup.py ${WRKSRC}/
+
+.include <bsd.port.post.mk>

@@ -1,5 +1,3 @@
-# Created by: Pedro Giffuni
-
 PORTNAME=	NASTRAN-95
 PORTVERSION=	20160908
 PORTREVISION=	6
@@ -7,6 +5,7 @@ CATEGORIES=	cad science
 
 MAINTAINER=	pfg@FreeBSD.org
 COMMENT=	NASA Structural Analysis System
+WWW=		https://github.com/nasa/NASTRAN-95
 
 LICENSE=	NOSA
 LICENSE_NAME=	NASA OPEN SOURCE AGREEMENT VERSION 1.3
@@ -14,6 +13,8 @@ LICENSE_FILE=	${FILESDIR}/NASTRAN95-license.txt
 LICENSE_PERMS=	dist-mirror dist-sell pkg-mirror pkg-sell auto-accept
 
 BROKEN=		Produces bogus files on newer versions of GCC fortran
+DEPRECATED=	Broken since 2020
+EXPIRATION_DATE=	2023-03-20
 
 USES=		fortran gmake dos2unix
 

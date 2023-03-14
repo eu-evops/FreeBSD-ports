@@ -1,11 +1,10 @@
-# Created by: Ka Ho Ng <khng300@gmail.com>
-
 PORTNAME=	fcitx5-chewing
 DISTVERSION=	5.0.7
 CATEGORIES=	chinese textproc
 
 MAINTAINER=	khng@FreeBSD.org
 COMMENT=	Chewing support for Fcitx5
+WWW=		https://github.com/fcitx/fcitx5-chewing
 
 LICENSE=	GPLv2+
 LICENSE_FILE=	${WRKSRC}/LICENSES/GPL-2.0-or-later.txt
@@ -19,5 +18,7 @@ USE_GITHUB=	yes
 GH_ACCOUNT=	fcitx
 
 USE_KDE=	ecm
+
+CONFLICTS_INSTALL=	zh-fcitx-chewing # share/icons/hicolor/48x48/apps/fcitx-chewing.png
 
 .include <bsd.port.mk>

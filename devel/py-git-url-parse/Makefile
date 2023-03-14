@@ -1,11 +1,12 @@
 PORTNAME=	git-url-parse
 PORTVERSION=	1.2.2
 CATEGORIES=	devel python
-MASTER_SITES=	CHEESESHOP
+MASTER_SITES=	PYPI
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
 
 MAINTAINER=	matthew@FreeBSD.org
 COMMENT=	Simple git URL parser
+WWW=		https://pypi.org/project/git-url-parse/
 
 LICENSE=	MIT
 LICENSE_FILE=	${WRKSRC}/LICENSE

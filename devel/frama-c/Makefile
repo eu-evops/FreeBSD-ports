@@ -1,17 +1,19 @@
-# Created by: b.f. <bf@FreeBSD.org>
-
 PORTNAME=	frama-c
 DISTVERSIONPREFIX=	Phosphorus-
 DISTVERSION=	20170501
+PORTREVISION=	3
 CATEGORIES=	devel lang
 MASTER_SITES=	http://frama-c.com/download/
 
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Extensible platform for source-code analysis of C
+WWW=		https://frama-c.com/index.html
 
 LICENSE=	LGPL21
 
 BROKEN=		fails to build
+DEPRECATED=	Broken since 2021
+EXPIRATION_DATE=	2023-03-21
 
 BUILD_DEPENDS=	${LOCALBASE}/lib/ocaml/ocamlgraph/graph.a:math/ocaml-ocamlgraph \
 	    ${LOCALBASE}/lib/ocaml/site-lib/zarith/zarith.a:math/ocaml-zarith

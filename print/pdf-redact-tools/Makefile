@@ -1,5 +1,3 @@
-# Created by: Emanuel Haupt <ehaupt@FreeBSD.org>
-
 PORTNAME=	pdf-redact-tools
 PORTVERSION=	0.1.2
 DISTVERSIONPREFIX=	v
@@ -9,14 +7,14 @@ PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
 
 MAINTAINER=	ehaupt@FreeBSD.org
 COMMENT=	Securely redact and strip metadata from PDF files
+WWW=		https://github.com/firstlookmedia/pdf-redact-tools
 
 LICENSE=	GPLv3
 LICENSE_FILE=	${WRKSRC}/LICENSE
 
-RUN_DEPENDS=	exiftool:graphics/p5-Image-ExifTool \
-		convert:graphics/ImageMagick6
+RUN_DEPENDS=	exiftool:graphics/p5-Image-ExifTool
 
-USES=		python:3.6+
+USES=		magick:6,run python:3.6+
 USE_GITHUB=	yes
 USE_PYTHON=	autoplist concurrent distutils
 

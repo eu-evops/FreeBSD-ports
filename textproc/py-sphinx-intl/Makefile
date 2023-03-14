@@ -1,13 +1,12 @@
-# Created by: Kris Moore <kmoore@FreeBSD.org>
-
 PORTNAME=	sphinx-intl
 PORTVERSION=	2.0.1
 CATEGORIES=	textproc python
-MASTER_SITES=	CHEESESHOP
+MASTER_SITES=	PYPI
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
 
 MAINTAINER=	sunpoet@FreeBSD.org
 COMMENT=	Sphinx utility that make it easy to translate and to apply translation
+WWW=		https://github.com/sphinx-doc/sphinx-intl
 
 LICENSE=	BSD2CLAUSE
 

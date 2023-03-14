@@ -1,13 +1,13 @@
-# Created by: Martin Wilke (miwi@FreeBSD.org)
-
 PORTNAME=	xfce4-time-out-plugin
 PORTVERSION=	1.1.2
+PORTREVISION=	1
 CATEGORIES=	x11-clocks xfce
 MASTER_SITES=	XFCE/panel-plugins
 DIST_SUBDIR=	xfce4
 
 MAINTAINER=	xfce@FreeBSD.org
 COMMENT=	Time out plugin for Xfce
+WWW=		https://goodies.xfce.org/projects/panel-plugins/xfce4-time-out-plugin
 
 LICENSE=	GPLv2
 

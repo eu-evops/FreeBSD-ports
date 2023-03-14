@@ -1,10 +1,12 @@
 PORTNAME=	wf-config
 DISTVERSIONPREFIX=	v
 DISTVERSION=	0.7.1
+PORTREVISION=	2
 CATEGORIES=	devel
 
 MAINTAINER=	jbeich@FreeBSD.org
 COMMENT=	Library for managing configuration files, written for wayfire
+WWW=		https://wayfire.org/
 
 LICENSE=	MIT
 LICENSE_FILE=	${WRKSRC}/LICENSE

@@ -1,11 +1,11 @@
-# Created by: Bruce M Simpson
-
 PORTNAME=	opensc
-DISTVERSION=	0.22.0
+DISTVERSION=	0.23.0
+PORTREVISION=	1
 CATEGORIES=	security devel
 
 MAINTAINER=	ale@FreeBSD.org
 COMMENT=	Libraries and utilities to access smart cards
+WWW=		https://github.com/OpenSC/OpenSC/wiki
 
 LICENSE=	LGPL21
 

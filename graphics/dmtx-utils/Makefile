@@ -1,5 +1,3 @@
-# Created by: johans
-
 PORTNAME=	dmtx-utils
 DISTVERSIONPREFIX=	v
 DISTVERSION=	0.7.6
@@ -8,13 +6,13 @@ CATEGORIES=	graphics
 
 MAINTAINER=	hrs@FreeBSD.org
 COMMENT=	Software for reading and writing Data Matrix barcodes
+WWW=		http://libdmtx.sourceforge.net
 
 LICENSE=	LGPL21+
 
-LIB_DEPENDS=	libdmtx.so:graphics/libdmtx \
-		libMagickWand-${IMAGEMAGICK_DEFAULT}.so:graphics/ImageMagick${IMAGEMAGICK_DEFAULT}
+LIB_DEPENDS=	libdmtx.so:graphics/libdmtx
 
-USES=		autoreconf libtool localbase tar:bzip2 pkgconfig
+USES=		autoreconf libtool localbase magick tar:bzip2 pkgconfig
 
 USE_GITHUB=	yes
 GH_ACCOUNT=	dmtx

@@ -1,5 +1,3 @@
-# Created by: Piotr Florczyk <pf@itwf.pl>
-
 PORTNAME=	lualdap
 PORTVERSION=	1.3.0
 DISTVERSIONPREFIX=	v
@@ -9,12 +7,13 @@ PKGNAMEPREFIX=	${LUA_PKGNAMEPREFIX}
 
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	LDAP support for the Lua language
+WWW=		https://github.com/lualdap/lualdap
 
 LICENSE=	MIT
 
-USES=		gmake lua:module
-USE_OPENLDAP=	yes
+USES=		gmake ldap lua:module
 USE_GITHUB=	yes
+USE_CSTD=	c99
 
 MAKE_ARGS+=	CPPFLAGS="-I${LOCALBASE}/include -I${LUA_INCDIR}" \
 		LDFLAGS="-L${LOCALBASE}/lib" \

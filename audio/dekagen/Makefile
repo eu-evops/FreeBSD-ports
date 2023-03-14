@@ -1,5 +1,3 @@
-# Created by: Martin Kraft <martin.kraft@fal.de>
-
 PORTNAME=	dekagen
 PORTVERSION=	1.0.2
 PORTREVISION=	2
@@ -8,6 +6,10 @@ MASTER_SITES=	ftp://ftp.ibiblio.org/pub/linux/apps/sound/convert/
 
 MAINTAINER=	martin.kraft@fal.de
 COMMENT=	Frontend to rip, convert, and name MP3/Ogg
+WWW=		http://userpage.fu-berlin.de/~mbayer/tools/dekagen.html
+
+DEPRECATED=	Abandonware, last release in 2004. Please consider using audio/cyanrip or audio/abcde
+EXPIRATION_DATE=2023-03-31
 
 # The only reason for installing xmcd is, that dekagen uses cda
 # for CDDB inquiries. You can safely 'make -DWITHOUT_XMCD', if you

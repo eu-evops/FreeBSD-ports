@@ -1,9 +1,11 @@
 PORTNAME=	wdisplays
 DISTVERSION=	1.1
-CATEGORIES=	x11
+PORTREVISION=	1
+CATEGORIES=	x11 wayland
 
 MAINTAINER=	jbeich@FreeBSD.org
 COMMENT=	GUI display configurator for wlroots compositors
+WWW=		https://github.com/artizirk/wdisplays
 
 LICENSE=	CC-BY-SA-4.0 CC0-1.0 GPLv3+ MIT
 LICENSE_COMB=	multi

@@ -1,11 +1,12 @@
 PORTNAME=	amfora
 DISTVERSIONPREFIX=	v
-DISTVERSION=	1.8.0
-PORTREVISION=	1
+DISTVERSION=	1.9.2
+PORTREVISION=	11
 CATEGORIES=	www
 
 MAINTAINER=	lcook@FreeBSD.org
 COMMENT=	Fancy terminal browser for the Gemini protocol
+WWW=		https://github.com/makeworld-the-better-one/amfora
 
 LICENSE=	GPLv3
 LICENSE_FILE=	${WRKSRC}/LICENSE
@@ -13,7 +14,7 @@ LICENSE_FILE=	${WRKSRC}/LICENSE
 USES=		go:modules
 
 _BUILD_VERSION=	${DISTVERSIONFULL}
-_BUILD_COMMIT=	71385e9
+_BUILD_COMMIT=	61d8645
 
 GO_MODULE=	github.com/makeworld-the-better-one/${PORTNAME}
 GO_BUILDFLAGS=	-ldflags "\

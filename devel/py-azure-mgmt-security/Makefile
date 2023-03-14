@@ -1,11 +1,12 @@
 PORTNAME=	azure-mgmt-security
 DISTVERSION=	2.0.0b1
 CATEGORIES=	devel python
-MASTER_SITES=	CHEESESHOP
+MASTER_SITES=	PYPI
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
 
 MAINTAINER=	dbaio@FreeBSD.org
 COMMENT=	Microsoft Azure Secutiry Center Management Client Library for Python
+WWW=		https://pypi.org/project/azure-mgmt-security/
 
 LICENSE=	MIT
 

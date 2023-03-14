@@ -1,13 +1,12 @@
-# Created by: Maxim Sobolev <sobomax@FreeBSD.org>
-
 PORTNAME=	svgalib
 PORTVERSION=	1.4.3
 PORTREVISION=	7
 CATEGORIES=	graphics devel
 MASTER_SITES=	http://www.svgalib.org/
 
-MAINTAINER=	zeising@FreeBSD.org
+MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Low level console graphics library
+WWW=		https://www.svgalib.org/
 
 LICENSE=	PD
 LICENSE_FILE=	${WRKSRC}/LICENSE

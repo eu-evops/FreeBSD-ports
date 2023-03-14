@@ -1,9 +1,10 @@
 PORTNAME=	segyio
-DISTVERSION=	1.9.8
+DISTVERSION=	1.9.9
 CATEGORIES=	science
 
 MAINTAINER=	yuri@FreeBSD.org
 COMMENT=	Library to interact with SEG-Y & Seismic Unix formatted seismic data
+WWW=		https://github.com/equinor/segyio
 
 LICENSE=	LGPL3
 LICENSE_FILE=	${WRKSRC}/License.md

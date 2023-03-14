@@ -1,6 +1,6 @@
---- src/uharfbuzz/_harfbuzz.cpp.orig	2021-05-09 03:05:40 UTC
+--- src/uharfbuzz/_harfbuzz.cpp.orig	2022-07-31 07:40:22 UTC
 +++ src/uharfbuzz/_harfbuzz.cpp
-@@ -18,13 +18,12 @@
+@@ -30,15 +30,12 @@
              "-std=c++11"
          ],
          "include_dirs": [
@@ -11,7 +11,9 @@
          "name": "uharfbuzz._harfbuzz",
          "sources": [
              "src/uharfbuzz/_harfbuzz.pyx",
--            "harfbuzz/src/harfbuzz.cc"
+-            "harfbuzz/src/harfbuzz.cc",
+-            "harfbuzz/src/hb-subset-repacker.cc",
+-            "harfbuzz/src/graph/gsubgpos-context.cc",
+             "src/uharfbuzz/_draw_test_funcs.cc"
          ]
      },
-     "module_name": "uharfbuzz._harfbuzz"

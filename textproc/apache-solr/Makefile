@@ -1,13 +1,14 @@
-# Created by: Gea-Suan Lin <gslin@gslin.org>
-
 PORTNAME=	apache-solr
-PORTVERSION=	8.10.0
+PORTVERSION=	8.11.2
+PORTREVISION=	0
+PORTEPOCH=	1
 CATEGORIES=	textproc java
 MASTER_SITES=	https://archive.apache.org/dist/lucene/solr/${PORTVERSION}/
 DISTNAME=	solr-${PORTVERSION}
 
 MAINTAINER=	mfechner@FreeBSD.org
 COMMENT=	High performance search server built using Lucene Java
+WWW=		https://lucene.apache.org/solr/
 
 LICENSE=	APACHE20
 
@@ -47,7 +48,7 @@ do-install:
 	${ECHO} 'SOLR_LOGS_DIR="/var/log/solr"' >> ${STAGEDIR}${PREFIX}/etc/solr.in.sh.sample
 	${ECHO} 'SOLR_PORT="8983"' >> ${STAGEDIR}${PREFIX}/etc/solr.in.sh.sample
 	${ECHO} 'SOLR_PID_DIR="/var/db/solr"' >> ${STAGEDIR}${PREFIX}/etc/solr.in.sh.sample
-	${ECHO} 'SOLR_OPTS="$$SOLR_OPTS -Djetty.host=localhost"' >> ${STAGEDIR}${PREFIX}/etc/solr.in.sh.sample
+	${ECHO} 'SOLR_OPTS="$$SOLR_OPTS -Djetty.host=localhost -Dlog4j2.formatMsgNoLookups=true"' >> ${STAGEDIR}${PREFIX}/etc/solr.in.sh.sample
 
 	${MKDIR} ${STAGEDIR}/var/db/solr
 	${MKDIR} ${STAGEDIR}/var/log/solr

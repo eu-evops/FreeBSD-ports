@@ -1,10 +1,12 @@
 PORTNAME=	snmp_exporter
 PORTVERSION=	0.20.0
 DISTVERSIONPREFIX=v
+PORTREVISION=	10
 CATEGORIES=	sysutils
 
 MAINTAINER=	fabian.freyer@physik.tu-berlin.de
 COMMENT=	SNMP Exporter for Prometheus
+WWW=		https://github.com/prometheus/snmp_exporter
 
 LICENSE=	APACHE20
 
@@ -49,6 +51,6 @@ post-patch:
 
 post-install:
 	${MKDIR} ${STAGEDIR}${PREFIX}/etc/snmp_exporter/
-	${INSTALL_DATA} ${FILESDIR}/generator.yml ${STAGEDIR}${PREFIX}/etc/snmp_exporter/generator.yml
+	${INSTALL_DATA} ${FILESDIR}/generator.yml ${STAGEDIR}${PREFIX}/etc/snmp_exporter/generator.yml.sample
 
 .include <bsd.port.mk>

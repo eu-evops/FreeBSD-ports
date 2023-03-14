@@ -1,5 +1,5 @@
 PORTNAME=	erlang
-PORTVERSION=	24.1
+PORTVERSION=	25.2
 PORTREVISION=	0
 CATEGORIES=	lang parallel
 MASTER_SITES=	http://www.erlang.org/download/
@@ -9,6 +9,7 @@ DIST_SUBDIR=	erlang
 
 MAINTAINER=	erlang@FreeBSD.org
 COMMENT=	Manual pages for Erlang/OTP
+WWW=		https://www.erlang.org/
 
 LICENSE=	APACHE20
 

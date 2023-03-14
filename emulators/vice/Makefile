@@ -1,13 +1,12 @@
-# Created by: dchapes@ddm.on.ca
-
 PORTNAME=	vice
-PORTVERSION=	3.5
-PORTREVISION=	2
+PORTVERSION=	3.7
+PORTREVISION=	1
 CATEGORIES=	emulators
 MASTER_SITES=	SF/vice-emu/releases
 
 MAINTAINER=	dinoex@FreeBSD.org
 COMMENT=	Emulator for Commodore C64, C128, VIC20, PET, and CBM-II
+WWW=		https://vice-emu.sourceforge.io/
 
 LICENSE=	GPLv2 ROM
 LICENSE_COMB=	multi
@@ -32,20 +31,19 @@ LIB_DEPENDS=	libpng.so:graphics/png \
 		libgnutls.so:security/gnutls \
 		libharfbuzz.so:print/harfbuzz
 
-USES=		compiler:c++11-lang pkgconfig makeinfo localbase:ldflags \
+USES=		compiler:c++11-lang pkgconfig perl5 localbase:ldflags \
 		gmake iconv:wchar_t jpeg readline gettext xorg
 USE_XORG=	xpm ice sm xext xv xt x11 xmu xxf86vm
 USE_XORG+=	xrender xinerama xi xrandr xcursor xcomposite xdamage xfixes
 HAS_CONFIGURE=	yes
-MAKE_ENV+=	MAKEINFOFLAGS="--no-split" \
-		XDG_DATA_DIRS=${STAGEDIR}${PREFIX}/share
+MAKE_ENV+=	XDG_DATA_DIRS=${STAGEDIR}${PREFIX}/share
 CFLAGS+=	-fcommon
-CONFIGURE_ARGS+=	--enable-ipv6 \
-			--enable-external-ffmpeg \
+CONFIGURE_ARGS+=	--prefix=${PREFIX} \
+			--enable-ipv6 \
+			--enable-ffmpeg \
 			--enable-x64 \
 			--disable-realdevice \
 			--disable-pdf-docs \
-			--infodir="${PREFIX}/${INFO_PATH}" \
 			--localedir="${LOCALBASE}/share/locale" \
 			--disable-dependency-tracking \
 			DOS2UNIX=true
@@ -61,11 +59,11 @@ SDLUI2_DESC=	use SDL2 user interface
 SDLSOUND_DESC=	build with SDL2 sound system support
 
 GTK3UI_USES=			desktop-file-utils
-GTK3UI_CONFIGURE_ENABLE=	native-gtk3ui desktop-files
+GTK3UI_CONFIGURE_ENABLE=	gtk3ui desktop-files
 GTK3UI_BUILD_DEPENDS=		bash:shells/bash
 SDLUI2_USES=			sdl
 SDLUI2_USE=			SDL=sdl2 SDL=image2
-SDLUI2_CONFIGURE_ENABLE=	sdlui2
+SDLUI2_CONFIGURE_ENABLE=	sdl2ui
 SDLSOUND_USES=			sdl
 SDLSOUND_USE=			SDL=sdl2
 SDLSOUND_CONFIGURE_ON=		--with-sdlsound
@@ -89,10 +87,6 @@ __pmlinks1!=	${ECHO_CMD} '${LMLINKS:S/    / /}' | ${AWK} \
 USES+=		gnome gl
 USE_GNOME+=	gtk30 vte3 cairo gdkpixbuf2 pango
 USE_GL+=	glu gl glew
-.endif
-
-.if ${PORT_OPTIONS:MDOCS}
-INFO+=		vice
 .endif
 
 pre-configure:

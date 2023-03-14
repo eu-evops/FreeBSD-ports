@@ -1,18 +1,20 @@
 PORTNAME=	flatcc
 DISTVERSIONPREFIX=	v
-DISTVERSION=	0.6.0
+DISTVERSION=	0.6.1
 CATEGORIES=	devel
 
 MAINTAINER=	yuri@FreeBSD.org
 COMMENT=	FlatBuffers compiler and library in C for C
+WWW=		https://github.com/dvidelabs/flatcc
 
 LICENSE=	APACHE20
 LICENSE_FILE=	${WRKSRC}/LICENSE
 
 USES=		cmake compiler:c++11-lib
+USE_LDCONFIG=	yes
+
 USE_GITHUB=	yes
 GH_ACCOUNT=	dvidelabs
-USE_LDCONFIG=	yes
 
 CMAKE_ON=	BUILD_SHARED_LIBS FLATCC_INSTALL
 CMAKE_OFF=	FLATCC_TEST

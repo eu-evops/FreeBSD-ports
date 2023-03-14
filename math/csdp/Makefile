@@ -6,6 +6,7 @@ PKGNAMEPREFIX=	coin-or-
 
 MAINTAINER=	yuri@FreeBSD.org
 COMMENT=	Solver for semidefinite programming problems
+WWW=		https://github.com/coin-or/Csdp
 
 LICENSE=	MIT
 LICENSE_FILE=	${WRKSRC}/LICENSE
@@ -29,9 +30,7 @@ PLIST_FILES=	bin/complement \
 		bin/rand_graph \
 		bin/theta
 
-.include <bsd.port.options.mk>
-
-.if ${ARCH} == powerpc
+.if !exists(/usr/include/omp.h)
 USES+=		compiler:gcc-c++11-lib
 .endif
 

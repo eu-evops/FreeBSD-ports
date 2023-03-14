@@ -1,8 +1,6 @@
-# Created by: Douglas Thrift <douglas@douglasthrift.net>
-
 PORTNAME=	anyterm
 PORTVERSION=	1.1.29
-PORTREVISION=	22
+PORTREVISION=	25
 CATEGORIES=	www
 MASTER_SITES=	http://anyterm.org/download/ \
 		http://dl1.douglasthrift.net/${PORTNAME}/ \
@@ -10,9 +8,15 @@ MASTER_SITES=	http://anyterm.org/download/ \
 
 MAINTAINER=	douglas@douglasthrift.net
 COMMENT=	Terminal emulator on a Web page
+WWW=		https://anyterm.org/
 
 LICENSE=	GPLv2+
 LICENSE_FILE=	${WRKSRC}/LICENSE
+
+DEPRECATED=	upstream is dead
+EXPIRATION_DATE=	2023-04-01	
+
+BROKEN=		segfaults on startup
 
 LIB_DEPENDS=	libboost_system.so:devel/boost-libs
 

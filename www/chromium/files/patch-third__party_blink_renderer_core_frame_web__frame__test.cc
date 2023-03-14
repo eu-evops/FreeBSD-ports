@@ -1,20 +1,20 @@
---- third_party/blink/renderer/core/frame/web_frame_test.cc.orig	2021-09-24 04:26:11 UTC
+--- third_party/blink/renderer/core/frame/web_frame_test.cc.orig	2023-02-08 09:03:45 UTC
 +++ third_party/blink/renderer/core/frame/web_frame_test.cc
-@@ -6076,7 +6076,7 @@ TEST_F(WebFrameTest, DISABLED_PositionForPointTest) {
-   EXPECT_EQ(64, ComputeOffset(layout_object, 1000, 1000));
- }
- 
--#if !defined(OS_MAC) && !defined(OS_LINUX) && !defined(OS_CHROMEOS)
-+#if !defined(OS_MAC) && !defined(OS_LINUX) && !defined(OS_CHROMEOS) && !defined(OS_BSD)
- TEST_F(WebFrameTest, SelectRangeStaysHorizontallyAlignedWhenMoved) {
+@@ -6451,7 +6451,7 @@ TEST_F(WebFrameTest, DISABLED_PositionForPointTest) {
+   MoveCaretStaysHorizontallyAlignedWhenMoved
+ #endif
+ // TODO(crbug.com/1317375): Build these tests on all platforms.
+-#if !BUILDFLAG(IS_MAC) && !BUILDFLAG(IS_LINUX) && !BUILDFLAG(IS_CHROMEOS)
++#if !BUILDFLAG(IS_MAC) && !BUILDFLAG(IS_LINUX) && !BUILDFLAG(IS_CHROMEOS) && !BUILDFLAG(IS_BSD)
+ TEST_F(WebFrameTest, MAYBE_SelectRangeStaysHorizontallyAlignedWhenMoved) {
    RegisterMockedHttpURLLoad("move_caret.html");
  
-@@ -6446,7 +6446,7 @@ TEST_P(CompositedSelectionBoundsTest, SVGBasic) {
- TEST_P(CompositedSelectionBoundsTest, SVGTextWithFragments) {
-   RunTest("composited_selection_bounds_svg_text_with_fragments.html");
+@@ -6848,7 +6848,7 @@ TEST_F(CompositedSelectionBoundsTest, LargeSelectionSc
+ TEST_F(CompositedSelectionBoundsTest, LargeSelectionNoScroll) {
+   RunTest("composited_selection_bounds_large_selection_noscroll.html");
  }
--#if defined(OS_WIN) || defined(OS_LINUX) || defined(OS_CHROMEOS)
-+#if defined(OS_WIN) || defined(OS_LINUX) || defined(OS_CHROMEOS) || defined(OS_BSD)
- #if !defined(OS_ANDROID)
- TEST_P(CompositedSelectionBoundsTest, Input) {
+-#if BUILDFLAG(IS_WIN) || BUILDFLAG(IS_LINUX) || BUILDFLAG(IS_CHROMEOS)
++#if BUILDFLAG(IS_WIN) || BUILDFLAG(IS_LINUX) || BUILDFLAG(IS_CHROMEOS) || BUILDFLAG(IS_BSD)
+ #if !BUILDFLAG(IS_ANDROID)
+ TEST_F(CompositedSelectionBoundsTest, Input) {
    web_view_helper_.GetWebView()->GetSettings()->SetDefaultFontSize(16);

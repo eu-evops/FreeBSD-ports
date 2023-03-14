@@ -11,6 +11,7 @@ DISTNAME=	thundercache-6.1.201104260900-${BITS}-fbsd
 
 MAINTAINER=	eksffa@freebsdbrasil.com.br
 COMMENT=	High-performance and high-efficiency caching proxy system
+WWW=		https://www.bmsoftware.org
 
 LICENSE=	commercial
 LICENSE_NAME=	commercial
@@ -40,7 +41,7 @@ BITS=		${ARCH:S/amd64/64/:S/x86_64/64/:S/i386/32/}bits
 WRKSRC=		${WRKDIR}/thunder
 
 .if ${PORT_OPTIONS:MAPACHE}
-USES+=		apache:run,2.2+
+USES+=		apache:run
 .endif
 
 .if ${PORT_OPTIONS:MPGSQL}

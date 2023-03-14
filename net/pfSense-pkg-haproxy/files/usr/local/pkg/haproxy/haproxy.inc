@@ -3,7 +3,7 @@
  * haproxy.inc
  *
  * part of pfSense (https://www.pfsense.org)
- * Copyright (c) 2009-2022 Rubicon Communications, LLC (Netgate)
+ * Copyright (c) 2009-2023 Rubicon Communications, LLC (Netgate)
  * Copyright (c) 2013-2016 PiBa-NL
  * All rights reserved.
  *
@@ -2078,11 +2078,6 @@ function haproxy_writeconf($configpath) {
 			}
 
 			fwrite ($fd, $config_actions);
-			// CVE-2021-40346 workaround
-			if ($backend_type == 'http') {
-				fwrite ($fd, "\thttp-request  deny if { req.hdr_cnt(content-length) gt 1 }\n");
-				fwrite ($fd, "\thttp-response deny if { res.hdr_cnt(content-length) gt 1 }\n");
-			}
 			// Write backends after advanced options so custom use_backend rules can be applied first.
 			fwrite ($fd, $config_usebackends);
 			fwrite ($fd, $config_usedefaultbackends);

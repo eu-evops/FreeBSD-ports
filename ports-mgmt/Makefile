@@ -2,15 +2,16 @@
 
     SUBDIR += bsdadminscripts2
     SUBDIR += caronade
-    SUBDIR += chucky
     SUBDIR += create-rb-port
     SUBDIR += dialog4ports
     SUBDIR += dialog4ports-static
     SUBDIR += distilator
+    SUBDIR += fallout
     SUBDIR += fastest_pkg
     SUBDIR += freebsd-bugzilla-cli
     SUBDIR += genpatch
     SUBDIR += genplist
+    SUBDIR += hs-cabal2tuple
     SUBDIR += hs-panopticum
     SUBDIR += jailaudit
     SUBDIR += lsknobs
@@ -25,6 +26,7 @@
     SUBDIR += pchecker
     SUBDIR += pkg
     SUBDIR += pkg-devel
+    SUBDIR += pkg-graph
     SUBDIR += pkg-provides
     SUBDIR += pkg-rmleaf
     SUBDIR += pkg_cleanup
@@ -54,6 +56,7 @@
     SUBDIR += portrac
     SUBDIR += ports-tools
     SUBDIR += portscout
+    SUBDIR += portsdb
     SUBDIR += portsearch
     SUBDIR += portshaker
     SUBDIR += portshaker-config
@@ -69,6 +72,8 @@
     SUBDIR += py-FreeBSD-ports
     SUBDIR += py-pytoport
     SUBDIR += py-skog
+    SUBDIR += rc-subr-jail
+    SUBDIR += reprise
     SUBDIR += sccache-overlay
     SUBDIR += synth
     SUBDIR += wanted-ports

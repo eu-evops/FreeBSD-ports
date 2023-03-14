@@ -1,12 +1,11 @@
-# Created by: TAKATSU Tomonari <tota@FreeBSD.org>
-
 PORTNAME=	e1071
-DISTVERSION=	1.7-9
+DISTVERSION=	1.7-11
 CATEGORIES=	science
 DISTNAME=	${PORTNAME}_${DISTVERSION}
 
 MAINTAINER=	tota@FreeBSD.org
 COMMENT=	Misc Functions of the Department of Statistics (e1071), TU Wien
+WWW=		https://cran.r-project.org/web/packages/e1071/
 
 LICENSE=	GPLv2+
 

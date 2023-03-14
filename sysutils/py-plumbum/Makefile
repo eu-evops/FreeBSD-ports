@@ -1,13 +1,12 @@
-# Created by: David Naylor <dbn@FreeBSD.org>
-
 PORTNAME=	plumbum
-PORTVERSION=	1.7.0
+PORTVERSION=	1.8.1
 CATEGORIES=	sysutils python
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
-MASTER_SITES=	CHEESESHOP
+MASTER_SITES=	PYPI
 
 MAINTAINER=	sunpoet@FreeBSD.org
 COMMENT=	Shell combinators library
+WWW=		https://github.com/tomerfiliba/plumbum
 
 LICENSE=	MIT
 LICENSE_FILE=	${WRKSRC}/LICENSE
@@ -20,5 +19,9 @@ NO_ARCH=	yes
 OPTIONS_DEFINE=	SSH
 
 SSH_RUN_DEPENDS=	${PYTHON_PKGNAMEPREFIX}paramiko>=0:security/py-paramiko@${PY_FLAVOR}
+
+post-patch:
+	@${RM} ${WRKSRC}/pyproject.toml
+	@${SED} -e 's|%%PORTVERSION%%|${PORTVERSION}|' ${FILESDIR}/setup.py > ${WRKSRC}/setup.py
 
 .include <bsd.port.mk>

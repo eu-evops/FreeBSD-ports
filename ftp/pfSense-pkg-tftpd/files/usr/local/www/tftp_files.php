@@ -3,7 +3,7 @@
  * tftp_files.php
  *
  * part of pfSense (https://www.pfsense.org)
- * Copyright (c) 2011-2022 Rubicon Communications, LLC (Netgate)
+ * Copyright (c) 2011-2023 Rubicon Communications, LLC (Netgate)
  * Copyright (C) 2008 Mark J Crane
  * All rights reserved.
  *
@@ -25,6 +25,8 @@ require_once("guiconfig.inc");
 require_once("notices.inc");
 require_once("util.inc");
 require_once("/usr/local/pkg/tftpd.inc");
+
+$shortcut_section = 'tftpd';
 
 /* Trigger full backup creation */
 if ($_GET['a'] == "other" && $_GET['t'] == "backup") {
@@ -102,7 +104,7 @@ if ($_GET['act'] == "del") {
 	}
 }
 
-$pgtitle = array("Package", "TFTP server", "Files");
+$pgtitle = array(gettext('Services'), gettext('TFTP Server'), gettext('Files'));
 require_once("head.inc");
 $savemsg = htmlspecialchars($_GET["savemsg"]);
 $result = htmlspecialchars($_GET["result"]) ?: 'success';

@@ -6,6 +6,7 @@ PKGNAMESUFFIX=	42
 
 MAINTAINER=	mike.jakubik@swiftsmsgateway.com
 COMMENT=	Connection pool server for PostgreSQL
+WWW=		https://pgpool.net/
 
 LICENSE=	MIT
 LICENSE_FILE=	${WRKSRC}/COPYING
@@ -18,7 +19,7 @@ USE_RC_SUBR=	pgpool
 
 GNU_CONFIGURE=	yes
 
-CONFLICTS=	pgpool-II
+CONFLICTS_INSTALL=	pgpool-II-[0-9][0-9] pgpool-II[0-9][0-9] # etc/escalation.sh.sample etc/failover.sh.sample etc/pcp.conf.sample
 
 PORTDOCS=	*
 

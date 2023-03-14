@@ -1,11 +1,12 @@
 PORTNAME=	znapzend
-PORTVERSION=	0.21.0
+PORTVERSION=	0.21.1
 DISTVERSIONPREFIX=	v
 PORTREVISION=	0
 CATEGORIES=	sysutils
 
 MAINTAINER=	olgeni@FreeBSD.org
 COMMENT=	ZFS-centric backup tool
+WWW=		https://www.znapzend.org/
 
 LICENSE=	GPLv3+
 LICENSE_FILE=	${WRKSRC}/LICENSE

@@ -1,5 +1,3 @@
-# Created by: Chris Piazza <cpiazza@FreeBSD.org>
-
 PORTNAME=	cmp3
 PORTVERSION=	2.0.p6
 PORTREVISION=	2
@@ -9,9 +7,13 @@ DISTNAME=	${PORTNAME}-${PORTVERSION:S/.p/pre/}
 
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	Ncurses based frontend to mpg123
+WWW=		http://cmp3.sourceforge.net/
 
 LICENSE=	GPLv2
 LICENSE_FILE=	${WRKSRC}/COPYING
+
+DEPRECATED=	Abandonware, no development in 20 years. Please consider using audio/cmus or audio/musicpd
+EXPIRATION_DATE=2023-03-31
 
 RUN_DEPENDS=	mpg123:audio/mpg123
 

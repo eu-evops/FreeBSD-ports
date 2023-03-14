@@ -1,5 +1,3 @@
-# Created by: Bill Fumerola <billf@chc-chimes.com>
-
 PORTNAME=	htdig
 PORTVERSION=	3.2.0.b6
 PORTREVISION=	6
@@ -9,6 +7,7 @@ DISTNAME=	htdig-3.2.0b6
 
 MAINTAINER=	ports@FreeBSD.org
 COMMENT=	WWW indexing and searching system
+WWW=		https://sourceforge.net/projects/htdig/
 
 LICENSE=	LGPL20+
 LICENSE_FILE=	${WRKSRC}/COPYING
@@ -31,10 +30,12 @@ INSTALL_TARGET=	install-strip
 LDFLAGS+=	-L${OPENSSLLIB}
 CFLAGS+=	-I${OPENSSLINC}
 
+CONFLICTS_INSTALL=	htdump mifluz # bin/htdb_dump bin/htdb_load bin/htdb_stat bin/htdump
+
 OPTIONS_DEFINE=	APACHE DOCS
 OPTIONS_DEFAULT=	APACHE
 
-APACHE_USE=	APACHE=22+
+APACHE_USES=	apache
 APACHE_CONFIGURE_ON=	--with-apache=${LOCALBASE}/sbin
 
 PORTDOCS=	*

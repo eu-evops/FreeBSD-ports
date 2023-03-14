@@ -1,15 +1,14 @@
-# Created by: Johannes Meixner <johannes@perceivon.net>
-
 PORTNAME=	tapi
 PORTVERSION=	0.1.7
 PORTREVISION=	2
 CATEGORIES=	devel python
-MASTER_SITES=	CHEESESHOP
+MASTER_SITES=	PYPI
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
 DISTNAME=	Tapi-${PORTVERSION}
 
 MAINTAINER=	sunpoet@FreeBSD.org
 COMMENT=	Framework for testing APIs
+WWW=		https://pypi.org/project/Tapi/
 
 LICENSE=	MIT
 

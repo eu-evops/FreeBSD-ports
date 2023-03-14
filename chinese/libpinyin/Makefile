@@ -1,12 +1,11 @@
-# Created by: Zhihao Yuan <lichray@gmail.com>
-
 PORTNAME=	libpinyin
-PORTVERSION=	2.3.0
+PORTVERSION=	2.6.2
 CATEGORIES=	chinese textproc
 MASTER_SITES=	SF/${PORTNAME}/${PORTNAME}
 
 MAINTAINER=	lichray@gmail.com
 COMMENT=	Library to deal with pinyin
+WWW=		https://github.com/libpinyin/libpinyin
 
 LICENSE=	GPLv2
 

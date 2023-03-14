@@ -1,11 +1,12 @@
 PORTNAME=	psautohint
 DISTVERSION=	2.0.0
 CATEGORIES=	print python
-MASTER_SITES=	CHEESESHOP
+MASTER_SITES=	PYPI
 PKGNAMEPREFIX=	${PYTHON_PKGNAMEPREFIX}
 
 MAINTAINER=	lantw44@gmail.com
 COMMENT=	Python wrapper for Adobe PostScript autohinter
+WWW=		https://github.com/adobe-type-tools/psautohint
 
 LICENSE=	APACHE20
 LICENSE_FILE=	${WRKSRC}/LICENSE

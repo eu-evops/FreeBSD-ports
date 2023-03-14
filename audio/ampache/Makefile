@@ -1,5 +1,3 @@
-# Created by: Philippe Audeoud <jadawin@tuxaco.net>
-
 PORTNAME=	ampache
 PORTVERSION=	5.0.0
 DISTVERSIONSUFFIX=	_all
@@ -9,12 +7,14 @@ PKGNAMESUFFIX=	${PHP_PKGNAMESUFFIX}
 
 MAINTAINER=	crees@FreeBSD.org
 COMMENT=	Web-based Audio file manager
+WWW=		https://ampache.org/
 
 LICENSE=	AGPLv3+
 
 USES=		cpe zip gettext php:flavors mysql
 USE_PHP=	pdo pdo_mysql hash session json intl simplexml curl dom xml
-IGNORE_WITH_PHP=73 80
+
+CONFLICTS_INSTALL=	ampache-php* # etc/periodic/daily/500.ampache-cron man/man1/ampache.1.gz
 
 NO_WRKSUBDIR=	yes
 NO_BUILD=	yes

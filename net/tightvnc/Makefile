@@ -1,5 +1,3 @@
-# Created by: ijliao
-
 PORTNAME=	tightvnc
 PORTVERSION=	1.3.10
 PORTREVISION=	6
@@ -9,9 +7,13 @@ DISTNAME=	${PORTNAME}-${PORTVERSION}_unixsrc
 
 MAINTAINER=	meta@FreeBSD.org
 COMMENT=	Enhanced version of VNC
+WWW=		https://www.tightvnc.com/
 
 LICENSE=	GPLv2
 LICENSE_FILE=	${WRKSRC}/LICENCE.TXT
+
+DEPRECATED=	Last release in 2009, newer version 2.x is available for Windows only.
+EXPIRATION_DATE=	2023-03-31
 
 RUN_DEPENDS=	showrgb:x11/rgb \
 		xauth:x11/xauth \
@@ -42,7 +44,7 @@ PREFIX=${TIGHTVNC_BASE}
 
 .include <bsd.port.pre.mk>
 
-.if ${ARCH} == aarch64 || ${ARCH:Mpowerpc*} || ${ARCH} == riscv64
+.if ${ARCH} == aarch64
 USE_GCC=	yes
 .endif
 

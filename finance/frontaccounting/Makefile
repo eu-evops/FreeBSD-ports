@@ -1,5 +1,3 @@
-# Created by: Janky Jay <ek@purplehat.org>
-
 PORTNAME=	frontaccounting
 DISTVERSION=	2.3.25
 CATEGORIES=	finance www
@@ -7,6 +5,7 @@ MASTER_SITES=	SF/${PORTNAME}/FrontAccounting-2.3/${PORTVERSION}
 
 MAINTAINER=	ek@purplehat.org
 COMMENT=	Simple, powerful system for the entire ERP chain
+WWW=		https://www.frontaccounting.com/
 
 LICENSE=	GPLv3+
 LICENSE_FILE=	${WRKSRC}/doc/license.txt
@@ -26,7 +25,7 @@ OPTIONS_DEFAULT=	APACHE MYSQL_SERVER
 MYSQL_SERVER_DESC=	MySQL server support
 NGINX_DESC=		NGINX web server
 
-APACHE_USES=		apache:run,2.2+ php:web
+APACHE_USES=		apache:run php:web
 LIGHTTPD_RUN_DEPENDS=	lighttpd:www/lighttpd
 LIGHTTPD_USES=		php:web
 NGINX_RUN_DEPENDS=	nginx:www/nginx

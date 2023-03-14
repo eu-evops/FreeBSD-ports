@@ -1,9 +1,10 @@
 PORTNAME=	xsimd
-DISTVERSION=	7.6.0
+DISTVERSION=	8.1.0
 CATEGORIES=	devel
 
 MAINTAINER=	yuri@FreeBSD.org
 COMMENT=	C++ wrappers for SIMD intrinsics and mathematical functions
+WWW=		https://github.com/xtensor-stack/xsimd
 
 LICENSE=	BSD3CLAUSE
 LICENSE_FILE=	${WRKSRC}/LICENSE

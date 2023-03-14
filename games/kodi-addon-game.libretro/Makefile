@@ -1,13 +1,11 @@
-# Created by: Rozhuk Ivan <rozhuk.im@gmail.com>
-
 PORTNAME=	game.libretro
-PORTVERSION=	2.2.0
-DISTVERSIONSUFFIX=	-Matrix
-PORTREVISION=	1
+PORTVERSION=	20.1.0
+DISTVERSIONSUFFIX=	-Nexus
 CATEGORIES=	games
 
 MAINTAINER=	rozhuk.im@gmail.com
 COMMENT=	Libretro compatibility layer for the Kodi Game API
+WWW=		https://github.com/kodi-game/game.libretro
 
 LICENSE=	GPLv2+
 

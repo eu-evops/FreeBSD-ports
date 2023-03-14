@@ -1,5 +1,3 @@
-# Created by: Michael Nottebrock <michaelnottebrock@gmx.net>
-
 PORTNAME=	dvdrip
 PORTVERSION=	0.98.11
 PORTREVISION=	12
@@ -9,9 +7,13 @@ MASTER_SITE_SUBDIR=	CPAN:JRED
 
 MAINTAINER=	se@FreeBSD.org
 COMMENT=	Perl Gtk+ based dvd-ripper
+WWW=		https://www.exit1.org/dvdrip/
 
 LICENSE=	ART10 GPLv1 # (ART10 or GPLv1) and CC-BY-SA-2.5
 LICENSE_COMB=	dual
+
+DEPRECATED=	Depends on broken transcode port
+EXPIRATION_DATE=	2023-03-31
 
 BUILD_DEPENDS=	p5-Gtk2>=0:x11-toolkits/p5-Gtk2 \
 		p5-AnyEvent>=0:devel/p5-AnyEvent \
@@ -26,7 +28,6 @@ RUN_DEPENDS=	p5-Gtk2>=0:x11-toolkits/p5-Gtk2 \
 		p5-Event-RPC>=0:devel/p5-Event-RPC \
 		p5-Locale-libintl>=0:devel/p5-Locale-libintl \
 		cdrdao:sysutils/cdrdao \
-		convert:graphics/ImageMagick6 \
 		mplayer:multimedia/mplayer \
 		pstree:sysutils/pstree \
 		transcode:multimedia/transcode \
@@ -34,7 +35,7 @@ RUN_DEPENDS=	p5-Gtk2>=0:x11-toolkits/p5-Gtk2 \
 		${LOCALBASE}/sbin/fping:net/fping \
 		cdrecord:sysutils/cdrtools
 
-USES=		gettext perl5 shebangfix
+USES=		gettext magick:6,run perl5 shebangfix
 USE_PERL5=	configure patch
 
 SHEBANG_FILES=	bin/dvdrip*

@@ -1,13 +1,12 @@
-# Created by: Ying-Chieh Liao <ijliao@FreeBSD.org>
-
 PORTNAME=	wdune
 PORTVERSION=	1.926
-PORTREVISION=	3
+PORTREVISION=	4
 CATEGORIES=	graphics
 MASTER_SITES=	ftp://ftp.ourproject.org/pub/wdune/
 
 MAINTAINER=	pi@FreeBSD.org
 COMMENT=	Graphical VRML97 editor and animation tool
+WWW=		https://wdune.ourproject.org/
 
 LICENSE=	GPLv2
 
@@ -32,6 +31,9 @@ CONFIGURE_ARGS+=	--with-optimization \
 		--with-helpurl="${DOCSDIR}/index.html"
 CPPFLAGS+=	-I${LOCALBASE}/include/freetype2 -D__FREEBSD__
 LDFLAGS+=	-L${LOCALBASE}/lib
+
+CONFLICTS_INSTALL=	ocaml-dune
+
 ALL_TARGET=	dune
 
 OPTIONS_DEFINE=	DOCS

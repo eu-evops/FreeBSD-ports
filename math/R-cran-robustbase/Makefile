@@ -1,12 +1,11 @@
-# Created by: TAKATSU Tomonari <tota@FreeBSD.org>
-
 PORTNAME=	robustbase
-DISTVERSION=	0.93-9
+DISTVERSION=	0.95-0
 CATEGORIES=	math
 DISTNAME=	${PORTNAME}_${DISTVERSION}
 
 MAINTAINER=	tota@FreeBSD.org
 COMMENT=	Basic Robust Statistics
+WWW=		https://cran.r-project.org/web/packages/robustbase/
 
 LICENSE=	GPLv2+
 

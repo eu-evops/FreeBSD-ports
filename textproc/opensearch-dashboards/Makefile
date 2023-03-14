@@ -1,19 +1,29 @@
 PORTNAME=	opensearch-dashboards
-DISTVERSION=	1.2.0
+DISTVERSION=	2.4.0
 DISTVERSIONSUFFIX=	-linux-x64
 CATEGORIES=	textproc www
 MASTER_SITES=	https://artifacts.opensearch.org/releases/bundle/${PORTNAME}/${DISTVERSION}/
 
 MAINTAINER=	opensearch@FreeBSD.org
 COMMENT=	Visualization dashboards for OpenSearch
+WWW=		https://opensearch.org
 
 LICENSE=	APACHE20
 LICENSE_FILE=	${WRKSRC}/LICENSE.txt
 
 BUILD_DEPENDS=	npm-node14>0:www/npm-node14
 
+CONFLICTS=	opensearch-dashboard13
+
 USES=		nodejs:14,build,run python:build
 USE_RC_SUBR=	${PORTNAME}
+
+WRKSRC=		${WRKDIR}/${PORTNAME}-${PORTVERSION}
+
+OPTIONS_DEFINE=	CHROME
+
+CHROME_DESC=	Add dependency on www/chromium (required for PDF reports)
+CHROME_RUN_DEPENDS=chrome:www/chromium
 
 _DEVDIR=	${WRKDIR}/.devdir
 
@@ -35,7 +45,7 @@ post-patch:
 
 do-configure:
 	(cd ${WRKSRC}/node_modules/re2 && \
-		${SETENV} HOME=${WRKDIR} \
+		${SETENV} HOME=${WRKDIR} PYTHONDONTWRITEBYTECODE=1 \
 		${LOCALBASE}/lib/node_modules/npm/bin/node-gyp-bin/node-gyp configure \
 		--python=${PYTHON_CMD} \
 		--nodedir ${LOCALBASE} \
@@ -43,7 +53,7 @@ do-configure:
 
 do-build:
 	(cd ${WRKSRC}/node_modules/re2 && \
-		${SETENV} HOME=${WRKDIR} \
+		${SETENV} HOME=${WRKDIR} PYTHONDONTWRITEBYTECODE=1 \
 		${LOCALBASE}/lib/node_modules/npm/bin/node-gyp-bin/node-gyp build \
 		--devdir=${_DEVDIR})
 	${RM} -r ${WRKSRC}/node_modules/re2/build/Release/.deps \
