@@ -10,3 +10,4 @@ Makefile.local
 *.orig
 *.sw[p-z]
 .vscode/
+vendor/
